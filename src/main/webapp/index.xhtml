@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default_index.xhtml">
+
+	<ui:define name="corpo">
+
+		<header id="page-top">
+			<div class="container">
+				<div class="heading">
+					<h1>#{resources['label.global.bemvindos']}</h1>
+					<h6>#{resources['label.global.bemvindos1']}</h6>
+					<br />
+					<div class="col-md-3 col-lg-3">
+						<div class="hpanel">
+							<div class="panel-body text-center h-80">
+								<i class="pe-7s-network fa-3x text-success"></i>
+								<h3 class="m-xs" style="color: #000" id="id-seu-ip"></h3>
+								<h4 class="font-extra-bold no-margins text-success">
+									#{resources['label.global.seuip']}</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="rooms-list" class="heading-image animate-panel" data-child="img-animate" data-effect="fadeInRight">
+<!-- 		            <p class="small">Live NOW</p> -->
+<!-- 		            <img class="img-animate" src="http://webapplayers.com/homer_admin-v2.0/images/landing/c1.jpg" style="" /> -->
+<!-- 		            <img class="img-animate" src="http://webapplayers.com/homer_admin-v2.0/images/landing/c2.jpg" style="" /> -->
+<!-- 		            <img class="img-animate" src="http://webapplayers.com/homer_admin-v2.0/images/landing/c3.jpg" style="" /> -->
+<!-- 		            <img class="img-animate" src="http://webapplayers.com/homer_admin-v2.0/images/landing/c4.jpg" style="" /> -->
+		        </div>
+				
+			</div>
+		</header>
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-9 col-lg-9">
+						<div class="row">
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/peoplesearch"><i
+											class="pe-7s-user fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/peoplesearch"><h5 class="m-xs">PEOPLE
+												SEARCH</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/videodownload"><i
+											class="pe-7s-cloud-download fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/videodownload">
+											<h5 class="m-xs">VIDEO DOWNLOAD</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/videodownload"><i
+											class="pe-7s-music fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/videodownload">
+											<h5 class="m-xs">MP3 DOWNLOAD</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/dirb"><i
+											class="pe-7s-key fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/dirb"><h5 class="m-xs">PENETRATION</h5></a>
+									</div>
+								</div>
+							</div>
+		
+		
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/ping"><i
+											class="pe-7s-cloud-upload fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/ping"><h5 class="m-xs">PING</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/whois"><i
+											class="pe-7s-id fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/whois"><h5 class="m-xs">WHOIS</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/nslookup"><i
+											class="pe-7s-wallet fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/nslookup"><h5 class="m-xs">NSLOOKUP</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/traceroute"><i
+											class="pe-7s-graph1 fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/traceroute"><h5 class="m-xs">TRACE</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/nmap"><i
+											class="pe-7s-map fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/nmap"><h5 class="m-xs">NMAP</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/snmp"><i
+											class="pe-7s-way fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/snmp"><h5 class="m-xs">SNMP</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/sip"><i
+											class="pe-7s-phone fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/sip"><h5 class="m-xs">SIP</h5></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<section id="features" class="bg-light">
+							<div class="container">
+									<div class="col-md-9 col-lg-9">
+										<center>
+											<h2>
+												<span class="text-success">Nettols Live </span>#{resources['label.global.bemvindos1']}
+											</h2>
+										</center>
+									</div>
+									<div class="col-md-7">
+										<strong>People Search</strong> <a
+											href="#{request.contextPath}/peoplesearch"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.peoplesearch']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>Penetration test</strong> <a
+											href="#{request.contextPath}/dirb"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.dirb']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>Ping</strong> <a href="#{request.contextPath}/ping"><p>#{resources['textmin.global.ping']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>Nslookup</strong> <a
+											href="#{request.contextPath}/nslookup"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.nslookup']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>Whois</strong> <a href="#{request.contextPath}/whois"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.whois']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>Traceroute</strong> <a
+											href="#{request.contextPath}/traceroute"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.traceroute']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>NMap</strong> <a href="#{request.contextPath}/nmap"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.nmap']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>SNMP</strong> <a href="#{request.contextPath}/snmp"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.snmp']}</p></a>
+									</div>
+									<div class="col-md-7">
+										<strong>SIP</strong> <a href="#{request.contextPath}/sip"><p
+												style="text-overflow: ellipsis;">#{resources['textmin.global.sip']}</p></a>
+									</div>
+							</div>
+						</section>
+					</div>
+					<div class="col-md-3 col-lg-3">
+						<ui:include src="/pages/blog/blog-include-vertical.xhtml" />
+					</div>		
+				</div>
+			</div>
+		</section>
+		<section id="contact" class="bg-light">
+			<div class="container">
+				<div class="row text-center">
+					<div class="col-md-6 col-md-offset-3">
+						<h2>
+							<span class="text-success">Net Tools</span> Live
+						</h2>
+						<p>
+							<a href="mailto:evandromoura@gmail.com">evandromoura@gmail.com</a>
+						</p>
+						<p>
+							<a
+								href="https://twitter.com/intent/tweet?screen_name=evandromoura&amp;ref_src=twsrc%5Etfw"
+								class="twitter-mention-button" data-show-count="false">Tweet
+								to @evandromoura</a>
+							<script async="async"
+								src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+						</p>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</ui:define>
+</ui:composition>
+

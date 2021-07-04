@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="#{resources['artigo4.titulo']}" />
+	<ui:param name="keywords" value="#{resources['artigo4.titulo']},#{resources['artigo4.subtitulo']}" />
+	
+	
+	<ui:define name="corpo">
+		<div id="wrapper">
+			<div class="row">
+	            <div class="col-md-offset-1 col-lg-10">
+	                <div class="hpanel blog-article-box">
+	                    <div class="panel-heading">
+	                        <h4>#{resources['artigo4.titulo']} </h4>
+	                        <small>#{resources['artigo4.subtitulo']}</small>
+	                        <div class="text-muted small">
+	                            Created by: <span class="font-bold">Evandro Moura</span>
+	                            06.19.2021, 23:00 pm
+	                        </div>
+	                    </div>
+	                    <div class="panel-body">
+	                        <p>
+	                            #{resources['artigo4.detalhes.p1']}
+	                        </p>
+	                        <p>
+	                            #{resources['artigo4.detalhes.p2']}
+	                        </p>
+	                        <br />
+	                        <br />
+<textarea cols="40" rows="20" spellcheck="false">
+sudo kubeadm reset
+
+sudo apt purge kubectl kubeadm kubelet kubernetes-cni -y
+sudo apt autoremove
+sudo rm -fr /etc/kubernetes/; sudo rm -fr ~/.kube/; sudo rm -fr /var/lib/etcd; sudo rm -rf /var/lib/cni/
+
+rm -rf /etc/cni /etc/kubernetes /var/lib/dockershim /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/*
+
+sudo systemctl daemon-reload
+
+sudo iptables -F &amp;&amp; sudo iptables -t nat -F &amp;&amp; sudo iptables -t mangle -F &amp;&amp; sudo iptables -X
+
+sudo iptables --flush
+
+shutdown -r now
+</textarea>	                        
+	                    </div>
+	                    <div class="panel-footer">
+	                    	<div class="fb-comments" data-href="https://nettools.live/blog/article-4" data-width="" data-numposts="10"></div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	       </div> 
+	</ui:define>
+</ui:composition>	 
+	
+	

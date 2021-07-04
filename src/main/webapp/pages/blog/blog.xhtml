@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="BLOG" />
+	<ui:param name="keywords"
+		value="Blog sobre desenvolvimento, Blog Development, Kubernetes, Java, Javaee8, NGINX Ingress Controller" />
+	<ui:define name="corpo">
+
+		<div id="wrapper">
+			<div class="normalheader ">
+				<div class="hpanel">
+					<div class="panel-body">
+						<a class="small-header-action" href="">
+							<div class="clip-header">
+								<i class="fa fa-arrow-up"></i>
+							</div>
+						</a>
+
+						<div id="hbreadcrumb" class="pull-right m-t-lg">
+							<ol class="hbreadcrumb breadcrumb">
+								<li><a href="mailto:evandromoura@gmail.com">evandromoura@gmail.com</a></li>
+							</ol>
+						</div>
+						<h2 class="font-light m-b-xs">Blog</h2>
+						<small>#{resources['label.global.blogs']}</small>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="content">
+				<ui:include src="blog-include-horizontal.xhtml">
+					<ui:param name="tamanhodiv" value="3" />
+				</ui:include>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+

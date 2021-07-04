@@ -1,0 +1,112 @@
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.84"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+	<url>
+		<loc>https://nettools.live</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/peoplesearch</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/videodownload</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/ping</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/whois</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/traceroute</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/nmap</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/snmp</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/sip</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/nslookup</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/dirb</loc>
+		<changefreq>always</changefreq>
+	</url>
+	
+	
+	<url>
+		<loc>https://nettools.live/blog</loc>
+		<changefreq>always</changefreq>
+	</url>
+	
+	<url>
+		<loc>https://nettools.live/blog</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-1</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-1/creating-a-cluster-in-kubernetes</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-1/criando-um-cluster-em-kubernetes</loc>
+		<changefreq>always</changefreq>
+	</url>
+	
+	
+	<url>
+		<loc>https://nettools.live/blog/article-2</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-2/app-javaee8-kubernetes-high-availability</loc>
+		<changefreq>always</changefreq>
+	</url>
+	
+	
+	<url>
+		<loc>https://nettools.live/blog/article-3</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-3/installing-nginx-ingress-controller-on-kubernetes</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-3/instalando-nginx-ingress-controller-no-kubernetes</loc>
+		<changefreq>always</changefreq>
+	</url>
+	
+	
+	<url>
+		<loc>https://nettools.live/blog/article-4</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-4/completely-uninstall-kubernetes</loc>
+		<changefreq>always</changefreq>
+	</url>
+	<url>
+		<loc>https://nettools.live/blog/article-4/desinstalar-completamente-o-kubernetes</loc>
+		<changefreq>always</changefreq>
+	</url>
+	
+	
+	
+</urlset>

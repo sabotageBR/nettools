@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE jboss-web PUBLIC
+   "-//JBoss//DTD Web Application 5.0//EN"
+   "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
+<jboss-web>
+	<context-root>/</context-root>
+    <virtual-host>nettools</virtual-host>
+<!--     <replication-config> -->
+<!-- 		<replication-trigger>SET_AND_NON_PRIMITIVE_GET</replication-trigger> -->
+<!-- 		<replication-granularity>SESSION</replication-granularity> -->
+<!--     </replication-config> -->
+</jboss-web>

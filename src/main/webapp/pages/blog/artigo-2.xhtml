@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="#{resources['artigo2.titulo']}" />
+	<ui:param name="keywords" value="#{resources['artigo2.titulo']},#{resources['artigo2.subtitulo']}" />
+	
+	
+	<ui:define name="corpo">
+		<div id="wrapper">
+			<div class="row">
+	            <div class="col-md-offset-1 col-lg-10">
+	                <div class="hpanel blog-article-box">
+	                    <div class="panel-heading">
+	                        <h4>#{resources['artigo2.titulo']} </h4>
+	                        <small>#{resources['artigo2.subtitulo']}</small>
+	                        <div class="text-muted small">
+	                            Created by: <span class="font-bold">Evandro Moura</span>
+	                            06.19.2021, 23:00 pm
+	                        </div>
+	                    </div>
+	                    <div class="panel-body">
+	                        <p>
+	                            #{resources['artigo2.detalhes.p1']}
+	                        </p>
+	                        <p>
+	                            #{resources['artigo2.detalhes.p2']}
+	                        </p>
+	                        
+	                        <br />
+	                        <h3><b>#{resources['artigo2.label.configuracao']}</b></h3>
+	                        <br />
+	                        <p>
+	                            #{resources['artigo2.detalhes.p3']}:
+	                        </p>
+	                        <br />
+                            <code>
+                            	git clone https://github.com/evandromoura/jkubecluster.git
+                            </code>
+	                        <br />
+	                        <br />
+	                        <img src="/resources/images/terminal-1.png" width="100%" height="50%" />
+	                        <br />
+	                        <br />
+	                        <center><h3>#{resources['artigo2.label.configuracao']}: kubernetes/standalone-full-ha.xml</h3></center>
+	                        <br />
+	                        <p>
+	                            Datasource:
+	                        </p>
+<div class="row">	                        
+<textarea cols="40" rows="13" spellcheck="false">
+<datasource jta="true" jndi-name="java:jboss/datasources/JKubeClusterDS" pool-name="java:jboss/datasources/JKubeClusterDS_Pool" enabled="true" use-java-context="true" use-ccm="true">
+   <connection-url>jdbc:postgresql://192.168.10.10:5432/postgres</connection-url>
+   <driver>postgresql-8.4-701.jdbc3.jar</driver>
+   <security>
+     <user-name>postgres</user-name>
+     <password>postgres</password>
+   </security>
+   <validation>
+      <check-valid-connection-sql>select 1</check-valid-connection-sql>
+   </validation>
+</datasource>
+</textarea>
+</div>
+	                        <br />
+	                        <code>
+	                            #{resources['artigo2.detalhes.p4']}
+	                        </code>
+	                        <br />
+	                        <br />
+	                        <p>
+	                            HOST:
+	                        </p>
+<textarea cols="40" rows="2" spellcheck="false">
+<host name="jkubecluster" alias="jkubecluster.evandromoura.com" default-web-module="jkubecluster.war"></host>
+</textarea>
+	                       <br />
+                            <code>
+                            	#{resources['artigo2.detalhes.p5']}
+                            </code> 
+	                        
+	                        
+	                        <br />
+	                        <br />
+	                        <br />
+	                        <p>#{resources['artigo2.detalhes.p6']}</p>
+	                        <code>
+	                        	echo "192.168.xx.xx  jkubecluster.evandromoura.com" >> /etc/hosts
+	                        </code>
+	                        <br />
+	                        <p>#{resources['artigo2.detalhes.p7']}</p>
+	                        <br />
+	                        <br />
+	                        <br />
+	                        <center><h3>#{resources['artigo2.detalhes.p8']}</h3></center>
+	                        <br />
+	                        <br />
+<textarea cols="40" rows="25" spellcheck="false">
+FROM jboss/wildfly
+  
+    LABEL MAINTAINER Evandro Moura 
+  
+    USER root 
+      
+    COPY kubernetes/docker-entrypoint.sh $JBOSS_HOME/docker-entrypoint.sh
+    RUN chown jboss $JBOSS_HOME/docker-entrypoint.sh &amp;&amp; \
+        chmod a+x $JBOSS_HOME/docker-entrypoint.sh
+  
+    #KUBE_PING
+    COPY kubernetes/kubeping-module $JBOSS_HOME/modules/system/layers/base/org/jgroups/kubernetes
+      
+    #CONEXAO
+    COPY kubernetes/standalone-full-ha.xml $JBOSS_HOME/standalone/configuration/standalone-full-ha.xml
+    COPY kubernetes/postgresql-8.4-701.jdbc3.jar $JBOSS_HOME/standalone/deployments/
+  
+    #BUILD
+    COPY /target/jkubecluster.war $JBOSS_HOME/standalone/deployments/
+      
+    #PORTAS
+    EXPOSE 8080 8009 9990 7600 8888
+  
+    ENTRYPOINT $JBOSS_HOME/docker-entrypoint.sh
+</textarea>	              
+						<br />
+						<br />
+						<p>#{resources['artigo2.detalhes.p9']}</p>          
+	                    <p>#{resources['artigo2.detalhes.p10']}</p>
+	                    
+	                    <br />
+	                    <br />
+	                    <center><h3>#{resources['artigo2.detalhes.p11']}</h3></center>
+	                    <br />
+	                     <p>#{resources['artigo2.detalhes.p12']} <b>buildAndRun.sh</b></p>
+	                     <br />  
+	                     <code>
+	                     	mvn clean package &amp;&amp; sudo docker build -t evandromoura/jkubecluster . &amp;&amp; sudo docker push evandromoura/jkubecluster
+	                     </code> 
+	                     <p>#{resources['artigo2.detalhes.p13']}</p>
+	                     <br />
+	                     <br />
+	                     <center><h3>#{resources['artigo2.detalhes.p14']}</h3></center>
+	                     <br />
+	                     <p>#{resources['artigo2.detalhes.p15']}</p>
+	                     <ul>
+	                     	<li><a href="/blog/article-1/#{resources['artigo1.link']}" target="_blank">#{resources['artigo2.detalhes.p16']}</a></li>
+	                     	<li><a href="/blog/article-3/#{resources['artigo3.link']}" target="_blank">#{resources['artigo2.detalhes.p17']}</a></li>
+	                     </ul>
+	                     <br />
+	                     <br />
+	                     <h3>Namespace</h3>
+<textarea cols="40" rows="5" spellcheck="false">
+kind: Namespace
+apiVersion: v1
+metadata:
+name: jkubecluster
+</textarea>	  
+	                     <br />
+	                     <h3>Jgroups / Cluster Role</h3>
+<textarea cols="40" rows="30" spellcheck="false">
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: jgroups-kubeping-service-account
+  namespace: jkubecluster
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jgroups-kubeping-pod-reader
+  namespace: jkubecluster
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: jgroups-kubeping-api-access
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: jgroups-kubeping-pod-reader
+subjects:
+- kind: ServiceAccount
+  name: jgroups-kubeping-service-account
+  namespace: jkubecluster
+</textarea>	  
+	                     <br />
+	                     <h3>Deployment</h3>
+<textarea cols="40" rows="45" spellcheck="false">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jkubecluster-evandromoura
+  namespace: jkubecluster
+spec:
+  selector:
+    matchLabels:
+      app: jkubecluster-evandromoura-server
+      tier: Production
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: jkubecluster-evandromoura-server
+        tier: Production
+    spec:
+      serviceAccountName: jgroups-kubeping-service-account
+      containers:
+        - name: jkubecluster-evandromoura
+          image: evandromoura/jkubecluster
+          command: ["/opt/jboss/wildfly/bin/standalone.sh"]
+          args: ["--server-config", "standalone-full-ha.xml", "-b", $(POD_IP), "-bmanagement", $(POD_IP) ,"-bprivate", $(POD_IP) ]
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+            - containerPort: 9990
+            - containerPort: 7600
+            - containerPort: 8888
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: KUBERNETES_LABELS
+              value: app=jkubecluster-evandromoura
+</textarea>	  
+	                     <br />
+	                     <h3>Service</h3>
+<textarea cols="40" rows="18" spellcheck="false">
+apiVersion: v1
+kind: Service
+metadata:
+  name: jkubecluster-evandromoura-service
+  namespace: jkubecluster
+spec:
+  type: LoadBalancer
+  selector:
+    app: jkubecluster-evandromoura-server
+  ports:
+    - name: jkubecluster-evandromoura-http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      #externalIPs:
+      #- 192.168.12.50
+</textarea>	  
+	                     <br />
+	                     <h3>Ingress</h3>
+<textarea cols="40" rows="30" spellcheck="false">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jkubecluster-evandromoura-ingress
+  namespace: jkubecluster
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    #cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+      - https-jkubecluster.evandromoura.com
+    secretName: tls-jkubecluster-ingress
+  rules:
+  - host: jkubecluster.evandromoura.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jkubecluster-evandromoura-service
+            port:
+              number: 8080
+</textarea>	                     
+	                    <br />
+	                    <br />
+	                    <center><h3>#{resources['artigo2.detalhes.p18']}</h3></center>
+	                    <br />	
+	                    <p>#{resources['artigo2.detalhes.p19']}</p> 
+	                    <code>
+	                       kubectl apply -f jkubecluster-app.yaml
+	                    </code>
+	                    <br />
+	                    <br />
+	                    <center><h3>#{resources['artigo2.detalhes.p20']}</h3></center>
+	                    
+	                    <br />
+	                    <img src="/resources/images/terminal-2.png" width="100%" height="50%" />
+	                    <br />
+	                    <p>#{resources['artigo2.detalhes.p21']}</p>
+	                    <br />
+	                    <img src="/resources/images/terminal-3.png" width="100%" height="50%" />
+	                    
+	                    <br />
+	                    <p>#{resources['artigo2.detalhes.p22']}</p>
+	                    <br />
+	                    <img src="/resources/images/terminal-4.png" width="100%" height="50%" />
+	                    
+	                    <br />
+	                    <p>#{resources['artigo2.detalhes.p23']}</p>
+	                    <br />
+	                    <img src="/resources/images/terminal-5.png" width="100%" height="50%" />
+	                    
+	                    </div>
+	                    <div class="panel-footer">
+	                    	<div class="fb-comments" data-href="https://nettools.live/blog/article-2" data-width="" data-numposts="10"></div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	       </div> 
+	</ui:define>
+</ui:composition>	 
+	
+	

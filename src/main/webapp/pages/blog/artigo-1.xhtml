@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="#{resources['artigo1.titulo']}" />
+	<ui:param name="keywords" value="#{resources['artigo1.titulo']},#{resources['artigo1.subtitulo']}" />
+	
+	
+	<ui:define name="corpo">
+		<div id="wrapper">
+			<div class="row">
+	            <div class="col-md-offset-1 col-lg-10">
+	                <div class="hpanel blog-article-box">
+	                    <div class="panel-heading">
+	                        <h4>#{resources['artigo1.titulo']} </h4>
+	                        <small>#{resources['artigo1.subtitulo']}</small>
+	                        <div class="text-muted small">
+	                            Created by: <span class="font-bold">Evandro Moura</span>
+	                            06.19.2021, 23:00 pm
+	                        </div>
+	                    </div>
+	                    <div class="panel-body">
+	                        <p>
+	                            #{resources['artigo1.detalhes.p1']}
+	                        </p>
+	                        <p>
+	                            #{resources['artigo1.detalhes.p2']}
+	                        </p>
+	                        
+	                        <br />
+	                        <h3><b>#{resources['artigo1.label.configuracao']}</b></h3>
+	                        <br />
+	                        <p>
+	                            #{resources['artigo1.detalhes.p3']}:
+	                        </p>
+	                        <br />
+	                        <p>
+	                            <b>MASTER</b>
+	                        </p>
+                            <code>
+                            	hostname kube-master <br />
+								echo "kube-master" > /etc/hostname
+                            </code>
+	                        <br />
+	                        <br />
+	                        <p>
+	                            <b>WORKERS</b>
+	                        </p>
+                            <code>
+                            	hostname kube-worker-1 <br />
+								echo "kube-worker-1" > /etc/hostname <br />
+								<br />
+								hostname kube-worker-2 <br />
+								echo "kube-worker-2" > /etc/hostname <br />
+								<br /> 
+								hostname kube-worker-3 <br />
+								echo "kube-worker-3" > /etc/hostname <br />
+                            </code>
+	                        
+	                        <br />
+	                        <br />
+	                        <h3><b>#{resources['artigo1.label.instalacao']}</b></h3>
+	                        <br />
+	                        <p>
+	                            #{resources['artigo1.detalhes.p4']}:
+	                        </p>
+	                        
+	                        <code>
+	                        	curl -fsSL https://get.docker.com | sh <br />
+								sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https ca-certificates curl <br />
+								sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg <br />
+								echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list <br />
+								sudo apt-get update <br />
+								sudo apt-get install -y kubelet kubeadm kubectl <br />
+								sudo apt-mark hold kubelet kubeadm kubectl <br />
+								 <br />
+								sudo swapoff -a
+	                        </code>
+	                        
+	                        
+	                        <br />
+	                        <br />
+	                        <h3><b>#{resources['artigo1.label.configuracao']} - MASTER</b></h3>
+	                        <br />
+	                        <p>
+	                            #{resources['artigo1.detalhes.p5']}:
+	                        </p>
+	                        <code>
+	                        	kubeadm init <br />
+								mkdir -p $HOME/.kube <br />
+								sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config <br />
+								sudo chown $(id -u):$(id -g) $HOME/.kube/config <br />
+	                        </code>
+	                        
+	                        
+	                        <br />
+	                        <br />
+	                        <h3><b>#{resources['artigo1.label.configuracao']} - WORKERS</b></h3>
+	                        <br />
+	                        <p>
+	                            #{resources['artigo1.detalhes.p6']}:
+	                        </p>
+	                        <p>
+	                            #{resources['artigo1.detalhes.p7']}:
+	                        </p>
+	                        <code>
+	                        	kubeadm join 192.168.12.50:6443 --token 97qkmt.wn0eqzu45geha6l7 \ <br />
+								--discovery-token-ca-cert-hash sha256:f8a26cf969f453ccbe75d74246a6699aa25cea3db81ebd7c7d67312648e53419 <br />
+	                        </code>
+	                        
+	                        <br />
+	                        <br />
+	                        <h3><b>#{resources['artigo1.label.verificandoinstalacao']}</b></h3>
+	                        <br />
+	                        <p>
+	                            #{resources['artigo1.detalhes.p8']}:
+	                        </p>
+	                        <code>
+	                        	kubectl get pods<br />
+	                        </code>
+	                    </div>
+	                    <div class="panel-footer">
+	                    	<div class="fb-comments" data-href="https://nettools.live/blog/article-1" data-width="" data-numposts="10"></div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	       </div> 
+	</ui:define>
+</ui:composition>	 
+	
+	

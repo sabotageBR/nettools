@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components">
+
+	<div class="row">
+		<div class="sort-blog col-md-12">
+			<div class="hpanel blog-box">
+				<div class="panel-heading">
+					<div class="media clearfix">
+						<a class="pull-left"> <img
+							src="/resources/images/heisenberg.png" alt="profile-picture" />
+						</a>
+						<div class="media-body">
+							<small>Created by: <span class="font-bold">Evandro
+									Moura</span>
+							</small> <br /> <small class="text-muted">06.19.2021, 23:00 pm</small>
+						</div>
+					</div>
+				</div>
+				<div class="panel-image">
+					<a href="/blog/article-1/#{resources['artigo1.link']}">
+						<img class="img-responsive" src="/resources/images/kubernetes.jpeg"  alt=""  />
+					</a>	
+					<div class="title">
+						<a href="/blog/article-1/#{resources['artigo1.link']}">
+							<h4>#{resources['artigo1.titulo']}</h4>
+						</a> <small>#{resources['artigo1.subtitulo']}</small>
+					</div>
+				</div>
+				<div class="panel-body">
+					<a href="/blog/article-1/#{resources['artigo1.link']}">
+						<p>#{resources['artigo1.detalhes.p1']}</p>
+						<p>#{resources['artigo1.detalhes.p2']}</p>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="sort-blog col-md-12">
+			<div class="hpanel blog-box">
+				<div class="panel-heading">
+					<div class="media clearfix">
+						<a class="pull-left"> <img
+							src="/resources/images/heisenberg.png" alt="profile-picture" />
+						</a>
+						<div class="media-body">
+							<small>Created by: <span class="font-bold">Evandro
+									Moura</span>
+							</small> <br /> <small class="text-muted">06.19.2021, 23:00 pm</small>
+						</div>
+					</div>
+				</div>
+				<div class="panel-image">
+					<a href="/blog/article-2/#{resources['artigo2.link']}">
+						<img class="img-responsive" src="/resources/images/java.png" alt=""  />
+					</a>	
+					<div class="title">
+						<a href="/blog/article-2/#{resources['artigo2.link']}">
+							<h4>#{resources['artigo2.titulo']}</h4>
+							<small>#{resources['artigo2.subtitulo']}</small>
+						</a>	
+					</div>
+				</div>
+				<div class="panel-body">
+					<a href="/blog/article-2/#{resources['artigo2.link']}">
+						<p>#{resources['artigo2.detalhes.p1']}</p>
+						<p>#{resources['artigo2.detalhes.p2']}</p>
+					</a>	
+				</div>
+			</div>
+		</div>
+		<div class="sort-blog col-md-12">
+			<div class="hpanel blog-box">
+				<div class="panel-heading">
+					<div class="media clearfix">
+						<a class="pull-left"> <img
+							src="/resources/images/heisenberg.png" alt="profile-picture" />
+						</a>
+						<div class="media-body">
+							<small>Created by: <span class="font-bold">Evandro
+									Moura</span>
+							</small> <br /> <small class="text-muted">06.19.2021, 23:00 pm</small>
+						</div>
+					</div>
+				</div>
+				<div class="panel-image">
+					<a href="/blog/article-3/#{resources['artigo3.link']}">
+						<img class="img-responsive" src="/resources/images/nginx.png" alt=""  />
+					</a>	
+					<div class="title">
+						<a href="/blog/article-3/#{resources['artigo3.link']}">
+							<h4>#{resources['artigo3.titulo']}</h4>
+							<small>#{resources['artigo3.subtitulo']}</small>
+						</a>	
+					</div>
+				</div>
+				<div class="panel-body">
+					<a href="/blog/article-3/#{resources['artigo3.link']}">
+						<p>#{resources['artigo3.detalhes.p1']}</p>
+						<p>#{resources['artigo3.detalhes.p2']}</p>
+					</a>	
+				</div>
+			</div>
+		</div>
+		
+		<div class="sort-blog col-md-12">
+
+			<div class="hpanel blog-box">
+				<div class="panel-heading">
+					<div class="media clearfix">
+						<a class="pull-left"> <img
+							src="/resources/images/heisenberg.png" alt="profile-picture" />
+						</a>
+						<div class="media-body">
+							<small>Created by: <span class="font-bold">Evandro
+									Moura</span>
+							</small> <br /> <small class="text-muted">06.19.2021, 23:00 pm</small>
+						</div>
+					</div>
+				</div>
+				<div class="panel-image">
+					<a href="/blog/article-4/#{resources['artigo4.link']}">
+						<img class="img-responsive" src="/resources/images/kubernetes.jpeg" alt="" />
+					</a>	
+					<div class="title">
+						<a href="/blog/article-4/#{resources['artigo4.link']}">
+							<h4>#{resources['artigo4.titulo']}</h4>
+						</a> <small>#{resources['artigo4.subtitulo']}</small>
+					</div>
+				</div>
+				<div class="panel-body">
+					<a href="/blog/article-4/#{resources['artigo4.link']}">
+						<p>#{resources['artigo4.detalhes.p1']}</p>
+						<p>#{resources['artigo4.detalhes.p2']}</p>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+	 //<![CDATA[
+		var cards = $(".sort-blog");
+		for(var i = 0; i < cards.length; i++){
+		    var target = Math.floor(Math.random() * cards.length -1) + 1;
+		    var target2 = Math.floor(Math.random() * cards.length -1) +1;
+		    cards.eq(target).before(cards.eq(target2));
+		}
+		//]]>	
+	</script>
+</ui:composition>

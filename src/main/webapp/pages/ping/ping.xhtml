@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="Ping" />
+	<ui:param name="keywords" value="Ping, Ping online, Ping online tool, Ping server, Ping server online" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+	
+	<h:form id="idFormPing" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<div class="row">
+									<h1 class="font-extra-bold no-margins text-success text-center">Ping</h1>
+								</div>				
+							</div>
+							<div class="panel-body">
+								<div class="row">
+								
+									<div class="form-group col-lg-3">
+		                                <label>Host</label>
+		                                <br />
+			                            <h:inputText id="id-input-host" value="#{pingController.to.host}" styleClass="form-control" />
+		                            </div>
+									<div class="form-group col-lg-2">
+		                                <label>Count</label>
+		                                <br />
+		                                <h:inputText id="id-input-qtd" value="#{pingController.to.qtd}" styleClass="form-control" size="2" onkeypress="mascara(this,soNumeros);" maxlength="2">
+		                                	<f:passThroughAttribute name="type" value="tel"/>
+		                                </h:inputText>
+		                            </div>
+		                            
+		                            <div class="form-group col-lg-3">
+		                                <label>Send Buffer (MTU)</label>
+		                                <br />
+			                            <h:inputText id="id-input-sendbuffer" value="#{pingController.to.sendBuffer}" styleClass="form-control" onkeypress="mascara(this,soNumeros);" maxlength="5">
+			                            	<f:passThroughAttribute name="type" value="tel"/>
+			                            </h:inputText>
+		                            </div>
+		                            <div class="form-group col-lg-3">
+			                            <h:commandButton action="#{pingController.ping}" value="Go!" id="id-button-ping" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+			                            	<f:ajax event="click" onevent="buttonClick()" execute="idFormPing" render="idPanelHistory"/>
+			                            </h:commandButton>
+		                            </div>
+			                    </div>    
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background: #000;">
+								<code id="id-panel-result" style="background-color: #000;color: #62cb31;min-height: 200px;">Net Tools Live - Terminal...</code>
+		                    </div>
+						</div>
+						<div class="row">
+							<br />
+							<br />
+							<br />
+							<div class="panel-footer">
+			                    	<div class="fb-comments" data-href="https://nettools.live/ping" data-width="" data-numposts="10"></div>
+			                 </div>
+						</div>
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="4" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<div class="hpanel" id="id-panel-api-geral" style="display: none">
+							<div class="panel-heading">
+								<div class="row">
+									<h2 class="font-extra-bold no-margins text-success text-center">API</h2>
+								</div>				
+							</div>
+							<div class="panel-body text-center">
+								<h5 id="id-panel-api"></h5>
+							</div>
+						</div>
+						<h:panelGroup id="idPanelHistory">
+						<ui:fragment rendered="#{customIdentity.pings.size() gt 0}">
+							<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<br />
+							
+								<h:dataTable id="idTablePings" value="#{customIdentity.pings}" var="ping" styleClass="table">
+									<h:column>
+										<f:facet name="header">
+											play
+										</f:facet>
+										<a onclick="searchHistory('#{ping.host}','#{ping.qtd}','#{ping.sendBuffer}')">
+											<i class="pe-7s-upload pe-rotate-90"></i>
+										</a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											host
+										</f:facet>
+										#{ping.host}
+									</h:column>
+									<h:column>
+										<f:facet name="header">
+											Data
+										</f:facet>
+										#{ping.dateTimeFormat}
+									</h:column>
+									
+								</h:dataTable>
+								<script>
+							    $('#idTablePings').DataTable( {
+							        "paging":   true,
+							        "ordering": false,
+							        "searching":     false,
+							        "bLengthChange": false,
+							        "info":     false,
+							        "fnDrawCallback": function(oSettings) {
+							            if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+							                $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+							            } else {
+							                 $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
+							            }
+							        }
+							    } );
+								</script>	
+						</ui:fragment>
+					  </h:panelGroup>
+					  <br /><br />
+						<div class="hpanel" style="margin-top: 20px">
+							<code style="background: none;color: #000">
+								<h:outputText value="#{resources['text.global.ping']}" />
+							</code>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>	
+	</h:form>	
+	<script>
+	//<![CDATA[
+	 document.getElementById('id-panel-footer').style.display = 'none';
+	  	
+ 	  var wsocketHost = null;	
+	  function connect() {         
+		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/PingServer", null, {debug: true, reconnectInterval: 3000});
+		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/PingServer", null, {debug: true, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;  
+		wsocketHost.onopen = onOpen;  
+	  }
+
+	  function onMessage(evt) {
+		  let obj = JSON.parse(evt.data);
+		  if(obj.resultado !== 'FIM'){
+			  document.getElementById('id-panel-result').innerHTML += obj.resultado +'<br />';
+		  }else{
+			  document.getElementById("id-button-ping").disabled = false;
+			  document.getElementById("id-button-ping").value = "Go!";
+// 			  if(wsocketHost){
+// 				  wsocketHost.close();
+// 			  }
+		  }
+		  
+	  }
+	  
+	  function onOpen(evt) {   
+		            
+	  }
+	  
+	  var buttonClick = function(){
+		  if (wsocketHost.readyState === WebSocket.CLOSED) {
+			   connect();
+		  }
+		  
+		  document.getElementById('id-panel-footer').style.display = 'block';
+		  document.getElementById('id-panel-api-geral').style.display = 'block';
+		  
+		  document.getElementById("id-button-ping").disabled = true;
+		  document.getElementById("id-button-ping").value = "...";
+		  document.getElementById('id-panel-result').innerHTML = '';
+		  wsocketHost.send(JSON.stringify({
+			    ipExterno:document.getElementById('id-ip-externo').value,
+			  	host: document.getElementById('id-input-host').value,
+			  	qtd: document.getElementById('id-input-qtd').value,
+			  	sendBuffer: document.getElementById('id-input-sendbuffer').value	
+		  }));
+		  let hostApi = compositeApi(document.getElementById('id-input-host').value,document.getElementById('id-input-qtd').value,document.getElementById('id-input-sendbuffer').value);
+		  let link = "<a href='"+hostApi+"' target='blank'>"+hostApi+"</a>";
+		  document.getElementById('id-panel-api').innerHTML = link;
+	  }
+
+	  var searchHistory = function(host,qtd,sendbuffer){
+		  document.getElementById('id-input-host').value = host;
+		  document.getElementById('id-input-qtd').value = qtd;
+		  document.getElementById('id-input-sendbuffer').value = sendbuffer;
+		  buttonClick();	
+	  }	  
+
+	  var compositeApi = function(host,qtd,sendbuffer){
+			let hostApi = "/api/tools/ping?host="+host+"&qtd="+qtd;
+			if(sendbuffer){
+				hostApi += "&sendbuffer="+sendbuffer;
+			}
+			return hostApi;
+	  }
+
+	  $('#idFormPing').on('keyup keypress', function(e) {
+		  var keyCode = e.keyCode || e.which;
+		  if (keyCode === 13) { 
+			document.getElementById('id-button-ping').click();
+		    return false;
+		  }
+		}); 
+
+	  function ping(){
+		  
+	  }
+	  connect();
+
+	  
+	  $.get('https://api.ipify.org', function(data) {
+		  document.getElementById('id-input-host').value = data;
+		});
+	//]]>
+	</script>	
+	</ui:define>
+</ui:composition>	 
+	
+	

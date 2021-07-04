@@ -1,0 +1,22 @@
+.hpanel>.panel-footer-result, .hpanel>.panel-section {
+    color: inherit;
+    border: 1px solid #eaeaea;
+    border-top: 0;
+    font-size: 90%;
+    background: #f7f9fa;
+    padding: 10px 15px;
+    min-height: 150px
+}
+
+
+.panel-footer-result {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.radioButtonSpace table tbody td {
+	padding-right:50px;
+}

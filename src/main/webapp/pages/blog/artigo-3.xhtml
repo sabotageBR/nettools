@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:itm="http://java.sun.com/jsf/composite/components"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="#{resources['artigo3.titulo']}" />
+	<ui:param name="keywords" value="#{resources['artigo3.titulo']},#{resources['artigo3.subtitulo']}" />
+	
+	
+	<ui:define name="corpo">
+		<div id="wrapper">
+			<div class="row">
+	            <div class="col-md-offset-1 col-lg-10">
+	                <div class="hpanel blog-article-box">
+	                    <div class="panel-heading">
+	                        <h4>#{resources['artigo3.titulo']} </h4>
+	                        <small>#{resources['artigo3.subtitulo']}</small>
+	                        <div class="text-muted small">
+	                            Created by: <span class="font-bold">Evandro Moura</span>
+	                            06.19.2021, 23:00 pm
+	                        </div>
+	                    </div>
+	                    <div class="panel-body">
+	                        <p>
+	                            #{resources['artigo3.detalhes.p1']}
+	                        </p>
+	                        <p>
+	                            #{resources['artigo3.detalhes.p2']}
+	                        </p>
+	                        
+	                        <br />
+	                        <h3><b>#{resources['artigo3.detalhes.p3']}</b></h3>
+	                        <br />
+	                        <code>
+	                        	wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/deploy.yaml
+	                        </code>
+	                        <br />
+	                        <br />
+	                        
+	                        <p>
+	                            #{resources['artigo3.detalhes.p4']}
+	                        </p>
+	                        <p>
+	                        	vi deploy.yaml
+	                        </p>
+<textarea cols="40" rows="24" spellcheck="false">	                        
+.
+.
+.
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/component: controller
+  externalIPs:
+    - 192.168.12.50	 
+    
+</textarea>             
+						<p>#{resources['artigo3.detalhes.p5']}</p> 
+						<br />
+						<h3>#{resources['artigo1.label.instalacao']}</h3>
+						<code>
+							kubectl apply -f deploy.yaml
+						</code> 
+						<br />
+						<br />
+						<br />       
+						<img src="/resources/images/terminal-6.png" width="100%" height="50%" alt="Instalando Nginx Ingress Controller no kubernetes"/>     
+						
+	                    </div>
+	                    <div class="panel-footer">
+	                    	<div class="fb-comments" data-href="https://nettools.live/blog/article-3" data-width="" data-numposts="10"></div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	       </div> 
+	</ui:define>
+</ui:composition>	 
+	
+	
