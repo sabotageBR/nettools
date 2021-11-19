@@ -8,18 +8,32 @@
 <f:view contentType="text/html">
 	
 	<h:head>
-		<script data-ad-client="ca-pub-3327695882262362" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, user-scalable=no" />
-		<meta name="keywords" content="Net Tools,Youtube download video,Youtube,Instagram,Download instagram reels,Instagram reels instagram,Facebook,vimeo, download, Video, Penetration Test, Hacking test, Hacker, Ping, pong, online ping, web ping, ping service Traceroute, Whois,domain, dns, lookup, whois, utility, webping, http, webtool, web tool, SIP Ping, SIP test, SIP test online, SNMP test, SNMP test online, Check port, BGP info, MAC Search, IP Detail, NMAP, NMAP online,ping, pong, online ping, web ping, ping service, timeout, traceroute, response time, host, ttl, time to live, response time, host, ttl, time to live, domain, dns, lookup, whois, utility, webping, http, webtool, web tool" />
-		<meta name="description" content="Net Tools Online" />
 		<title>Net Tools Live</title>
-		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico" />
+		<meta name="description" content="#{resources['label.global.bemvindos1']}" />
+		<meta name="Cache-Control" content="max-age=3600" />
+		<meta name="keywords" content="My ip, Meu ip, whois domain, ping test, traceroute test, nmap test, Pentest, Find people, Search people, True People Search, Video Downloader" />
+		<link rel="canonical" href="https://nettools.live/" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="robots" content="index, follow" />
+		
+		<meta property="og:title" content="Network Tools Online" />
+		<meta property="og:description" content="#{resources['label.global.bemvindos1']}" />
+		<meta property="og:image" content="https://nettools.live/favicon.ico" />
+		<link rel="icon" type="image/png" href="https://nettools.live/favicon.ico" />
+		<meta name="application-name" content="Nettools.live" />
+		
 		<link rel="stylesheet" href="#{request.contextPath}/resources/vendor/bootstrap/dist/css/bootstrap.min.css" />   
 		<script src="#{request.contextPath}/resources/vendor/jquery/dist/jquery.min.js"></script> 
 		<link rel="stylesheet" href="#{request.contextPath}/resources/styles/style-lg.css" />
+		
+		
+		
 	</h:head>
+	
+	
 
 	<h:body styleClass="landing-page">
 		<nav class="navbar navbar-default navbar-fixed-top">
@@ -39,7 +53,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="page-scroll" href="#{request.contextPath}/peoplesearch">People Search</a></li>
                 <li><a class="page-scroll" href="https://gettvid.com">Video Download</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/dirb">Penetration test</a></li>
+                <li><a class="page-scroll" href="#{request.contextPath}/pentest">Penetration test</a></li>
                 <li><a class="page-scroll" href="#{request.contextPath}/ping">Ping</a></li>
                 <li><a class="page-scroll" href="#{request.contextPath}/nslookup">Nslookup</a></li>
                 <li><a class="page-scroll" href="#{request.contextPath}/whois">Whois</a></li>
@@ -63,16 +77,6 @@
 		<script src="#{request.contextPath}/resources/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="#{request.contextPath}/resources/scripts/homer.js"></script>
 		
-		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JZYCL749E9"></script>
-		<script>
-		  //<![CDATA[	
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		  gtag('config', 'G-JZYCL749E9');
-		  //]]>
-		</script>
-		
 		<script>
 		//<![CDATA[	
 			var cont = 0;
@@ -85,6 +89,18 @@
 			});
 			//]]> 	
 		</script>
+		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JZYCL749E9"></script>
+		<script>
+		  //<![CDATA[	
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'G-JZYCL749E9');
+		  //]]>
+		</script>
+		
+		<script data-ad-client="ca-pub-3327695882262362" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		
 		<h:form prependId="false">
 			<h:inputHidden id="id-ip-externo" value="#{customIdentity.ipExterno}"/>
 			<h:commandButton id="id-botao-informacoes" style="display:none" action="#{customIdentity.comporInformacoesHTTP()}">

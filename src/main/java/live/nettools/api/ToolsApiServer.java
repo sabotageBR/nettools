@@ -24,13 +24,11 @@ import live.nettools.service.youtube.YoutubeService;
 import live.nettools.to.DirbTO;
 import live.nettools.to.NmapTO;
 import live.nettools.to.NslookupTO;
-import live.nettools.to.PeoplesearchTO;
 import live.nettools.to.PingTO;
 import live.nettools.to.SipTO;
 import live.nettools.to.SnmpTO;
 import live.nettools.to.TracerouteTO;
 import live.nettools.to.WhoisTO;
-import live.nettools.to.YoutubeTO;
 
 
 @javax.ws.rs.Path(value="/tools")
@@ -132,10 +130,10 @@ public class ToolsApiServer {
 	
 	
 	@GET
-	@Path("/dirb")
+	@Path("/pentest")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dirb(@QueryParam(value = "host") String host) throws Exception {
-		System.out.println("api-dirb= host:"+host);
+		System.out.println("api-pentest= host:"+host);
 		DirbTO dirbTO = new DirbTO(host,LocalDateTime.now());
 		dirbTO.setResultado(dirbService.executar(dirbTO, null));
 		return Response.ok().entity(dirbTO).build();

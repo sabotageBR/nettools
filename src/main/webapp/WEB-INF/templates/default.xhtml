@@ -7,18 +7,25 @@
 
 <f:view contentType="text/html">
 
-
 	<h:head>
-		<script data-ad-client="ca-pub-3327695882262362" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<title>#{title}</title>
 		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<title>#{title}</title>
+		<meta name="description" content="#{keywords}" />
+		<meta name="Cache-Control" content="max-age=3600" />
 		<meta name="keywords" content="#{keywords}" />
-		<meta name="description" content="Net Tools Online" />
-		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/> 
+		<link rel="canonical" href="https://nettools.live/" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="robots" content="index, follow" />
+		<meta property="og:title" content="#{title}" />
+		<meta property="og:description" content="#{keywords}" />
+		<meta property="og:image" content="https://nettools.live/favicon.ico" />
+		<link rel="icon" type="image/png" href="https://nettools.live/favicon.ico" />
+		<meta name="application-name" content="Nettools.live" />
 		<script src="#{request.contextPath}/resources/vendor/jquery/dist/jquery.min.js"></script>
 		<link rel="stylesheet" href="#{request.contextPath}/resources/vendor/bootstrap/dist/css/bootstrap.min.css" />
+		
 	</h:head>
 
 	<h:body>
@@ -54,7 +61,7 @@
 					</li>
 					
 					<li class="active">
-						<a href="#{request.contextPath}/dirb"> <span class="nav-label">PENETRATION TEST</span>
+						<a href="#{request.contextPath}/pentest"> <span class="nav-label">PENETRATION TEST</span>
 						</a>
 					</li>
 					<li class="active">
@@ -118,15 +125,6 @@
 
 		<!-- App scripts -->
 		<script src="#{request.contextPath}/resources/scripts/homer.js"></script>
-		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JZYCL749E9"></script>
-		<script>
-		  //<![CDATA[	
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		  gtag('config', 'G-JZYCL749E9');
-		  //]]>
-		</script>
 		<script>
 		//<![CDATA[	
 			var cont = 0;
@@ -138,6 +136,16 @@
 			});
 			//]]> 	
 		</script>
+		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JZYCL749E9"></script>
+		<script>
+		  //<![CDATA[	
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'G-JZYCL749E9');
+		  //]]>
+		</script>
+		<script data-ad-client="ca-pub-3327695882262362" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<h:form prependId="false">
 			<h:inputHidden id="id-ip-externo" value="#{customIdentity.ipExterno}"/>
 			<h:commandButton id="id-botao-informacoes" style="display:none" action="#{customIdentity.comporInformacoesHTTP()}">

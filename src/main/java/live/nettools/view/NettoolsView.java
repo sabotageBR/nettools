@@ -13,7 +13,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMappings;
 		  @URLMapping(id = "sip", pattern = "/sip", viewId = "/pages/sip/sip.xhtml"),
 		  
 		  @URLMapping(id = "nslookup", pattern = "/nslookup", viewId = "/pages/nslookup/nslookup.xhtml"),
-		  @URLMapping(id = "dirb", pattern = "/dirb", viewId = "/pages/dirb/dirb.xhtml"),
+		  @URLMapping(id = "pentest", pattern = "/pentest", viewId = "/pages/dirb/dirb.xhtml"),
 		  @URLMapping(id = "videodownload", pattern = "/videodownload", viewId = "/pages/youtube/youtube.xhtml"),
 		  @URLMapping(id = "peoplesearch", pattern = "/peoplesearch", viewId = "/pages/peoplesearch/peoplesearch.xhtml"),
 		  
