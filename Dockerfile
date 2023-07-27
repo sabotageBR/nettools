@@ -1,8 +1,8 @@
-FROM evandromoura/wildfly:nettools-2.0
+FROM evandromoura/wildfly:24.0.2.Final.itm
 
 	LABEL MAINTAINER Evandro Moura <evandromoura@gmail.com>
 
-	USER jboss
+	USER root
 	
 	ARG cliente
 
@@ -17,7 +17,7 @@ FROM evandromoura/wildfly:nettools-2.0
 	COPY kubernetes/kubeping-module $JBOSS_HOME/modules/system/layers/base/org/jgroups/kubernetes
 	
 	#CONEXAO
-	COPY kubernetes/standalone-full-ha.xml $JBOSS_HOME/standalone/configuration/standalone-full-ha.xml
+	COPY kubernetes/standalone.xml $JBOSS_HOME/standalone/configuration/standalone.xml
 	COPY kubernetes/postgresql-8.4-701.jdbc3.jar $JBOSS_HOME/standalone/deployments/
 
 	#BUILD
