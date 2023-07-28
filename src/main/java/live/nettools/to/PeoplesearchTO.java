@@ -17,6 +17,8 @@ public class PeoplesearchTO extends NettoolsTO{
 	private String instagram;
 	private String facebook;
 	private String twitter;
+	private String tiktok;
+	private String erome;
 	
 	private PeopleSearchResultTO resultado;
 	private List<PeopleSearchResultTO> resultados;
@@ -103,5 +105,17 @@ public class PeoplesearchTO extends NettoolsTO{
 	}
 	public void setPosicao(Integer posicao) {
 		this.posicao = posicao;
+	}
+	public String getTiktok() {
+		return tiktok;
+	}
+	public void setTiktok(String tiktok) {
+		this.tiktok = tiktok;
+	}
+	public String getErome() {
+		return erome;
+	}
+	public void setErome(String erome) {
+		this.erome = erome;
 	}
 }

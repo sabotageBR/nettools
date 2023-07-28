@@ -34,12 +34,12 @@ public class PeoplesearchController extends AbstractController<PeoplesearchTO>{
 	
 	public void peoplesearch() {
 		UtilString us = new UtilString();
-		if(!us.vazio(getTo().getNome()) ||
-			 !us.vazio(getTo().getFacebook()) ||
-				!us.vazio(getTo().getInstagram()) ||
-					!us.vazio(getTo().getTwitter())) {
+		if(!us.vazio(getTo().getNome()) || !us.vazio(getTo().getFacebook()) ||
+				!us.vazio(getTo().getInstagram()) ||!us.vazio(getTo().getTwitter())) {
+			
 		customIdentity.getPeoplesearchs().add(new PeoplesearchTO(getTo().getNome(), getTo().getInstagram(),
 				getTo().getFacebook(), getTo().getTwitter(), LocalDateTime.now()));
+		
 		uc.ordenarListaDesc(customIdentity.getPeoplesearchs(),"dateTimeOrder");
 		}
 	}

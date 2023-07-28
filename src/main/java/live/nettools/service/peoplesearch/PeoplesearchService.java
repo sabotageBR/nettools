@@ -33,7 +33,7 @@ public class PeoplesearchService implements Serializable{
 			
 			if(!us.vazio(peoplesearch.getNome())) {
 				enviarStatus(session, "Global search...");
-				String comandoGlobal = String.format("googler -n 20 \"%s\" --unfilter --noprompt", peoplesearch.getNome());
+				String comandoGlobal = String.format("googler -n 100 \"%s\" --unfilter --noprompt", peoplesearch.getNome());
 				System.out.println("ComandoGlobal.: "+comandoGlobal);
 				if(execute) {
 					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
@@ -43,14 +43,14 @@ public class PeoplesearchService implements Serializable{
 			}
 			if(!us.vazio(peoplesearch.getFacebook())) {
 				enviarStatus(session, "Facebook search...");
-				String comandoGlobal = String.format("googler -n 20 %s --unfilter --noprompt", peoplesearch.getFacebook());
+				String comandoGlobal = String.format("googler -n 100 %s --unfilter --noprompt", peoplesearch.getFacebook());
 				System.out.println("ComandoGlobal.: "+comandoGlobal);
 				if(execute) {
 					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
 				}	
 				Thread.currentThread().sleep(5000);
 				
-				String comandoFacebook =String.format("googler -n 20 -w facebook.com %s --unfilter --noprompt", peoplesearch.getFacebook());
+				String comandoFacebook =String.format("googler -n 100 -w facebook.com %s --unfilter --noprompt", peoplesearch.getFacebook());
 				System.out.println("Facebook.: "+comandoFacebook);
 				if(execute) {
 					executarComando(comandoFacebook,PeoplesearchTypeEnum.FACEBOOK,peoplesearch, session, resultados);
@@ -61,14 +61,14 @@ public class PeoplesearchService implements Serializable{
 			
 			if(!us.vazio(peoplesearch.getInstagram())) {
 				enviarStatus(session, "Instagram search...");
-				String comandoGlobal = String.format("googler -n 20 @%s --unfilter --noprompt", peoplesearch.getInstagram());
+				String comandoGlobal = String.format("googler -n 100 @%s --unfilter --noprompt", peoplesearch.getInstagram());
 				System.out.println("ComandoGlobal.: "+comandoGlobal);
 				if(execute) {
 					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
 				}	
 				Thread.currentThread().sleep(5000);
 				
-				String comandoInstagram = String.format("googler -n 20 -w instagram.com @%s --unfilter --noprompt", peoplesearch.getInstagram());
+				String comandoInstagram = String.format("googler -n 100 -w instagram.com @%s --unfilter --noprompt", peoplesearch.getInstagram());
 				System.out.println("Instagram: "+comandoInstagram);
 				if(execute) {
 					executarComando(comandoInstagram,PeoplesearchTypeEnum.INSTAGRAM,peoplesearch, session, resultados);
@@ -80,17 +80,35 @@ public class PeoplesearchService implements Serializable{
 			
 			if(!us.vazio(peoplesearch.getTwitter())) {
 				enviarStatus(session, "Twitter search...");
-				String comandoGlobal = String.format("googler -n 20 %s --unfilter --noprompt", peoplesearch.getTwitter());
+				String comandoGlobal = String.format("googler -n 100 %s --unfilter --noprompt", peoplesearch.getTwitter());
 				System.out.println("ComandoGlobal.: "+comandoGlobal);
 				if(execute) {
 					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
 				}	
 				Thread.currentThread().sleep(5000);
 				
-				String comandoTwitter =String.format("googler -n 20 -w twitter.com @%s --unfilter --noprompt", peoplesearch.getTwitter());
+				String comandoTwitter =String.format("googler -n 100 -w twitter.com @%s --unfilter --noprompt", peoplesearch.getTwitter());
 				System.out.println("Twitter.: "+comandoTwitter);
 				if(execute) {
 					executarComando(comandoTwitter,PeoplesearchTypeEnum.TWITTER,peoplesearch, session, resultados);
+				}	
+				Thread.currentThread().sleep(5000);
+				
+			}
+			
+			if(!us.vazio(peoplesearch.getTiktok())) {
+				enviarStatus(session, "TikTok search...");
+				String comandoGlobal = String.format("googler -n 100 %s --unfilter --noprompt", peoplesearch.getTwitter());
+				System.out.println("ComandoGlobal.: "+comandoGlobal);
+				if(execute) {
+					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
+				}	
+				Thread.currentThread().sleep(5000);
+				
+				String comandoTwitter =String.format("googler -n 100 -w tiktok.com %s --unfilter --noprompt", peoplesearch.getTwitter());
+				System.out.println("TikTok.: "+comandoTwitter);
+				if(execute) {
+					executarComando(comandoTwitter,PeoplesearchTypeEnum.TIKTOK,peoplesearch, session, resultados);
 				}	
 				Thread.currentThread().sleep(5000);
 				
