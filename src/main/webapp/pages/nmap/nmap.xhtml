@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="NMAP" />
+	<ui:param name="title" value="Nmap Online — Free Port Scanner from the Browser" />
+	<ui:param name="description" value="Online Nmap port scanner. Find open ports, running services and fingerprint OSes on any public host. Free cloud scan, no install, results stream in real time." />
 	<ui:param name="keywords" value="NMAP test, NMAP Online, NMap test online, NMap Online, Nmap Tool, Nmap Tools online" />
 	
 	<ui:define name="corpo">
@@ -52,6 +53,55 @@
 				                    	<div class="fb-comments" data-href="https://nettools.live/nmap" data-width="" data-numposts="10"></div>
 				                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this Nmap scan</h2>
+							</div>
+							<div class="panel-body">
+								<p>Nmap is the industry standard for network port discovery. This tool runs a default <code>nmap</code> scan from our cloud — that means the scan originates from our IP, not yours, and no software is installed on your machine. Results stream live to your browser.</p>
+								<p>Type a hostname or IP and submit. The scanner probes the most common 1000 TCP ports and reports each as open, closed or filtered, along with the service banner when identifiable.</p>
+								<h3>Reading the output</h3>
+								<ul>
+									<li><strong>open</strong> — the port is accepting connections. That service is reachable from the public internet.</li>
+									<li><strong>closed</strong> — the host is up but nothing is listening on that port.</li>
+									<li><strong>filtered</strong> — a firewall or packet filter is silently dropping the probe.</li>
+									<li><strong>Service column</strong> — educated guess based on the port number (e.g. 80 → http). Doesn't confirm the service, just names what usually runs there.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Is it legal to scan someone else's server?</strong> Port scanning your own infrastructure is always fine. Scanning third-party systems without authorisation is a grey area and can be unlawful in some jurisdictions — stick to systems you own or have written consent to test.</p>
+								<p><strong>What ports are scanned?</strong> The default 1000 most-common TCP ports. UDP and full 65k port sweeps are not part of the free scan.</p>
+								<p><strong>Why are all ports filtered?</strong> A firewall in front of the host is blocking our probe. The host is likely up but hidden behind a perimeter filter.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Nmap",
+						  "description": "Free cloud-based Nmap port scan.",
+						  "applicationCategory": "SecurityApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/nmap",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Is it legal to scan someone else's server?", "acceptedAnswer": {"@type": "Answer", "text": "Scanning systems you own is always fine. Scanning third-party systems without permission can be unlawful — stick to systems you own or have written consent to test."}},
+						    {"@type": "Question", "name": "What ports are scanned?", "acceptedAnswer": {"@type": "Answer", "text": "The default 1000 most-common TCP ports. UDP and full 65535 port sweeps are not part of the free scan."}},
+						    {"@type": "Question", "name": "Why are all ports filtered?", "acceptedAnswer": {"@type": "Answer", "text": "A firewall in front of the host is silently dropping our probes. The host is likely up but hidden."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="nmap" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -148,8 +198,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/NmapServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/NmapServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/NmapServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

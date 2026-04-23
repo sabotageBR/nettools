@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="Ping" />
+	<ui:param name="title" value="Ping Test — Online Latency and Packet Loss Check" />
+	<ui:param name="description" value="Free online ping test. Measure round-trip latency, packet loss and MTU from our servers to any public host. Results stream live in your browser — no install required." />
 	<ui:param name="keywords" value="Ping, Ping test, Ping online test, Ping online" />
 	<ui:define name="corpo">
 	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
@@ -65,6 +66,55 @@
 			                    	<div class="fb-comments" data-href="https://nettools.live/ping" data-width="" data-numposts="10"></div>
 			                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this ping tool</h2>
+							</div>
+							<div class="panel-body">
+								<p>Ping sends ICMP Echo Request packets from our server to the host you specify and measures how long each round trip takes. It is the fastest way to check if a machine is online and how stable the path to it is.</p>
+								<p>Enter a hostname (e.g. <em>google.com</em>) or an IPv4/IPv6 address, choose how many packets to send, and — optionally — force a specific payload size to probe MTU. The output streams to your browser line by line; you will see TTL, time in milliseconds and final statistics (min/avg/max and percentage of packet loss).</p>
+								<h3>How to read the results</h3>
+								<ul>
+									<li><strong>time=…ms</strong> — round-trip latency. Under 50&#160;ms is excellent, 50–150&#160;ms is typical for cross-country, above 300&#160;ms usually means an overseas or congested path.</li>
+									<li><strong>TTL</strong> — Time To Live, how many hops the packet can still traverse before being dropped. Gives a rough hint of how far the target is.</li>
+									<li><strong>Request timeout</strong> — the host is unreachable or is blocking ICMP. Try another target or fall back to <a href="#{request.contextPath}/traceroute">traceroute</a>.</li>
+									<li><strong>Packet loss</strong> — non-zero loss signals a flaky path or a saturated link.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why does my ping time out?</strong> Many servers drop ICMP as a hardening measure. The host may still be up; try <a href="#{request.contextPath}/nmap">nmap</a> or a real service check.</p>
+								<p><strong>What is MTU and why does it matter?</strong> The Maximum Transmission Unit is the largest packet size a link will forward without fragmentation. Sending with the <em>don't fragment</em> flag and progressively smaller sizes reveals the smallest link on the path — useful for troubleshooting VPNs and tunnels.</p>
+								<p><strong>Is pinging a public server legal?</strong> Yes. Ping is a passive diagnostic and normal part of running the internet.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Ping",
+						  "description": "Free online ping test. Measure latency and packet loss from the browser.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/ping",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why does my ping time out?", "acceptedAnswer": {"@type": "Answer", "text": "Many hosts drop ICMP Echo packets as a hardening measure even though the service is up. Try an nmap scan or a service-level check."}},
+						    {"@type": "Question", "name": "What is MTU and why does it matter?", "acceptedAnswer": {"@type": "Answer", "text": "The Maximum Transmission Unit is the largest packet a link forwards without fragmentation. Probing with the don't-fragment flag reveals the smallest MTU on the path."}},
+						    {"@type": "Question", "name": "Is pinging a public server legal?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Ping is a passive diagnostic and a normal part of operating the internet."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="ping" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -159,8 +209,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/PingServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/PingServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/PingServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

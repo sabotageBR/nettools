@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="SSL Checker — Free TLS Certificate Inspector" />
+	<ui:param name="description" value="Free online SSL/TLS certificate checker. Inspect the cert chain, issuer, expiration date, SANs, protocol and cipher of any HTTPS server. No install." />
+	<ui:param name="keywords" value="ssl checker, ssl certificate check, tls check, cert expiry, ssl test" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+
+	<h:form id="idFormSsl" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<h1 class="font-extra-bold no-margins text-success text-center">SSL/TLS Certificate Checker</h1>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-lg-6">
+										<label>Host</label>
+										<br />
+										<h:inputText id="id-input-host" value="#{sslController.to.host}" styleClass="form-control" />
+									</div>
+									<div class="form-group col-lg-3">
+										<label>Port</label>
+										<br />
+										<h:inputText id="id-input-port" value="#{sslController.to.porta}" styleClass="form-control" onkeypress="mascara(this,soNumeros);" maxlength="5">
+											<f:passThroughAttribute name="type" value="tel" />
+										</h:inputText>
+									</div>
+									<div class="form-group col-lg-3">
+										<h:commandButton action="#{sslController.ssl}" value="Go!" id="id-button-ssl" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+											<f:ajax event="click" onevent="buttonClick()" execute="idFormSsl" render="idPanelHistory" />
+										</h:commandButton>
+									</div>
+								</div>
+								<small class="text-muted">Common TLS ports: 443 (HTTPS) · 465 (SMTPS) · 587 (SMTP+STARTTLS implicit via explicit test) · 993 (IMAPS) · 995 (POP3S) · 636 (LDAPS)</small>
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background:#000;">
+								<code id="id-panel-result" style="background:#000;color:#62cb31;min-height:200px;white-space:pre;font-size:13px;">Net Tools Live - Terminal...</code>
+							</div>
+						</div>
+
+						<div class="row">
+							<br /><br />
+							<div class="panel-footer">
+								<div class="fb-comments" data-href="https://nettools.live/ssl" data-width="" data-numposts="10"></div>
+							</div>
+						</div>
+
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About SSL/TLS certificate checking</h2>
+							</div>
+							<div class="panel-body">
+								<p>Every HTTPS site presents a <strong>certificate</strong> that proves its identity. Browsers validate it in four places at once: is the signing CA trusted, does the certificate cover the hostname you are visiting, has the certificate expired, and was a modern TLS protocol negotiated. This tool inspects all four from our servers and streams the results back.</p>
+								<h3>What you get</h3>
+								<ul>
+									<li><strong>Subject / SANs</strong> — every hostname the certificate covers.</li>
+									<li><strong>Issuer</strong> — which CA signed it (Let's Encrypt, Digicert, Google Trust, etc.).</li>
+									<li><strong>Validity</strong> — issued and expiration dates, plus how many days are left. Warnings when under 30 days.</li>
+									<li><strong>Key and signature</strong> — algorithm and bit length (RSA 2048, ECDSA P-256, …).</li>
+									<li><strong>Protocol / cipher</strong> — the TLS version and cipher suite actually negotiated.</li>
+									<li><strong>Chain</strong> — every intermediate CA, in order.</li>
+									<li><strong>Trust verdict</strong> — whether the default system truststore validates the chain.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why is my cert "not trusted"?</strong> Three common causes: the chain is missing an intermediate (server misconfigured), the root CA isn't in the system truststore (self-signed or private CA), or the cert is already expired.</p>
+								<p><strong>What's a SAN?</strong> Subject Alternative Name — the modern way to list all hostnames a cert covers. If your browser shows "not secure" despite a valid cert, the hostname is probably missing from the SAN list.</p>
+								<p><strong>Is TLS 1.2 still safe?</strong> Yes. TLS 1.3 is preferred, but 1.2 with modern ciphers remains acceptable. TLS 1.0 and 1.1 should be disabled on any public server.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools SSL Checker",
+						  "description": "Free online SSL/TLS certificate inspection.",
+						  "applicationCategory": "SecurityApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/ssl",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why is my cert not trusted?", "acceptedAnswer": {"@type": "Answer", "text": "Usually one of three things: missing intermediate in the chain, root CA not in the system truststore, or the cert is already expired."}},
+						    {"@type": "Question", "name": "What is a SAN?", "acceptedAnswer": {"@type": "Answer", "text": "Subject Alternative Name — lists every hostname a cert covers. Browsers show 'not secure' if the hostname isn't in the SAN list."}},
+						    {"@type": "Question", "name": "Is TLS 1.2 still safe?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. TLS 1.3 is preferred, but TLS 1.2 with modern ciphers remains acceptable. TLS 1.0 and 1.1 should be disabled on any public server."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="ssl" />
+						</ui:include>
+
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="6" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<h:panelGroup id="idPanelHistory">
+							<ui:fragment rendered="#{customIdentity.ssls.size() gt 0}">
+								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+								<br />
+								<h:dataTable value="#{customIdentity.ssls}" var="s" styleClass="table">
+									<h:column>
+										<f:facet name="header">play</f:facet>
+										<a onclick="historyClick('#{s.host}','#{s.porta}')"><i class="pe-7s-upload pe-rotate-90"></i></a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">host</f:facet>
+										#{s.host}:#{s.porta}
+									</h:column>
+									<h:column>
+										<f:facet name="header">when</f:facet>
+										#{s.dateTimeFormat}
+									</h:column>
+								</h:dataTable>
+							</ui:fragment>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>
+	</h:form>
+
+	<script>
+	//<![CDATA[
+	document.getElementById('id-panel-footer').style.display = 'none';
+	var wsocketHost = null;
+	function connect() {
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/SslServer', null, {debug: false, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;
+	}
+	function onMessage(evt) {
+		var obj = JSON.parse(evt.data);
+		if (obj.resultado !== 'FIM') {
+			document.getElementById('id-panel-footer').style.display = 'block';
+			var line = document.createElement('div');
+			line.textContent = obj.resultado;
+			document.getElementById('id-panel-result').appendChild(line);
+		} else {
+			document.getElementById('id-button-ssl').value = 'Go!';
+		}
+	}
+	var buttonClick = function () {
+		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
+		var host = document.getElementById('id-input-host').value;
+		var port = document.getElementById('id-input-port').value || '443';
+		if (host !== '') {
+			document.getElementById('id-button-ssl').value = 'Waiting...';
+			document.getElementById('id-panel-result').innerHTML = '';
+			wsocketHost.send(JSON.stringify({ host: host, porta: port }));
+		} else {
+			alert('Fill a host.');
+		}
+	};
+	var historyClick = function (h, p) {
+		document.getElementById('id-input-host').value = h;
+		document.getElementById('id-input-port').value = p;
+		buttonClick();
+	};
+	connect();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>

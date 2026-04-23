@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="MAC Address Lookup — Find Manufacturer by MAC" />
+	<ui:param name="description" value="Free MAC address lookup. Identify the network card manufacturer from any MAC address in any format. Uses the IEEE OUI registry." />
+	<ui:param name="keywords" value="mac address lookup, mac vendor, oui lookup, network card manufacturer" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+
+	<h:form id="idFormMac" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<h1 class="font-extra-bold no-margins text-success text-center">MAC Address Lookup</h1>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-lg-8">
+										<label>MAC address</label>
+										<br />
+										<h:inputText id="id-input-mac" value="#{macController.to.mac}" styleClass="form-control" style="font-family:monospace;" />
+										<small class="text-muted">Any format accepted: <code>AA:BB:CC:DD:EE:FF</code>, <code>aa-bb-cc-dd-ee-ff</code>, <code>AABB.CCDD.EEFF</code>, <code>AABBCCDDEEFF</code></small>
+									</div>
+									<div class="form-group col-lg-3">
+										<h:commandButton action="#{macController.mac}" value="Go!" id="id-button-mac" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+											<f:ajax event="click" onevent="buttonClick()" execute="idFormMac" render="idPanelHistory" />
+										</h:commandButton>
+									</div>
+								</div>
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background:#000;">
+								<code id="id-panel-result" style="background:#000;color:#62cb31;min-height:200px;">Net Tools Live - Terminal...</code>
+							</div>
+						</div>
+
+						<div class="row">
+							<br /><br />
+							<div class="panel-footer">
+								<div class="fb-comments" data-href="https://nettools.live/mac" data-width="" data-numposts="10"></div>
+							</div>
+						</div>
+
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About MAC address lookup</h2>
+							</div>
+							<div class="panel-body">
+								<p>Every network interface (Wi-Fi card, Ethernet chip, Bluetooth radio) ships with a globally unique MAC address assigned by the manufacturer. The first 24 bits — the <strong>OUI (Organizationally Unique Identifier)</strong> — encode the vendor. IEEE keeps a public registry of which company owns which OUI, and that's how we can tell Apple traffic from Cisco traffic just by looking at an address.</p>
+								<h3>Use cases</h3>
+								<ul>
+									<li><strong>Network audit</strong> — identify rogue devices on a LAN.</li>
+									<li><strong>DHCP log analysis</strong> — see which brand of phone connected to your AP.</li>
+									<li><strong>Forensics</strong> — correlate captured traffic to device vendors.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why does the lookup sometimes fail?</strong> Some OUIs are unallocated, private (locally administered addresses), or assigned after the registry was last updated. Randomised MACs on modern phones also won't resolve to a real vendor.</p>
+								<p><strong>Can a MAC be changed?</strong> Yes — all major OSs allow MAC spoofing. iOS, Android and Windows randomise MACs by default when scanning for Wi-Fi networks for privacy.</p>
+								<p><strong>Are MAC addresses routable?</strong> No. They only identify devices inside a single layer-2 segment. Routers strip and rewrite them at each hop.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools MAC Lookup",
+						  "description": "Free MAC address / OUI vendor lookup.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/mac",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why does the lookup sometimes fail?", "acceptedAnswer": {"@type": "Answer", "text": "Some OUIs are unallocated, private (locally administered), or assigned after the registry was last updated. Randomised MACs also won't resolve."}},
+						    {"@type": "Question", "name": "Can a MAC be changed?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. All major OSs allow MAC spoofing; iOS, Android and Windows randomise MACs during Wi-Fi scans for privacy."}},
+						    {"@type": "Question", "name": "Are MAC addresses routable?", "acceptedAnswer": {"@type": "Answer", "text": "No. They identify devices in a single layer-2 segment only. Routers strip and rewrite them at each hop."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="mac" />
+						</ui:include>
+
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="6" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<h:panelGroup id="idPanelHistory">
+							<ui:fragment rendered="#{customIdentity.macs.size() gt 0}">
+								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+								<br />
+								<h:dataTable value="#{customIdentity.macs}" var="m" styleClass="table">
+									<h:column>
+										<f:facet name="header">play</f:facet>
+										<a onclick="historyClick('#{m.mac}')"><i class="pe-7s-upload pe-rotate-90"></i></a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">mac</f:facet>
+										#{m.mac}
+									</h:column>
+									<h:column>
+										<f:facet name="header">when</f:facet>
+										#{m.dateTimeFormat}
+									</h:column>
+								</h:dataTable>
+							</ui:fragment>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>
+	</h:form>
+
+	<script>
+	//<![CDATA[
+	document.getElementById('id-panel-footer').style.display = 'none';
+	var wsocketHost = null;
+	function connect() {
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/MacServer', null, {debug: false, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;
+	}
+	function onMessage(evt) {
+		var obj = JSON.parse(evt.data);
+		if (obj.resultado !== 'FIM') {
+			document.getElementById('id-panel-footer').style.display = 'block';
+			var line = document.createElement('div');
+			line.textContent = obj.resultado;
+			document.getElementById('id-panel-result').appendChild(line);
+		} else {
+			document.getElementById('id-button-mac').value = 'Go!';
+		}
+	}
+	var buttonClick = function () {
+		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
+		var mac = document.getElementById('id-input-mac').value;
+		if (mac !== '') {
+			document.getElementById('id-button-mac').value = 'Waiting...';
+			document.getElementById('id-panel-result').innerHTML = '';
+			wsocketHost.send(JSON.stringify({ mac: mac }));
+		} else {
+			alert('Fill a MAC address.');
+		}
+	};
+	var historyClick = function (m) {
+		document.getElementById('id-input-mac').value = m;
+		buttonClick();
+	};
+	connect();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>

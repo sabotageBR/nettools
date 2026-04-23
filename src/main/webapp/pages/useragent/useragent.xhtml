@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="What Is My User Agent — Browser, OS and Device Info" />
+	<ui:param name="description" value="Free User-Agent detector. Identify your browser, version, operating system, device type and language from the browser itself. No tracking, no install." />
+	<ui:param name="keywords" value="user agent, my user agent, browser info, navigator, device info" />
+	<ui:define name="corpo">
+	<div id="wrapper">
+		<div class="content animate-panel">
+			<div class="row">
+				<div class="col-md-offset-1 col-lg-7">
+					<div class="hpanel">
+						<div class="panel-heading">
+							<h1 class="font-extra-bold no-margins text-success text-center">User Agent</h1>
+						</div>
+						<div class="panel-body">
+							<div style="margin-bottom: 18px;">
+								<label>Raw User-Agent string</label>
+								<div style="background:#000;color:#62cb31;padding:10px;border-radius:4px;font-family:monospace;word-break:break-all;" id="ua-raw">—</div>
+							</div>
+							<table class="table table-striped" style="margin-bottom: 0;" id="ua-table"></table>
+						</div>
+					</div>
+
+					<div class="row">
+						<br />
+						<br />
+						<div class="panel-footer">
+							<div class="fb-comments" data-href="https://nettools.live/useragent" data-width="" data-numposts="10"></div>
+						</div>
+					</div>
+
+					<div class="hpanel" style="margin-top: 20px;">
+						<div class="panel-heading">
+							<h2 class="font-extra-bold no-margins text-success">About the User-Agent</h2>
+						</div>
+						<div class="panel-body">
+							<p>Every time a browser makes a request, it introduces itself with a <code>User-Agent</code> header. The string encodes the browser family, version, rendering engine, operating system and, historically, legacy strings that survive for compatibility reasons (which is why even Safari still announces "Mozilla").</p>
+							<p>This page reads your browser's current User-Agent and parses it locally. <strong>Nothing is sent to our servers</strong> — the decoding happens in your browser.</p>
+							<h3>What it tells the server</h3>
+							<ul>
+								<li><strong>Browser + version</strong> — choose the right CSS/JS polyfills.</li>
+								<li><strong>Operating system</strong> — choose the right download (macOS/Windows/Linux/iOS/Android).</li>
+								<li><strong>Device category</strong> — mobile vs tablet vs desktop.</li>
+							</ul>
+							<h3>FAQ</h3>
+							<p><strong>Can I change my User-Agent?</strong> Yes. Every browser has a developer-tools option to spoof the User-Agent. Extensions can also rewrite it per site.</p>
+							<p><strong>Why do most User-Agents start with "Mozilla/5.0"?</strong> Historical compatibility — the 90s web filtered features based on that prefix, and browsers kept it forever to avoid breaking old sites.</p>
+							<p><strong>Is my User-Agent unique?</strong> Often yes enough to contribute to browser fingerprinting. Combined with IP, timezone and a few other signals, it becomes a strong identifier.</p>
+						</div>
+					</div>
+
+					<script type="application/ld+json">
+					{
+					  "@context": "https://schema.org",
+					  "@type": "SoftwareApplication",
+					  "name": "Nettools User Agent",
+					  "description": "Free User-Agent parser. Browser, OS and device detection.",
+					  "applicationCategory": "UtilitiesApplication",
+					  "operatingSystem": "Web",
+					  "url": "https://nettools.live/useragent",
+					  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+					}
+					</script>
+
+					<ui:include src="/pages/includes/related-tools.xhtml">
+						<ui:param name="current" value="useragent" />
+					</ui:include>
+
+					<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+						<ui:param name="tamanhodiv" value="6" />
+					</ui:include>
+				</div>
+			</div>
+		</div>
+		<footer class="footer">
+			<span class="pull-right"> Net Tools Live </span> Company 2021
+		</footer>
+	</div>
+
+	<script>
+	//<![CDATA[
+	(function () {
+		var ua = navigator.userAgent || '';
+		document.getElementById('ua-raw').textContent = ua;
+
+		function detectBrowser(u) {
+			if (/Edg\//.test(u)) return match(u, /Edg\/([\d.]+)/, 'Microsoft Edge');
+			if (/OPR\/|Opera\//.test(u)) return match(u, /(?:OPR|Opera)\/([\d.]+)/, 'Opera');
+			if (/SamsungBrowser\//.test(u)) return match(u, /SamsungBrowser\/([\d.]+)/, 'Samsung Internet');
+			if (/Firefox\//.test(u)) return match(u, /Firefox\/([\d.]+)/, 'Firefox');
+			if (/Chrome\//.test(u) && !/Chromium\//.test(u)) return match(u, /Chrome\/([\d.]+)/, 'Chrome');
+			if (/Chromium\//.test(u)) return match(u, /Chromium\/([\d.]+)/, 'Chromium');
+			if (/Safari\//.test(u) && /Version\//.test(u)) return match(u, /Version\/([\d.]+)/, 'Safari');
+			if (/MSIE |Trident\//.test(u)) return match(u, /(?:MSIE |rv:)([\d.]+)/, 'Internet Explorer');
+			return { name: 'Unknown', version: '' };
+		}
+		function match(u, re, name) {
+			var m = u.match(re);
+			return { name: name, version: m ? m[1] : '' };
+		}
+		function detectEngine(u) {
+			if (/Gecko\/[\d]/.test(u)) return 'Gecko';
+			if (/AppleWebKit\//.test(u)) return /Chrome\/|Chromium\/|Edg\/|OPR\//.test(u) ? 'Blink' : 'WebKit';
+			if (/Trident\//.test(u)) return 'Trident';
+			return 'Unknown';
+		}
+		function detectOs(u) {
+			if (/Windows NT 10\.0/.test(u)) return 'Windows 10/11';
+			if (/Windows NT 6\.3/.test(u)) return 'Windows 8.1';
+			if (/Windows NT 6\.2/.test(u)) return 'Windows 8';
+			if (/Windows NT 6\.1/.test(u)) return 'Windows 7';
+			if (/Windows/.test(u)) return 'Windows (older)';
+			if (/Android ([\d.]+)/.test(u)) return 'Android ' + u.match(/Android ([\d.]+)/)[1];
+			if (/iPhone OS ([\d_]+)/.test(u)) return 'iOS ' + u.match(/iPhone OS ([\d_]+)/)[1].replace(/_/g, '.');
+			if (/iPad; CPU OS ([\d_]+)/.test(u)) return 'iPadOS ' + u.match(/iPad; CPU OS ([\d_]+)/)[1].replace(/_/g, '.');
+			if (/Mac OS X ([\d_.]+)/.test(u)) return 'macOS ' + u.match(/Mac OS X ([\d_.]+)/)[1].replace(/_/g, '.');
+			if (/CrOS/.test(u)) return 'ChromeOS';
+			if (/Linux/.test(u)) return 'Linux';
+			return 'Unknown';
+		}
+		function detectDevice(u) {
+			if (/iPad/.test(u)) return 'Tablet (iPad)';
+			if (/Tablet/.test(u)) return 'Tablet';
+			if (/Mobi|Android.*Mobile|iPhone|iPod/.test(u)) return 'Mobile';
+			return 'Desktop';
+		}
+
+		var browser = detectBrowser(ua);
+		var rows = [
+			[ 'Browser', browser.name + (browser.version ? ' ' + browser.version : '') ],
+			[ 'Rendering engine', detectEngine(ua) ],
+			[ 'Operating system', detectOs(ua) ],
+			[ 'Device type', detectDevice(ua) ],
+			[ 'Screen resolution', window.screen.width + ' × ' + window.screen.height ],
+			[ 'Viewport', window.innerWidth + ' × ' + window.innerHeight ],
+			[ 'Device pixel ratio', (window.devicePixelRatio || 1).toString() ],
+			[ 'Language', navigator.language || navigator.userLanguage || '—' ],
+			[ 'Languages list', (navigator.languages || []).join(', ') || '—' ],
+			[ 'Timezone', Intl.DateTimeFormat().resolvedOptions().timeZone ],
+			[ 'Timezone offset', '+' + (-new Date().getTimezoneOffset() / 60) + 'h' ],
+			[ 'Cookies enabled', navigator.cookieEnabled ? 'Yes' : 'No' ],
+			[ 'Do Not Track', navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled' ],
+			[ 'Online', navigator.onLine ? 'Yes' : 'No' ],
+			[ 'Hardware cores', (navigator.hardwareConcurrency || '—').toString() ],
+			[ 'Touch points', (navigator.maxTouchPoints || 0).toString() ],
+			[ 'Platform', navigator.platform || '—' ]
+		];
+
+		var table = document.getElementById('ua-table');
+		var html = '';
+		for (var i = 0; i < rows.length; i++) {
+			html += '<tr><td style="width:40%"><strong>' + rows[i][0] + '</strong></td><td>' + rows[i][1] + '</td></tr>';
+		}
+		table.innerHTML = html;
+	})();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>

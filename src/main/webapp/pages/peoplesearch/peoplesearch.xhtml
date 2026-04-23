@@ -6,8 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="People Search" />
-	
+	<ui:param name="title" value="People Search — Find Social Profiles Across the Web" />
+	<ui:param name="description" value="Free people search. Find social media profiles on Facebook, Instagram, Twitter and TikTok in one place. No sign up, results with photo preview stream in real time." />
 	<ui:param name="keywords"
 		value="Find People, Search People, True People Search" />
 	<ui:define name="corpo">
@@ -155,6 +155,54 @@
 				                    	<div class="fb-comments" data-href="https://nettools.live/peoplesearch" data-width="" data-numposts="10"></div>
 				                 </div>
 							</div>
+							<div class="hpanel" style="margin-top: 20px;">
+								<div class="panel-heading">
+									<h2 class="font-extra-bold no-margins text-success">About this People Search</h2>
+								</div>
+								<div class="panel-body">
+									<p>People Search queries the public web — and the social graphs of Facebook, Instagram, Twitter and TikTok — for a person's name or handles in a single step. It is useful for reconnecting with someone, verifying identity before a hire, or checking how much of your own digital footprint is public.</p>
+									<p>Fill in any combination of full name and handles. The more fields, the narrower the result. Cards arrive in real time as each query completes; the cover image of each page is fetched asynchronously and filled in on each card.</p>
+									<h3>Tips</h3>
+									<ul>
+										<li><strong>Use the full name in quotes</strong> to avoid mixed results with similar names — type <em>"Jane Doe"</em>.</li>
+										<li><strong>Handles work best with the @</strong>. If you're unsure, drop the <em>@</em>; we add it for Instagram/Twitter.</li>
+										<li><strong>Not finding someone?</strong> They may have a private profile. Public-only search won't reveal them by design.</li>
+									</ul>
+									<h3>FAQ</h3>
+									<p><strong>How does it work?</strong> We query a public search index and filter results by site (facebook.com, instagram.com, twitter.com, tiktok.com). No login, no scraping of private data.</p>
+									<p><strong>Is it legal?</strong> Yes, we only surface publicly available content. Respect local privacy laws when acting on the information.</p>
+									<p><strong>Why are some cards missing images?</strong> Some pages don't expose an Open Graph image, or the site blocks our server from downloading it.</p>
+								</div>
+							</div>
+
+							<script type="application/ld+json">
+							{
+							  "@context": "https://schema.org",
+							  "@type": "SoftwareApplication",
+							  "name": "Nettools People Search",
+							  "description": "Free people search across Google, Facebook, Instagram, Twitter and TikTok.",
+							  "applicationCategory": "UtilitiesApplication",
+							  "operatingSystem": "Web",
+							  "url": "https://nettools.live/peoplesearch",
+							  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+							}
+							</script>
+							<script type="application/ld+json">
+							{
+							  "@context": "https://schema.org",
+							  "@type": "FAQPage",
+							  "mainEntity": [
+							    {"@type": "Question", "name": "How does People Search work?", "acceptedAnswer": {"@type": "Answer", "text": "It queries a public search index and filters results by site for Facebook, Instagram, Twitter and TikTok. Only publicly available content is surfaced."}},
+							    {"@type": "Question", "name": "Is People Search legal?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Only publicly available content is surfaced. Respect local privacy laws when acting on the information."}},
+							    {"@type": "Question", "name": "Why are some cards missing images?", "acceptedAnswer": {"@type": "Answer", "text": "The target page may not expose an Open Graph image or the site blocks downloads from our server."}}
+							  ]
+							}
+							</script>
+
+							<ui:include src="/pages/includes/related-tools.xhtml">
+								<ui:param name="current" value="peoplesearch" />
+							</ui:include>
+
 							<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 								<ui:param name="tamanhodiv" value="6" />
 							</ui:include>
@@ -229,6 +277,94 @@
 				</footer>
 			</div>
 		</h:form>
+		<style type="text/css">
+		/*<![CDATA[*/
+		.ns-card {
+			display: flex;
+			align-items: flex-start;
+			padding: 14px 18px;
+			margin-bottom: 10px;
+			background: #fff;
+			border: 1px solid #eaeaea;
+			border-radius: 6px;
+			text-decoration: none !important;
+			color: #444;
+			transition: box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+		}
+		.ns-card:hover {
+			box-shadow: 0 4px 14px rgba(0,0,0,.08);
+			border-color: #c7e6cc;
+			transform: translateY(-1px);
+		}
+		.ns-card-icon {
+			width: 40px;
+			height: 40px;
+			flex: 0 0 40px;
+			margin-right: 16px;
+			border-radius: 6px;
+			background: #f4f4f4;
+			object-fit: contain;
+			padding: 4px;
+		}
+		.ns-card-thumb {
+			width: 120px;
+			height: 80px;
+			flex: 0 0 120px;
+			margin-right: 16px;
+			border-radius: 6px;
+			background: #f4f4f4;
+			object-fit: cover;
+		}
+		.ns-card-body { flex: 1 1 auto; min-width: 0; }
+		.ns-card-meta {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 4px;
+		}
+		.ns-card-domain {
+			font-size: 11px;
+			color: #999;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			max-width: 260px;
+		}
+		.ns-card-title {
+			margin: 0 0 4px;
+			font-size: 15px;
+			font-weight: 600;
+			color: #222;
+			line-height: 1.3;
+			word-break: break-word;
+		}
+		.ns-card-snippet {
+			margin: 0;
+			font-size: 13px;
+			color: #666;
+			line-height: 1.45;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+		.ns-badge {
+			display: inline-block;
+			padding: 2px 8px;
+			border-radius: 10px;
+			font-size: 10px;
+			font-weight: 700;
+			letter-spacing: .4px;
+			color: #fff;
+			text-transform: uppercase;
+		}
+		.ns-badge-final     { background: #62cb31; }
+		.ns-badge-facebook  { background: #1877f2; }
+		.ns-badge-instagram { background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4); }
+		.ns-badge-twitter   { background: #1da1f2; }
+		.ns-badge-tiktok    { background: #000; }
+		/*]]>*/
+		</style>
 		<script>
 	//<![CDATA[
 	 document.getElementById('id-panel-footer').style.display = 'none';
@@ -236,65 +372,122 @@
  	  var wsocketHost = null;	
  	  var cont = 0;
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/PeoplesearchServer", null, {debug: true, reconnectInterval: 3000}); 
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/PeoplesearchServer", null, {debug: true, reconnectInterval: 3000}); 
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/PeoplesearchServer', null, {debug: true, reconnectInterval: 3000});
 		
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }
 
+	  var TIPOS_PS = {
+		  GLOBAL:    { suffix: 'final',     label: 'Global',    fallback: '/resources/images/world.png' },
+		  FACEBOOK:  { suffix: 'facebook',  label: 'Facebook',  fallback: '/resources/images/facebook.png' },
+		  INSTAGRAM: { suffix: 'instagram', label: 'Instagram', fallback: '/resources/images/instagram.png' },
+		  TWITTER:   { suffix: 'twitter',   label: 'Twitter',   fallback: '/resources/images/twitter.png' },
+		  TIKTOK:    { suffix: 'tiktok',    label: 'TikTok',    fallback: '/resources/images/tiktok.png' }
+	  };
+	  var PENDING_IMG = {};
+
+	  function domainOf(url) {
+		  try { return new URL(url).hostname.replace(/^www\./, ''); }
+		  catch (e) { return url || ''; }
+	  }
+
+	  function appendPeopleResult(tipo, r) {
+		  var cfg = TIPOS_PS[tipo];
+		  if (!cfg || !r || !r.link) return;
+		  var panel  = document.getElementById('id-panel-result-' + cfg.suffix);
+		  var titulo = document.getElementById('id-panel-result-' + cfg.suffix + '-titulo');
+		  if (!panel) return;
+		  panel.style.display  = 'block';
+		  if (titulo) titulo.style.display = 'block';
+
+		  var d = domainOf(r.link);
+
+		  var card = document.createElement('a');
+		  card.className = 'ns-card';
+		  card.href = r.link;
+		  card.target = '_blank';
+		  card.rel = 'noopener noreferrer';
+
+		  var img = document.createElement('img');
+		  img.alt = '';
+		  var faviconUrl = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(d) + '&sz=64';
+		  img.className = 'ns-card-icon';
+		  img.src = faviconUrl;
+		  img.onerror = function () { this.onerror = null; this.src = cfg.fallback; };
+		  if (r.link) {
+			  PENDING_IMG[r.link] = { img: img, fallback: cfg.fallback, favicon: faviconUrl };
+		  }
+
+		  var body = document.createElement('div');
+		  body.className = 'ns-card-body';
+
+		  var meta = document.createElement('div');
+		  meta.className = 'ns-card-meta';
+		  var badge = document.createElement('span');
+		  badge.className = 'ns-badge ns-badge-' + cfg.suffix;
+		  badge.textContent = cfg.label;
+		  var dom = document.createElement('span');
+		  dom.className = 'ns-card-domain';
+		  dom.textContent = d;
+		  meta.appendChild(badge);
+		  meta.appendChild(dom);
+
+		  var h = document.createElement('h4');
+		  h.className = 'ns-card-title';
+		  h.textContent = r.titulo || '';
+
+		  var p = document.createElement('p');
+		  p.className = 'ns-card-snippet';
+		  p.textContent = r.texto || '';
+
+		  body.appendChild(meta);
+		  body.appendChild(h);
+		  body.appendChild(p);
+
+		  card.appendChild(img);
+		  card.appendChild(body);
+		  panel.appendChild(card);
+	  }
+
+	  function updatePeopleImage(pageUrl, imageUrl) {
+		  if (!pageUrl || !imageUrl) return;
+		  var rec = PENDING_IMG[pageUrl];
+		  if (!rec || !rec.img) return;
+		  var img = rec.img;
+		  img.onerror = function () {
+			  this.onerror = function () { this.onerror = null; this.src = rec.fallback; };
+			  this.className = 'ns-card-icon';
+			  this.src = rec.favicon;
+		  };
+		  img.className = 'ns-card-thumb';
+		  img.src = imageUrl;
+		  delete PENDING_IMG[pageUrl];
+	  }
+
 	  function onMessage(evt) {
 		  cont++;
-		  
-		  let obj = JSON.parse(evt.data);
-		 
-		  if(obj.resultado.titulo === 'STATUS'){
+		  var obj;
+		  try { obj = JSON.parse(evt.data); } catch (e) { return; }
+		  if (!obj || !obj.resultado) return;
+		  var res = obj.resultado;
+
+		  if (res.titulo === 'STATUS') {
 			  document.getElementById('id-panel-footer').style.display = 'block';
-			  document.getElementById('id-panel-result').innerHTML = obj.resultado.texto;
-
-		  }else if(obj.resultado.texto !== 'FIM'){
-			  let nomeALink = 'id-panel-link-'+cont;
-			  //document.getElementById('id-panel-result-final').innerHTML += '<div class="col-lg-12" style=""><div class="hpanel"><div class="panel-body text-center h-200"><h5 class="font-extra-bold no-margins text-success">'+obj.resultado.titulo+'</h5><embed frameborder="0" scrolling="no" src="'+obj.resultado.link+'" width="100%" height="200" /></div><div class="panel-footer-result">'+obj.resultado.texto+'</div></div></div>';
-			  if(!obj.resultado.texto){
-				  obj.resultado.texto = '';
-			  }
-			  if(obj.resultado.tipo === 'GLOBAL'){
-				  document.getElementById('id-panel-result-final').style.display = 'block';
-				  document.getElementById('id-panel-result-final-titulo').style.display = 'block';
-				  document.getElementById('id-panel-result-final').innerHTML += '<div class="hpanel filter-item"><a href="'+obj.resultado.link+'" target="_blank"><div class="panel-body"><div class="pull-right text-right"><img src="/resources/images/world.png" width="25px" height="25px" /></div><h4 class="m-b-xs">'+obj.resultado.titulo+'</h4><p class="small">'+obj.resultado.texto+'</p><p class="small"><b>'+obj.resultado.link+'</b></p> </div></a></div>';
-				  
-
-			  }else if(obj.resultado.tipo === 'FACEBOOK'){
-				  document.getElementById('id-panel-result-facebook').style.display = 'block';
-				  document.getElementById('id-panel-result-facebook-titulo').style.display = 'block';
-				  document.getElementById('id-panel-result-facebook').innerHTML += '<div class="hpanel filter-item"><a href="'+obj.resultado.link+'" target="_blank"><div class="panel-body"><div class="pull-right text-right"><img src="/resources/images/facebook.png" width="25px" height="25px" /></div><h4 class="m-b-xs">'+obj.resultado.titulo+'</h4><p class="small">'+obj.resultado.texto+'</p><p class="small"><b>'+obj.resultado.link+'</b></p> </div></a></div>';
-
-			  }else if(obj.resultado.tipo === 'INSTAGRAM'){
-				  document.getElementById('id-panel-result-instagram').style.display = 'block';
-				  document.getElementById('id-panel-result-instagram-titulo').style.display = 'block';
-				  document.getElementById('id-panel-result-instagram').innerHTML += '<div class="hpanel filter-item"><a href="'+obj.resultado.link+'" target="_blank"><div class="panel-body"><div class="pull-right text-right"><img src="/resources/images/instagram.png" width="25px" height="25px" /></div><h4 class="m-b-xs">'+obj.resultado.titulo+'</h4><p class="small">'+obj.resultado.texto+'</p><p class="small"><b>'+obj.resultado.link+'</b></p> </div></a></div>';	  
-
-			  }else if(obj.resultado.tipo === 'TWITTER'){
-				  document.getElementById('id-panel-result-twitter').style.display = 'block';
-				  document.getElementById('id-panel-result-twitter-titulo').style.display = 'block';
-				  document.getElementById('id-panel-result-twitter').innerHTML += '<div class="hpanel filter-item"><a href="'+obj.resultado.link+'" target="_blank"><div class="panel-body"><div class="pull-right text-right"><img src="/resources/images/twitter.png" width="25px" height="25px" /></div><h4 class="m-b-xs">'+obj.resultado.titulo+'</h4><p class="small">'+obj.resultado.texto+'</p><p class="small"><b>'+obj.resultado.link+'</b></p> </div></a></div>';	  
-
-			  }else if(obj.resultado.tipo === 'TIKTOK'){
-				  document.getElementById('id-panel-result-tiktok').style.display = 'block';
-				  document.getElementById('id-panel-result-tiktok-titulo').style.display = 'block';
-				  document.getElementById('id-panel-result-tiktok').innerHTML += '<div class="hpanel filter-item"><a href="'+obj.resultado.link+'" target="_blank"><div class="panel-body"><div class="pull-right text-right"><img src="/resources/images/twitter.png" width="25px" height="25px" /></div><h4 class="m-b-xs">'+obj.resultado.titulo+'</h4><p class="small">'+obj.resultado.texto+'</p><p class="small"><b>'+obj.resultado.link+'</b></p> </div></a></div>';	  
-			  }
-
-			  
-		  }else{
-			  //document.getElementById("id-button-peoplesearch").disabled = false;
-			  document.getElementById("id-button-peoplesearch").value = "Go!";
-// 			  if(wsocketHost){
-// 				  wsocketHost.close();
-// 			  }
-			  notificar();
+			  document.getElementById('id-panel-result').textContent = res.texto || '';
+			  return;
 		  }
-		  
+		  if (res.titulo === 'IMAGE_UPDATE') {
+			  updatePeopleImage(res.link, res.imagem);
+			  return;
+		  }
+		  if (res.texto === 'FIM') {
+			  document.getElementById('id-button-peoplesearch').value = 'Go!';
+			  notificar();
+			  return;
+		  }
+		  appendPeopleResult(res.tipo, res);
 	  }
 	  
 	  function onOpen(evt) {   
@@ -315,10 +508,15 @@
 				  	 	   		document.getElementById('id-input-tiktok').value !== ''){
 
 			  	 autorizarNotificacoes();
-			  	 
-			     document.getElementById("id-button-peoplesearch").disabled = true;
 			     document.getElementById("id-button-peoplesearch").value = "Waiting...";
 			     document.getElementById('id-panel-result').innerHTML = '';
+			     PENDING_IMG = {};
+			     ['final','facebook','instagram','twitter','tiktok'].forEach(function(t){
+			         var panel = document.getElementById('id-panel-result-' + t);
+			         var titulo = document.getElementById('id-panel-result-' + t + '-titulo');
+			         if (panel)  { panel.innerHTML = ''; panel.style.display = 'none'; }
+			         if (titulo) { titulo.style.display = 'none'; }
+			     });
 			  	 wsocketHost.send(JSON.stringify({
 					    ipExterno:document.getElementById('id-ip-externo').value,
 					  	nome: document.getElementById('id-input-nome').value,

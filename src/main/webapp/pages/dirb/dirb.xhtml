@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="Penetration Test" />
+	<ui:param name="title" value="Penetration Test Online — Discover Hidden Directories" />
+	<ui:param name="description" value="Online penetration test. Discover hidden directories and files on any public web server using dirb. Educational and authorised use only. Free, no install." />
 	<ui:param name="keywords" value="Pentest, Penetration Test, Penetration Test online, Dirb, Dirb online, Penetration Test site, Penetration Test server" />
 	<ui:define name="corpo">
 	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
@@ -53,6 +54,54 @@
 				                    	<div class="fb-comments" data-href="https://nettools.live/pentest" data-width="" data-numposts="10"></div>
 				                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this penetration test tool</h2>
+							</div>
+							<div class="panel-body">
+								<p>Dirb brute-forces a wordlist of common directory and file names against a web server and reports everything it finds that doesn't return 404. It's one of the first steps in reconnaissance for a web application security assessment: before attacking anything, you map what surface is actually exposed.</p>
+								<p>Provide a URL (e.g. <em>example.com</em> or <code>https://example.com/app/</code>). The scanner streams each discovered path back to your browser as it walks through the wordlist.</p>
+								<h3>Typical findings</h3>
+								<ul>
+									<li><strong>/admin, /backup, /old, /test</strong> — legacy paths forgotten in production.</li>
+									<li><strong>/.git, /.env, /config.php.bak</strong> — misconfigured deploys leaking source or secrets.</li>
+									<li><strong>/robots.txt, /sitemap.xml</strong> — not findings, but worth reading; they often reveal internal paths.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Is this legal?</strong> You must have explicit permission to test any server you don't own. This tool is provided for defensive self-audit, bug-bounty programs that allow it, and authorised penetration tests.</p>
+								<p><strong>What wordlist is used?</strong> The default dirb "common.txt" — about 4600 entries covering the most frequent web paths.</p>
+								<p><strong>Why does the scan take minutes?</strong> Each entry in the wordlist requires one HTTP request. Target servers often rate-limit, adding delay.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Penetration Test",
+						  "description": "Free online dirb directory brute-force scanner for web applications.",
+						  "applicationCategory": "SecurityApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/pentest",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Is this legal?", "acceptedAnswer": {"@type": "Answer", "text": "Use only on systems you own or have explicit authorisation to test. This tool is provided for defensive self-audit and authorised pentests."}},
+						    {"@type": "Question", "name": "What wordlist is used?", "acceptedAnswer": {"@type": "Answer", "text": "The default dirb common.txt with about 4600 entries covering the most frequent web paths."}},
+						    {"@type": "Question", "name": "Why does the scan take minutes?", "acceptedAnswer": {"@type": "Answer", "text": "Each wordlist entry requires one HTTP request. Target servers often rate-limit, adding delay."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="pentest" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -145,8 +194,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/DirbServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/DirbServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/DirbServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

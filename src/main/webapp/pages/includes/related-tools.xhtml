@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<!-- Bloco Related Tools — inclua em qualquer página com:
+	     <ui:include src="/pages/includes/related-tools.xhtml"><ui:param name="current" value="ping"/></ui:include>
+	     O parâmetro 'current' é opcional e oculta a ferramenta atual da lista. -->
+
+	<div class="hpanel" style="margin-top: 20px;">
+		<div class="panel-heading">
+			<h2 class="font-extra-bold no-margins text-success">Related network tools</h2>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<ui:fragment rendered="#{current != 'ping'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/ping"><i class="pe-7s-cloud-upload"></i> <strong>Ping</strong> — measure round-trip latency and packet loss.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'traceroute'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/traceroute"><i class="pe-7s-graph1"></i> <strong>Traceroute</strong> — see every hop between you and a host.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'whois'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/whois"><i class="pe-7s-id"></i> <strong>Whois</strong> — lookup domain registration and ownership.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'nslookup'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/nslookup"><i class="pe-7s-wallet"></i> <strong>NSLookup</strong> — resolve A, AAAA, MX and other DNS records.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'nmap'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/nmap"><i class="pe-7s-map"></i> <strong>Nmap</strong> — scan for open ports and services on a host.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'snmp'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/snmp"><i class="pe-7s-way"></i> <strong>SNMP Walk</strong> — query SNMP OIDs over the network.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'sip'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/sip"><i class="pe-7s-phone"></i> <strong>SIP</strong> — test if a SIP server is reachable and responding.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'pentest'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/pentest"><i class="pe-7s-key"></i> <strong>Penetration Test</strong> — discover hidden directories on a web server.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'peoplesearch'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/peoplesearch"><i class="pe-7s-user"></i> <strong>People Search</strong> — find social profiles across networks.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'portcheck'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/portcheck"><i class="pe-7s-plug"></i> <strong>Port Check</strong> — test if a TCP port is open on a host.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'reversedns'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/reversedns"><i class="pe-7s-back"></i> <strong>Reverse DNS</strong> — PTR lookup for any IP.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'subnet'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/subnet"><i class="pe-7s-calculator"></i> <strong>Subnet Calculator</strong> — CIDR, netmask and host ranges.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'myip'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/myip"><i class="pe-7s-network"></i> <strong>What Is My IP</strong> — see your public IP, ISP and location.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'useragent'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/useragent"><i class="pe-7s-display1"></i> <strong>User Agent</strong> — decode your browser, OS and device.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'mac'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/mac"><i class="pe-7s-micro"></i> <strong>MAC Lookup</strong> — find the manufacturer of a MAC address.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'httpstatus'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/httpstatus"><i class="pe-7s-look"></i> <strong>HTTP Status</strong> — follow any URL's redirect chain.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'isitdown'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/isitdown"><i class="pe-7s-attention"></i> <strong>Is It Down?</strong> — check if a website is online.</a>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{current != 'ssl'}">
+					<div class="col-sm-6 col-md-4" style="margin-bottom: 8px;">
+						<a href="#{request.contextPath}/ssl"><i class="pe-7s-lock"></i> <strong>SSL Checker</strong> — inspect TLS certificate and chain.</a>
+					</div>
+				</ui:fragment>
+			</div>
+		</div>
+	</div>
+</ui:composition>

@@ -19,6 +19,14 @@
 							<div class="panel-body text-center h-80">
 								<i class="pe-7s-network fa-3x text-success"></i>
 								<h3 class="m-xs" style="color: #000" id="id-seu-ip"></h3>
+								<button id="id-copy-ip" type="button"
+									aria-label="Copy IP to clipboard"
+									title="Copy IP"
+									class="btn btn-xs btn-default"
+									style="display: none; margin-bottom: 6px;"
+									onclick="copyMyIp(event); return false;">
+									<i class="fa fa-copy"></i> Copy
+								</button>
 								<h4 class="font-extra-bold no-margins text-success">
 									#{resources['label.global.seuip']}</h4>
 							</div>
@@ -141,6 +149,87 @@
 										<a href="#{request.contextPath}/sip"><i
 											class="pe-7s-phone fa-4x text-success"></i></a> <a
 											href="#{request.contextPath}/sip"><h5 class="m-xs">SIP</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/portcheck"><i
+											class="pe-7s-plug fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/portcheck"><h5 class="m-xs">PORT CHECK</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/reversedns"><i
+											class="pe-7s-back fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/reversedns"><h5 class="m-xs">REVERSE DNS</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/subnet"><i
+											class="pe-7s-calculator fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/subnet"><h5 class="m-xs">SUBNET CALC</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/myip"><i
+											class="pe-7s-network fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/myip"><h5 class="m-xs">MY IP</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/useragent"><i
+											class="pe-7s-display1 fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/useragent"><h5 class="m-xs">USER AGENT</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/mac"><i
+											class="pe-7s-micro fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/mac"><h5 class="m-xs">MAC LOOKUP</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/httpstatus"><i
+											class="pe-7s-look fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/httpstatus"><h5 class="m-xs">HTTP STATUS</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/isitdown"><i
+											class="pe-7s-attention fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/isitdown"><h5 class="m-xs">IS IT DOWN</h5></a>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 col-lg-3">
+								<div class="hpanel">
+									<div class="panel-body text-center h-100">
+										<a href="#{request.contextPath}/ssl"><i
+											class="pe-7s-lock fa-4x text-success"></i></a> <a
+											href="#{request.contextPath}/ssl"><h5 class="m-xs">SSL CHECKER</h5></a>
 									</div>
 								</div>
 							</div>

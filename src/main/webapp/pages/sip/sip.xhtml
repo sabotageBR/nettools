@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="SIP" />
+	<ui:param name="title" value="SIP Online — Test VoIP Servers from the Browser" />
+	<ui:param name="description" value="Online SIP server test. Send a REGISTER packet to any SIP endpoint and verify it's reachable and responding. Free VoIP diagnostics, no client install needed." />
 	<ui:param name="keywords" value="SIP test, SIP Test online, SIP online, SIP Tools,SIP Tools online" />
 	
 	<ui:define name="corpo">
@@ -64,6 +65,56 @@
 			                    	<div class="fb-comments" data-href="https://nettools.live/sip" data-width="" data-numposts="10"></div>
 			                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this SIP test</h2>
+							</div>
+							<div class="panel-body">
+								<p>SIP (Session Initiation Protocol) is the signalling protocol behind most VoIP systems. This tool sends a crafted SIP <code>REGISTER</code> request over UDP to a given host and port, waits for the response, and shows whether the endpoint is reachable, what it answers and how fast.</p>
+								<p>Fill in the host, the UDP port (5060 by default; also 5061 for TLS, 5069 for some providers) and an optional user handle. The tool opens a single UDP datagram session from our server and displays both the request sent and the response received.</p>
+								<h3>Common SIP response codes</h3>
+								<ul>
+									<li><strong>100 Trying</strong> / <strong>180 Ringing</strong> — provisional, the server accepted the request.</li>
+									<li><strong>200 OK</strong> — success, the endpoint is alive and healthy.</li>
+									<li><strong>401 Unauthorized</strong> / <strong>407 Proxy Authentication Required</strong> — the server is up and is asking for authentication (which is normal for REGISTER).</li>
+									<li><strong>404 Not Found</strong> — SIP stack is healthy but doesn't know that user.</li>
+									<li><strong>No reply</strong> — the port is silently dropped or the server is offline.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Which port should I use?</strong> 5060 for plain UDP/TCP is the default. 5061 for TLS. Providers sometimes move the public port (5069, 5070) to hide from scanners.</p>
+								<p><strong>Why a REGISTER probe?</strong> REGISTER is the lightest SIP message a server must answer to prove it's operational, even if anonymously.</p>
+								<p><strong>What does 401 mean here?</strong> 401 is a good sign — the SIP stack is healthy and is refusing authentication for the anonymous probe, as expected.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools SIP Test",
+						  "description": "Free online SIP REGISTER probe for any VoIP endpoint.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/sip",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Which port should I use?", "acceptedAnswer": {"@type": "Answer", "text": "5060 for plain UDP or TCP. 5061 for SIP over TLS. Providers sometimes use 5069 or 5070 to reduce scanner noise."}},
+						    {"@type": "Question", "name": "Why a REGISTER probe?", "acceptedAnswer": {"@type": "Answer", "text": "REGISTER is the lightest SIP message a server must answer to prove it's operational, even without authentication."}},
+						    {"@type": "Question", "name": "What does 401 mean here?", "acceptedAnswer": {"@type": "Answer", "text": "401 is a good sign — the SIP stack is healthy and is requesting authentication for the anonymous probe, as expected."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="sip" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -160,8 +211,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/SipServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/SipServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/SipServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

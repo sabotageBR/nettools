@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="What Is My IP — Public IP, Location and ISP" />
+	<ui:param name="description" value="What is my IP? Free instant check of your public IPv4/IPv6 address, country, city, ISP, ASN, timezone and reverse DNS. No install, no sign-up." />
+	<ui:param name="keywords" value="what is my ip, my ip, ip lookup, geoip, ip location" />
+	<ui:define name="corpo">
+	<div id="wrapper">
+		<div class="content animate-panel">
+
+			<div class="row">
+				<div class="col-md-offset-1 col-lg-7">
+					<div class="hpanel">
+						<div class="panel-heading">
+							<h1 class="font-extra-bold no-margins text-success text-center">Your public IP</h1>
+						</div>
+						<div class="panel-body">
+							<div class="text-center" style="margin: 10px 0 20px;">
+								<span style="font-size: 42px; color: #62cb31; font-weight: bold;"><h:outputText value="#{myIpController.info.ip}" /></span>
+								<div style="color: #999; margin-top: 4px;">
+									<h:outputText value="IPv6" rendered="#{myIpController.info.ipv6}" />
+									<h:outputText value="IPv4" rendered="#{not myIpController.info.ipv6}" />
+									<h:outputText value=" · Reverse DNS: #{myIpController.info.hostname}" rendered="#{not empty myIpController.info.hostname}" />
+								</div>
+							</div>
+
+							<table class="table table-striped" style="margin-bottom: 0;">
+								<tr><td style="width: 35%;"><strong>Country</strong></td><td><h:outputText value="#{myIpController.info.country} (#{myIpController.info.countryCode})" /></td></tr>
+								<tr><td><strong>Region</strong></td><td><h:outputText value="#{myIpController.info.region}" /></td></tr>
+								<tr><td><strong>City</strong></td><td><h:outputText value="#{myIpController.info.city}" /></td></tr>
+								<tr><td><strong>Postal</strong></td><td><h:outputText value="#{myIpController.info.postal}" /></td></tr>
+								<tr><td><strong>Timezone</strong></td><td><h:outputText value="#{myIpController.info.timezone}" /></td></tr>
+								<tr><td><strong>Latitude / Longitude</strong></td><td><h:outputText value="#{myIpController.info.latitude}, #{myIpController.info.longitude}" rendered="#{not empty myIpController.info.latitude}" /></td></tr>
+								<tr><td><strong>ISP</strong></td><td><h:outputText value="#{myIpController.info.isp}" /></td></tr>
+								<tr><td><strong>Organization</strong></td><td><h:outputText value="#{myIpController.info.org}" /></td></tr>
+								<tr><td><strong>ASN</strong></td><td><h:outputText value="#{myIpController.info.asn}" /></td></tr>
+								<tr><td><strong>Proxy / VPN detected</strong></td><td><h:outputText value="#{myIpController.info.proxy ? 'Yes' : 'No'}" /></td></tr>
+								<tr><td><strong>Hosting / datacenter</strong></td><td><h:outputText value="#{myIpController.info.hosting ? 'Yes' : 'No'}" /></td></tr>
+								<tr><td><strong>User-Agent</strong></td><td><code><h:outputText value="#{myIpController.info.userAgent}" /></code></td></tr>
+								<tr><td><strong>Accept-Language</strong></td><td><h:outputText value="#{myIpController.info.acceptLanguage}" /></td></tr>
+							</table>
+						</div>
+					</div>
+
+					<div class="row">
+						<br />
+						<br />
+						<div class="panel-footer">
+							<div class="fb-comments" data-href="https://nettools.live/myip" data-width="" data-numposts="10"></div>
+						</div>
+					</div>
+
+					<div class="hpanel" style="margin-top: 20px;">
+						<div class="panel-heading">
+							<h2 class="font-extra-bold no-margins text-success">About "What is my IP"</h2>
+						</div>
+						<div class="panel-body">
+							<p>Every time your device connects to the internet, your ISP gives it a public IP address. This page shows exactly what websites, games and online services see about you: your public IP, where the IP is geolocated, which ISP owns it, and whether it looks like a VPN, proxy or datacenter.</p>
+							<p>The geolocation comes from public WHOIS and BGP data — it's usually accurate at the country and city level. It is <em>not</em> a precise street-level location; nobody can derive that from an IP alone.</p>
+							<h3>FAQ</h3>
+							<p><strong>Why does the city look wrong?</strong> ISPs sometimes announce blocks from a different city than you live in. Mobile networks and large ISPs are especially imprecise.</p>
+							<p><strong>Is my IP permanent?</strong> Home users usually get a "dynamic" IP that changes when the modem reconnects. Servers, businesses and fibre customers often get static IPs.</p>
+							<p><strong>How do I hide my IP?</strong> Use a VPN, Tor or a trusted proxy. We'll detect all three and show "Proxy/VPN: Yes".</p>
+						</div>
+					</div>
+
+					<script type="application/ld+json">
+					{
+					  "@context": "https://schema.org",
+					  "@type": "SoftwareApplication",
+					  "name": "Nettools What Is My IP",
+					  "description": "Free public IP, GeoIP, ISP and User-Agent viewer.",
+					  "applicationCategory": "NetworkApplication",
+					  "operatingSystem": "Web",
+					  "url": "https://nettools.live/myip",
+					  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+					}
+					</script>
+					<script type="application/ld+json">
+					{
+					  "@context": "https://schema.org",
+					  "@type": "FAQPage",
+					  "mainEntity": [
+					    {"@type": "Question", "name": "Why does the city look wrong?", "acceptedAnswer": {"@type": "Answer", "text": "ISPs sometimes announce IP blocks from a different city than where you live. Mobile networks and large ISPs are especially imprecise."}},
+					    {"@type": "Question", "name": "Is my IP permanent?", "acceptedAnswer": {"@type": "Answer", "text": "Home users typically get dynamic IPs that change on modem reconnect. Servers and business lines often get static IPs."}},
+					    {"@type": "Question", "name": "How do I hide my IP?", "acceptedAnswer": {"@type": "Answer", "text": "Use a VPN, Tor or a trusted proxy. This page will detect all three as Proxy/VPN."}}
+					  ]
+					}
+					</script>
+
+					<ui:include src="/pages/includes/related-tools.xhtml">
+						<ui:param name="current" value="myip" />
+					</ui:include>
+
+					<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+						<ui:param name="tamanhodiv" value="6" />
+					</ui:include>
+				</div>
+			</div>
+		</div>
+		<footer class="footer">
+			<span class="pull-right"> Net Tools Live </span> Company 2021
+		</footer>
+	</div>
+	</ui:define>
+</ui:composition>

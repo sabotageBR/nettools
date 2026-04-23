@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="SNMP" />
+	<ui:param name="title" value="SNMP Walk Online — Query OIDs from the Browser" />
+	<ui:param name="description" value="SNMP walk online. Query v1, v2c and v3 OIDs on any reachable device with a community string. Read system info, interface counters and more, no snmpwalk install required." />
 	<ui:param name="keywords" value="SNMP Test online, SNMP Test, SNMP online, SNMP Tools,SNMP Tools online" />
 	<ui:define name="corpo">
 	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
@@ -72,6 +73,54 @@
 			                    	<div class="fb-comments" data-href="https://nettools.live/snmp" data-width="" data-numposts="10"></div>
 			                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this SNMP tool</h2>
+							</div>
+							<div class="panel-body">
+								<p>SNMP (Simple Network Management Protocol) exposes operational metrics of routers, switches, servers and printers through a tree of numeric identifiers called OIDs. This tool runs an <code>snmpwalk</code> from our cloud against any reachable SNMP agent and streams the results back.</p>
+								<p>Provide the host, the UDP port (161 by default), the SNMP version (v1, v2c or v3), the community string, and the OID to walk. Results come back in numeric form (<code>-On</code>) so you can copy-paste them into your NMS.</p>
+								<h3>Frequent OIDs</h3>
+								<ul>
+									<li><code>1.3.6.1.2.1.1</code> — System: sysDescr, sysUpTime, sysName, sysLocation.</li>
+									<li><code>1.3.6.1.2.1.2.2.1</code> — Interfaces table: bandwidth, counters, status.</li>
+									<li><code>1.3.6.1.2.1.25</code> — Host resources: CPU, memory, running processes.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>What's a community string?</strong> A shared password for SNMP v1/v2c. Common defaults are <code>public</code> (read-only) and <code>private</code> (read-write). Change these before exposing a device to the internet.</p>
+								<p><strong>v1 vs v2c vs v3?</strong> v1 is legacy; v2c adds 64-bit counters and better error handling but is still plaintext; v3 adds authentication and encryption and is the only version safe for untrusted networks.</p>
+								<p><strong>Why am I getting no response?</strong> The device might not allow SNMP from our IP, the community string is wrong, or UDP 161 is blocked by a firewall.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools SNMP Walk",
+						  "description": "Free online SNMP walk for v1, v2c and v3.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/snmp",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "What's a community string?", "acceptedAnswer": {"@type": "Answer", "text": "A shared password for SNMP v1 and v2c. Defaults are public for read-only and private for read-write. Change them before exposing a device to the internet."}},
+						    {"@type": "Question", "name": "SNMP v1 vs v2c vs v3?", "acceptedAnswer": {"@type": "Answer", "text": "v1 is legacy, v2c adds 64-bit counters but is still plaintext, v3 adds authentication and encryption and is the only version safe for untrusted networks."}},
+						    {"@type": "Question", "name": "Why am I getting no response?", "acceptedAnswer": {"@type": "Answer", "text": "The device may not allow SNMP from our IP, the community string is wrong, or UDP 161 is firewalled."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="snmp" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -168,8 +217,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/SnmpServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/SnmpServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/SnmpServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

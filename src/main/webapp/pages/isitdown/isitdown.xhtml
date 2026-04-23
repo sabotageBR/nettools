@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="Is This Site Down — Check Website Availability" />
+	<ui:param name="description" value="Free Is It Down? checker. Tell instantly if a website is online or down for everyone. Checks DNS, TCP 80/443 and HTTP response in one go." />
+	<ui:param name="keywords" value="is it down, down for everyone, website down, site status, uptime check" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+
+	<h:form id="idFormIsItDown" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<h1 class="font-extra-bold no-margins text-success text-center">Is It Down?</h1>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-lg-8">
+										<label>Website or domain</label>
+										<br />
+										<h:inputText id="id-input-host" value="#{isItDownController.to.host}" styleClass="form-control" />
+									</div>
+									<div class="form-group col-lg-3">
+										<h:commandButton action="#{isItDownController.isitdown}" value="Check" id="id-button-isitdown" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+											<f:ajax event="click" onevent="buttonClick()" execute="idFormIsItDown" render="idPanelHistory" />
+										</h:commandButton>
+									</div>
+								</div>
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background:#000;">
+								<code id="id-panel-result" style="background:#000;color:#62cb31;min-height:200px;white-space:pre;">Net Tools Live - Terminal...</code>
+							</div>
+						</div>
+
+						<div class="row">
+							<br /><br />
+							<div class="panel-footer">
+								<div class="fb-comments" data-href="https://nettools.live/isitdown" data-width="" data-numposts="10"></div>
+							</div>
+						</div>
+
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About "Is It Down?"</h2>
+							</div>
+							<div class="panel-body">
+								<p>When a site seems broken, the first question is always: is it down for everyone, or just me? This tool checks a website from our external infrastructure and tells you in seconds whether the issue is on the server side, somewhere on the network, or local to your connection.</p>
+								<p>We run four checks in sequence: DNS resolution → TCP port 443 → TCP port 80 → HTTP GET. Each step is reported individually so you can see exactly where the failure occurs.</p>
+								<h3>Possible verdicts</h3>
+								<ul>
+									<li><strong>UP</strong> — server reachable and responding with a 2xx/3xx code.</li>
+									<li><strong>UP with errors</strong> — DNS and TCP fine, but the application itself returns 4xx or 5xx.</li>
+									<li><strong>DOWN</strong> — DNS fails, or no TCP port answers, or HTTP times out.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>The site works for me but you say "DOWN" — why?</strong> Some sites block our datacenter IP range or apply aggressive bot protection. Try <a href="#{request.contextPath}/ping">ping</a> and <a href="#{request.contextPath}/portcheck">port check</a> to confirm.</p>
+								<p><strong>Why does it say "UP with errors"?</strong> The infrastructure is healthy but the app returned a 500 or 503. That's a backend bug, not a network issue.</p>
+								<p><strong>What if only DNS fails?</strong> The domain is expired, misconfigured or the DNS delegation broke. Check <a href="#{request.contextPath}/whois">whois</a> for expiration.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Is It Down",
+						  "description": "Free website availability checker — DNS + TCP + HTTP.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/isitdown",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "The site works for me but you say DOWN — why?", "acceptedAnswer": {"@type": "Answer", "text": "Some sites block our datacenter IP range or apply bot protection. Try ping and port check to confirm reachability."}},
+						    {"@type": "Question", "name": "Why does it say UP with errors?", "acceptedAnswer": {"@type": "Answer", "text": "Infrastructure is healthy but the app returned a 500 or 503. That's a backend bug, not a network issue."}},
+						    {"@type": "Question", "name": "What if only DNS fails?", "acceptedAnswer": {"@type": "Answer", "text": "The domain is expired, misconfigured or DNS delegation broke. Check whois for expiration."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="isitdown" />
+						</ui:include>
+
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="6" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<h:panelGroup id="idPanelHistory">
+							<ui:fragment rendered="#{customIdentity.isitdowns.size() gt 0}">
+								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+								<br />
+								<h:dataTable value="#{customIdentity.isitdowns}" var="i" styleClass="table">
+									<h:column>
+										<f:facet name="header">play</f:facet>
+										<a onclick="historyClick('#{i.host}')"><i class="pe-7s-upload pe-rotate-90"></i></a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">host</f:facet>
+										#{i.host}
+									</h:column>
+									<h:column>
+										<f:facet name="header">when</f:facet>
+										#{i.dateTimeFormat}
+									</h:column>
+								</h:dataTable>
+							</ui:fragment>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>
+	</h:form>
+
+	<script>
+	//<![CDATA[
+	document.getElementById('id-panel-footer').style.display = 'none';
+	var wsocketHost = null;
+	function connect() {
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/IsItDownServer', null, {debug: false, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;
+	}
+	function onMessage(evt) {
+		var obj = JSON.parse(evt.data);
+		if (obj.resultado !== 'FIM') {
+			document.getElementById('id-panel-footer').style.display = 'block';
+			var line = document.createElement('div');
+			line.textContent = obj.resultado;
+			document.getElementById('id-panel-result').appendChild(line);
+		} else {
+			document.getElementById('id-button-isitdown').value = 'Check';
+		}
+	}
+	var buttonClick = function () {
+		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
+		var h = document.getElementById('id-input-host').value;
+		if (h !== '') {
+			document.getElementById('id-button-isitdown').value = 'Waiting...';
+			document.getElementById('id-panel-result').innerHTML = '';
+			wsocketHost.send(JSON.stringify({ host: h }));
+		} else {
+			alert('Fill a host or URL.');
+		}
+	};
+	var historyClick = function (h) {
+		document.getElementById('id-input-host').value = h;
+		buttonClick();
+	};
+	connect();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>

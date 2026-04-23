@@ -8,12 +8,18 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import live.nettools.to.DirbTO;
+import live.nettools.to.HttpStatusTO;
+import live.nettools.to.IsItDownTO;
+import live.nettools.to.MacTO;
 import live.nettools.to.NmapTO;
 import live.nettools.to.NslookupTO;
 import live.nettools.to.PeoplesearchTO;
 import live.nettools.to.PingTO;
+import live.nettools.to.PortCheckTO;
+import live.nettools.to.ReverseDnsTO;
 import live.nettools.to.SipTO;
 import live.nettools.to.SnmpTO;
+import live.nettools.to.SslTO;
 import live.nettools.to.TracerouteTO;
 import live.nettools.to.WhoisTO;
 import live.nettools.to.YoutubeTO;
@@ -173,7 +179,7 @@ public class CustomIdentity implements Serializable{
 	
 	
 	private List<PeoplesearchTO> peoplesearchs;
-	
+
 	public List<PeoplesearchTO> getPeoplesearchs() {
 		if (peoplesearchs == null) {
 			peoplesearchs = new ArrayList<PeoplesearchTO>();
@@ -185,6 +191,68 @@ public class CustomIdentity implements Serializable{
 	public void setPeoplesearchs(List<PeoplesearchTO> peoplesearchs) {
 		this.peoplesearchs = peoplesearchs;
 	}
+
+	private List<PortCheckTO> portchecks;
+
+	public List<PortCheckTO> getPortchecks() {
+		if (portchecks == null) {
+			portchecks = new ArrayList<PortCheckTO>();
+		}
+		return portchecks;
+	}
+
+	public void setPortchecks(List<PortCheckTO> portchecks) {
+		this.portchecks = portchecks;
+	}
+
+	private List<ReverseDnsTO> reverseDns;
+
+	public List<ReverseDnsTO> getReverseDns() {
+		if (reverseDns == null) {
+			reverseDns = new ArrayList<ReverseDnsTO>();
+		}
+		return reverseDns;
+	}
+
+	public void setReverseDns(List<ReverseDnsTO> reverseDns) {
+		this.reverseDns = reverseDns;
+	}
+
+	private List<MacTO> macs;
+
+	public List<MacTO> getMacs() {
+		if (macs == null) macs = new ArrayList<MacTO>();
+		return macs;
+	}
+
+	public void setMacs(List<MacTO> macs) { this.macs = macs; }
+
+	private List<HttpStatusTO> httpstatuses;
+
+	public List<HttpStatusTO> getHttpstatuses() {
+		if (httpstatuses == null) httpstatuses = new ArrayList<HttpStatusTO>();
+		return httpstatuses;
+	}
+
+	public void setHttpstatuses(List<HttpStatusTO> httpstatuses) { this.httpstatuses = httpstatuses; }
+
+	private List<IsItDownTO> isitdowns;
+
+	public List<IsItDownTO> getIsitdowns() {
+		if (isitdowns == null) isitdowns = new ArrayList<IsItDownTO>();
+		return isitdowns;
+	}
+
+	public void setIsitdowns(List<IsItDownTO> isitdowns) { this.isitdowns = isitdowns; }
+
+	private List<SslTO> ssls;
+
+	public List<SslTO> getSsls() {
+		if (ssls == null) ssls = new ArrayList<SslTO>();
+		return ssls;
+	}
+
+	public void setSsls(List<SslTO> ssls) { this.ssls = ssls; }
 	
 	public void comporInformacoesHTTP() {
 	}

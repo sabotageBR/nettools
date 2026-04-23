@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="NsLookup" />
+	<ui:param name="title" value="NSLookup Online — Resolve DNS Records in the Browser" />
+	<ui:param name="description" value="Online NSLookup tool. Resolve A, AAAA, MX, NS, CNAME and TXT records for any domain. Free, instant, no install. Troubleshoot DNS issues from the browser." />
 	<ui:param name="keywords" value="Nslookup test, Nslookup online test, Nslookup tool, Nslookup site, Nslookup server" />
 	
 	<ui:define name="corpo">
@@ -51,6 +52,57 @@
 				                    	<div class="fb-comments" data-href="https://nettools.live/nslookup" data-width="" data-numposts="10"></div>
 				                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this NSLookup tool</h2>
+							</div>
+							<div class="panel-body">
+								<p>NSLookup resolves a hostname into its DNS records: the IP address behind a domain, the mail servers that accept its email, its authoritative name servers, its aliases, and any verification strings in TXT records. It is the fundamental diagnostic for DNS propagation, mail delivery issues, and domain troubleshooting.</p>
+								<p>Enter a domain and submit. Our server queries the authoritative name servers and streams the raw response back.</p>
+								<h3>Common record types</h3>
+								<ul>
+									<li><strong>A</strong> — IPv4 address. Where <em>example.com</em> points to.</li>
+									<li><strong>AAAA</strong> — IPv6 address.</li>
+									<li><strong>MX</strong> — mail servers for the domain, with priority.</li>
+									<li><strong>NS</strong> — authoritative name servers.</li>
+									<li><strong>CNAME</strong> — alias pointing to another hostname.</li>
+									<li><strong>TXT</strong> — arbitrary text; used for SPF, DKIM, domain verification.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>What's the difference between A and AAAA?</strong> A records hold IPv4 addresses (four numbers 0–255), AAAA records hold IPv6 addresses (eight groups of hex digits). A site can have both.</p>
+								<p><strong>Why does my MX query return nothing?</strong> The domain may have no mail configuration, or the record uses a different TLD. Check the parent domain or the registrar configuration.</p>
+								<p><strong>Is NSLookup real-time?</strong> It queries live DNS servers, but TTL caching can make recent changes invisible for minutes to hours.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools NSLookup",
+						  "description": "Free online NSLookup for A, AAAA, MX, NS, CNAME and TXT DNS records.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/nslookup",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "What's the difference between A and AAAA?", "acceptedAnswer": {"@type": "Answer", "text": "A records hold IPv4 addresses, AAAA records hold IPv6 addresses. A single site can publish both."}},
+						    {"@type": "Question", "name": "Why does my MX query return nothing?", "acceptedAnswer": {"@type": "Answer", "text": "The domain may not receive email or the record is set on a different subdomain. Check the registrar configuration."}},
+						    {"@type": "Question", "name": "Is NSLookup real-time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, it queries live DNS. But TTL caching can delay propagation of recent changes."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="nslookup" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -144,8 +196,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/NslookupServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/NslookupServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/NslookupServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

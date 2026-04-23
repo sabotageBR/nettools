@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="HTTP Status &amp; Redirect Checker — Inspect Any URL" />
+	<ui:param name="description" value="Check the HTTP status code and full redirect chain of any URL. See 301/302/307 redirects, final status and response headers. Free, no install." />
+	<ui:param name="keywords" value="http status, redirect checker, 301 302 redirect, url status checker, response header" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+
+	<h:form id="idFormHttpStatus" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<h1 class="font-extra-bold no-margins text-success text-center">HTTP Status Checker</h1>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-lg-8">
+										<label>URL</label>
+										<br />
+										<h:inputText id="id-input-url" value="#{httpStatusController.to.url}" styleClass="form-control" />
+									</div>
+									<div class="form-group col-lg-3">
+										<h:commandButton action="#{httpStatusController.httpstatus}" value="Go!" id="id-button-httpstatus" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+											<f:ajax event="click" onevent="buttonClick()" execute="idFormHttpStatus" render="idPanelHistory" />
+										</h:commandButton>
+									</div>
+								</div>
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background:#000;">
+								<code id="id-panel-result" style="background:#000;color:#62cb31;min-height:200px;white-space:pre;">Net Tools Live - Terminal...</code>
+							</div>
+						</div>
+
+						<div class="row">
+							<br /><br />
+							<div class="panel-footer">
+								<div class="fb-comments" data-href="https://nettools.live/httpstatus" data-width="" data-numposts="10"></div>
+							</div>
+						</div>
+
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About HTTP status codes</h2>
+							</div>
+							<div class="panel-body">
+								<p>Every HTTP response starts with a three-digit status code. This tool fetches any URL you give it and shows not only the final code but every <em>hop</em> in the redirect chain — a common cause of slow load times and SEO trouble.</p>
+								<h3>Status code families</h3>
+								<ul>
+									<li><strong>2xx</strong> — success. <code>200 OK</code> is the vast majority.</li>
+									<li><strong>3xx</strong> — redirect. <code>301</code> permanent, <code>302/307</code> temporary. Each redirect adds round-trip latency.</li>
+									<li><strong>4xx</strong> — client error. <code>404</code> missing, <code>403</code> forbidden, <code>429</code> rate-limited.</li>
+									<li><strong>5xx</strong> — server error. <code>500</code> generic, <code>502/503/504</code> upstream issues.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why do you follow up to 10 redirects?</strong> More than ~5 redirects signals a loop or misconfiguration. 10 is a safe cap.</p>
+								<p><strong>Why is <code>HTTPS → HTTP → HTTPS</code> bad?</strong> Mixed scheme redirects downgrade users to insecure connections, get blocked by HSTS, and drop SEO signals.</p>
+								<p><strong>Can I check an intranet URL?</strong> No. The scan runs from our public server; it cannot reach private IPs.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools HTTP Status Checker",
+						  "description": "Free HTTP status and redirect chain checker.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/httpstatus",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why do you follow up to 10 redirects?", "acceptedAnswer": {"@type": "Answer", "text": "More than about 5 redirects suggests a loop or misconfiguration. 10 is a safe cap."}},
+						    {"@type": "Question", "name": "Why is HTTPS → HTTP → HTTPS bad?", "acceptedAnswer": {"@type": "Answer", "text": "Mixed scheme redirects downgrade users, get blocked by HSTS and hurt SEO signals."}},
+						    {"@type": "Question", "name": "Can I check an intranet URL?", "acceptedAnswer": {"@type": "Answer", "text": "No. The scan runs from our public server and cannot reach private IPs."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="httpstatus" />
+						</ui:include>
+
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="6" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<h:panelGroup id="idPanelHistory">
+							<ui:fragment rendered="#{customIdentity.httpstatuses.size() gt 0}">
+								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+								<br />
+								<h:dataTable value="#{customIdentity.httpstatuses}" var="h" styleClass="table">
+									<h:column>
+										<f:facet name="header">play</f:facet>
+										<a onclick="historyClick('#{h.url}')"><i class="pe-7s-upload pe-rotate-90"></i></a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">url</f:facet>
+										#{h.url}
+									</h:column>
+									<h:column>
+										<f:facet name="header">when</f:facet>
+										#{h.dateTimeFormat}
+									</h:column>
+								</h:dataTable>
+							</ui:fragment>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>
+	</h:form>
+
+	<script>
+	//<![CDATA[
+	document.getElementById('id-panel-footer').style.display = 'none';
+	var wsocketHost = null;
+	function connect() {
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/HttpStatusServer', null, {debug: false, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;
+	}
+	function onMessage(evt) {
+		var obj = JSON.parse(evt.data);
+		if (obj.resultado !== 'FIM') {
+			document.getElementById('id-panel-footer').style.display = 'block';
+			var line = document.createElement('div');
+			line.textContent = obj.resultado;
+			document.getElementById('id-panel-result').appendChild(line);
+		} else {
+			document.getElementById('id-button-httpstatus').value = 'Go!';
+		}
+	}
+	var buttonClick = function () {
+		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
+		var url = document.getElementById('id-input-url').value;
+		if (url !== '') {
+			document.getElementById('id-button-httpstatus').value = 'Waiting...';
+			document.getElementById('id-panel-result').innerHTML = '';
+			wsocketHost.send(JSON.stringify({ url: url }));
+		} else {
+			alert('Fill a URL.');
+		}
+	};
+	var historyClick = function (u) {
+		document.getElementById('id-input-url').value = u;
+		buttonClick();
+	};
+	connect();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>

@@ -6,7 +6,8 @@
 	xmlns:itm="http://java.sun.com/jsf/composite/components"
 	template="/WEB-INF/templates/default.xhtml">
 
-	<ui:param name="title" value="Whois" />
+	<ui:param name="title" value="Whois Lookup — Free Domain Ownership Check" />
+	<ui:param name="description" value="Whois lookup online. Check domain ownership, registration and expiration dates, registrar and name servers for any TLD. Free, instant, no account required." />
 	<ui:param name="keywords" value="Whois online, Whois dominio, Whois domain, Whois tools" />
 	
 	<ui:define name="corpo">
@@ -50,6 +51,55 @@
 			                    	<div class="fb-comments" data-href="https://nettools.live/whois" data-width="" data-numposts="10"></div>
 			                 </div>
 						</div>
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this whois tool</h2>
+							</div>
+							<div class="panel-body">
+								<p>Whois queries the public registry of domain names and returns who registered a given domain, when, through which registrar, and when it expires. It is the canonical source for domain provenance — useful for trademark disputes, acquisition research, phishing analysis, and verifying that a new domain is what it claims to be.</p>
+								<p>Type the bare domain (<em>example.com</em>, no <code>http://</code>) and submit. The output streams directly from the registrar or registry responsible for the TLD.</p>
+								<h3>Key fields</h3>
+								<ul>
+									<li><strong>Registrar</strong> — the company that sold/maintains the registration.</li>
+									<li><strong>Creation / Updated / Expiry Date</strong> — lifecycle timestamps. Very young or near-expiry domains are classic abuse signals.</li>
+									<li><strong>Name servers</strong> — which DNS provider the domain currently points to.</li>
+									<li><strong>Registrant / Admin / Tech contacts</strong> — who to reach. Often redacted since GDPR.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why can't I see the owner name?</strong> Since GDPR and similar privacy laws, most registrars redact personal contact data. Corporate and US .com/.net registrations are more likely to show it.</p>
+								<p><strong>What's a registrar?</strong> An ICANN-accredited company that sells domains to end users (GoDaddy, Namecheap, Porkbun, Google Domains, etc.).</p>
+								<p><strong>How fresh is the data?</strong> Whois records are usually updated within minutes of a registrar change. Some TLDs cache for up to 24 hours.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Whois",
+						  "description": "Free online whois lookup for any domain.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/whois",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why can't I see the owner name?", "acceptedAnswer": {"@type": "Answer", "text": "Since GDPR and similar privacy laws, most registrars redact personal contact data. Corporate and US .com/.net registrations are more likely to show it."}},
+						    {"@type": "Question", "name": "What is a registrar?", "acceptedAnswer": {"@type": "Answer", "text": "An ICANN-accredited company that sells domain registrations to end users."}},
+						    {"@type": "Question", "name": "How fresh is whois data?", "acceptedAnswer": {"@type": "Answer", "text": "Most changes propagate within minutes. Some TLDs cache for up to 24 hours."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="whois" />
+						</ui:include>
+
 						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
 							<ui:param name="tamanhodiv" value="6" />
 						</ui:include>
@@ -146,8 +196,8 @@
 	  	
  	  var wsocketHost = null;	
 	  function connect() {         
-		//wsocketHost = new ReconnectingWebSocket("ws://nettools.local:8080/WhoisServer", null, {debug: true, reconnectInterval: 3000});
-		wsocketHost = new ReconnectingWebSocket("wss://nettools.live/WhoisServer", null, {debug: true, reconnectInterval: 3000});
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/WhoisServer', null, {debug: true, reconnectInterval: 3000});
 		wsocketHost.onmessage = onMessage;  
 		wsocketHost.onopen = onOpen;  
 	  }

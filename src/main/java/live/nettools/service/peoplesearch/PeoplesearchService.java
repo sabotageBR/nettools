@@ -1,11 +1,12 @@
 package live.nettools.service.peoplesearch;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Named;
 import javax.websocket.Session;
@@ -15,190 +16,182 @@ import com.google.gson.Gson;
 import live.nettools.enums.PeoplesearchTypeEnum;
 import live.nettools.to.PeopleSearchResultTO;
 import live.nettools.to.PeoplesearchTO;
-import live.nettools.util.UtilString;
+import live.nettools.util.HostValidator;
+import live.nettools.util.OgImageResolver;
+import live.nettools.util.SearxngClient;
 
+/**
+ * People Search consulta o DuckDuckGo (HTML endpoint) em vez do antigo
+ * {@code googler}. Cada campo preenchido gera uma busca global e, quando
+ * aplicável, uma busca filtrada por site (facebook.com, instagram.com, ...).
+ * Os resultados são enviados em tempo real pelo WebSocket.
+ */
 @Named
-public class PeoplesearchService implements Serializable{
+public class PeoplesearchService implements Serializable {
 
-	private static final long serialVersionUID = -6986454410309827919L;
+    private static final long serialVersionUID = -6986454410309827919L;
+    private static final Logger LOG = Logger.getLogger(PeoplesearchService.class.getName());
 
-	private boolean execute = true;
-	
-	@SuppressWarnings("static-access")
-	public List<PeopleSearchResultTO> executar(PeoplesearchTO peoplesearch, Session session) {
-		
-		UtilString us = new UtilString();
-		List<PeopleSearchResultTO> resultados = new ArrayList<PeopleSearchResultTO>();
-		try {
-			
-			if(!us.vazio(peoplesearch.getNome())) {
-				enviarStatus(session, "Global search...");
-				String comandoGlobal = String.format("googler -n 100 \"%s\" --unfilter --noprompt", peoplesearch.getNome());
-				System.out.println("ComandoGlobal.: "+comandoGlobal);
-				if(execute) {
-					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-			}
-			if(!us.vazio(peoplesearch.getFacebook())) {
-				enviarStatus(session, "Facebook search...");
-				String comandoGlobal = String.format("googler -n 100 %s --unfilter --noprompt", peoplesearch.getFacebook());
-				System.out.println("ComandoGlobal.: "+comandoGlobal);
-				if(execute) {
-					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-				String comandoFacebook =String.format("googler -n 100 -w facebook.com %s --unfilter --noprompt", peoplesearch.getFacebook());
-				System.out.println("Facebook.: "+comandoFacebook);
-				if(execute) {
-					executarComando(comandoFacebook,PeoplesearchTypeEnum.FACEBOOK,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-			}
-			
-			if(!us.vazio(peoplesearch.getInstagram())) {
-				enviarStatus(session, "Instagram search...");
-				String comandoGlobal = String.format("googler -n 100 @%s --unfilter --noprompt", peoplesearch.getInstagram());
-				System.out.println("ComandoGlobal.: "+comandoGlobal);
-				if(execute) {
-					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-				String comandoInstagram = String.format("googler -n 100 -w instagram.com @%s --unfilter --noprompt", peoplesearch.getInstagram());
-				System.out.println("Instagram: "+comandoInstagram);
-				if(execute) {
-					executarComando(comandoInstagram,PeoplesearchTypeEnum.INSTAGRAM,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-			}
-			
-			
-			
-			if(!us.vazio(peoplesearch.getTwitter())) {
-				enviarStatus(session, "Twitter search...");
-				String comandoGlobal = String.format("googler -n 100 %s --unfilter --noprompt", peoplesearch.getTwitter());
-				System.out.println("ComandoGlobal.: "+comandoGlobal);
-				if(execute) {
-					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-				String comandoTwitter =String.format("googler -n 100 -w twitter.com @%s --unfilter --noprompt", peoplesearch.getTwitter());
-				System.out.println("Twitter.: "+comandoTwitter);
-				if(execute) {
-					executarComando(comandoTwitter,PeoplesearchTypeEnum.TWITTER,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-			}
-			
-			if(!us.vazio(peoplesearch.getTiktok())) {
-				enviarStatus(session, "TikTok search...");
-				String comandoGlobal = String.format("googler -n 100 %s --unfilter --noprompt", peoplesearch.getTwitter());
-				System.out.println("ComandoGlobal.: "+comandoGlobal);
-				if(execute) {
-					executarComando(comandoGlobal,PeoplesearchTypeEnum.GLOBAL,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-				String comandoTwitter =String.format("googler -n 100 -w tiktok.com %s --unfilter --noprompt", peoplesearch.getTwitter());
-				System.out.println("TikTok.: "+comandoTwitter);
-				if(execute) {
-					executarComando(comandoTwitter,PeoplesearchTypeEnum.TIKTOK,peoplesearch, session, resultados);
-				}	
-				Thread.currentThread().sleep(5000);
-				
-			}
-			
-		}catch (Exception e) {
-		}	
-		return resultados;
-	}
-	
-	private void enviarStatus(Session session, String msg) {
-		try {
-			Gson gson = new Gson();
-			session.getBasicRemote().sendText(gson.toJson(new PeoplesearchTO("",
-					  new PeopleSearchResultTO("STATUS",msg))));
-		}catch (Exception e) {
-			//e.printStackTrace();
-		}	
-	}
+    private static final int MAX_RESULTS_PER_QUERY = 25;
+    private static final long THROTTLE_MILLIS = 1000L;
 
+    public List<PeopleSearchResultTO> executar(PeoplesearchTO input, Session session) {
+        List<PeopleSearchResultTO> resultados = new ArrayList<PeopleSearchResultTO>();
 
-	private void executarComando(String comando,PeoplesearchTypeEnum tipo, PeoplesearchTO peoplesearch, Session session, List<PeopleSearchResultTO> resultados) {
-		Process proc = null;
-		BufferedReader stdInput = null;
-		BufferedReader stdError = null;
-		String s = null;
-		try {
-			Runtime rt = Runtime.getRuntime();
-			proc = rt.exec(comando);
-			stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream(),"UTF-8"));
-			stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream(),"UTF-8"));
-			PeopleSearchResultTO resultado = new PeopleSearchResultTO();
-			Gson gson = new Gson();
-			while ((s = stdInput.readLine()) != null) {
-				if(session != null) {
-					resultado = comporResultado(session,tipo,peoplesearch,resultado,resultados, s);
-				}	
-			}
-			if(resultado.getTitulo() != null && resultado.getLink() != null) { 
-				session.getBasicRemote().sendText(gson.toJson(new PeoplesearchTO(peoplesearch.getNome(), resultado)));
-			}
-			while ((s = stdError.readLine()) != null) {
-				if(session != null) {
-					resultado = comporResultado(session,tipo,peoplesearch,resultado,resultados,s);
-				}	
-			}
-		} catch (Exception e) {
-			//e.printStackTrace();
-		} finally {
-			try {
-				Field f = proc.getClass().getDeclaredField("pid");
-				f.setAccessible(true);
-				stdInput.close();
-				stdError.close();
-				proc.destroy();
-				proc.destroyForcibly();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	
-	public PeopleSearchResultTO comporResultado(Session session,PeoplesearchTypeEnum tipo, PeoplesearchTO peoplesearch, PeopleSearchResultTO result,List<PeopleSearchResultTO> resultados,String valor) {
-		try {
-			System.out.println("Compor resultado ="+valor);
-			if(valor != null && !valor.equals("") && valor.trim().length() > 5) {
-				
-				Gson gson = new Gson();
-				if(valor.trim().substring(0,2).matches("^[0-9]\\.") || valor.trim().substring(0,3).matches("^[0-9][0-9]\\.")) {
-					System.out.println("entrou na regex");
-					resultados.add(result);
-					if(result.getTitulo() != null && result.getLink() != null) { 
-						session.getBasicRemote().sendText(gson.toJson(new PeoplesearchTO(peoplesearch.getNome(), result)));
-						System.out.println("Enviou");
-					}
-					result = null;
-					result = new PeopleSearchResultTO();
-					result.setTitulo(valor.trim());
-					result.setTipo(tipo);
-				}else if(valor.contains("http")) {                   
-					result.setLink(valor.trim());
-				}else {
-					result.setTexto(result.getTexto() + valor.trim()+"<br />");
-				}
-			}	
-		}catch(Exception e) {
-		//	e.printStackTrace();
-		}
-		return result;
-	}
-	
+        String nome;
+        String facebook;
+        String instagram;
+        String twitter;
+        String tiktok;
+        try {
+            nome = HostValidator.optionalFreeText(input.getNome(), "nome");
+            facebook = HostValidator.optionalFreeText(input.getFacebook(), "facebook");
+            instagram = HostValidator.optionalFreeText(input.getInstagram(), "instagram");
+            twitter = HostValidator.optionalFreeText(input.getTwitter(), "twitter");
+            tiktok = HostValidator.optionalFreeText(input.getTiktok(), "tiktok");
+        } catch (IllegalArgumentException ex) {
+            LOG.log(Level.INFO, "Entrada rejeitada em PeoplesearchService: {0}", ex.getMessage());
+            sendStatus(session, "Invalid input: " + ex.getMessage());
+            return resultados;
+        }
+
+        try {
+            if (nome != null) {
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.GLOBAL, nome, null,
+                        "Global search: \"" + nome + "\"");
+                throttle();
+            }
+            if (facebook != null) {
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.GLOBAL, facebook, null,
+                        "Facebook global: \"" + facebook + "\"");
+                throttle();
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.FACEBOOK, facebook, "facebook.com",
+                        "Facebook: \"" + facebook + "\"");
+                throttle();
+            }
+            if (instagram != null) {
+                String handle = instagram.startsWith("@") ? instagram : "@" + instagram;
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.GLOBAL, handle, null,
+                        "Instagram global: \"" + handle + "\"");
+                throttle();
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.INSTAGRAM, handle, "instagram.com",
+                        "Instagram: \"" + handle + "\"");
+                throttle();
+            }
+            if (twitter != null) {
+                String handle = twitter.startsWith("@") ? twitter : "@" + twitter;
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.GLOBAL, handle, null,
+                        "Twitter global: \"" + handle + "\"");
+                throttle();
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.TWITTER, handle, "twitter.com",
+                        "Twitter: \"" + handle + "\"");
+                throttle();
+            }
+            if (tiktok != null) {
+                String handle = tiktok.startsWith("@") ? tiktok : "@" + tiktok;
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.GLOBAL, handle, null,
+                        "TikTok global: \"" + handle + "\"");
+                throttle();
+                runQuery(session, resultados, input, PeoplesearchTypeEnum.TIKTOK, handle, "tiktok.com",
+                        "TikTok: \"" + handle + "\"");
+            }
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+        return resultados;
+    }
+
+    private void runQuery(Session session,
+                          List<PeopleSearchResultTO> resultados,
+                          PeoplesearchTO input,
+                          PeoplesearchTypeEnum tipo,
+                          String term,
+                          String siteFilter,
+                          String statusMsg) {
+        sendStatus(session, statusMsg);
+        String query = siteFilter == null ? term : term + " site:" + siteFilter;
+        List<SearxngClient.SearchResult> page;
+        try {
+            page = SearxngClient.search(query, MAX_RESULTS_PER_QUERY);
+        } catch (IOException e) {
+            LOG.log(Level.WARNING, "Falha ao consultar SearXNG em " + SearxngClient.baseUrl(), e);
+            sendStatus(session, "Search temporarily unavailable (SearXNG unreachable at " + SearxngClient.baseUrl() + ")");
+            return;
+        }
+        if (page.isEmpty()) {
+            sendStatus(session, "No results");
+            return;
+        }
+        List<String> urls = new ArrayList<String>();
+        for (SearxngClient.SearchResult r : page) {
+            PeopleSearchResultTO item = new PeopleSearchResultTO();
+            item.setTitulo(r.title);
+            item.setLink(r.url);
+            item.setTexto(r.snippet == null ? "" : r.snippet);
+            item.setTipo(tipo);
+            resultados.add(item);
+            sendResult(session, input, item);
+            if (r.url != null) {
+                urls.add(r.url);
+            }
+        }
+
+        final Session sess = session;
+        OgImageResolver.resolveManyAsync(urls, new java.util.function.BiConsumer<String, String>() {
+            @Override
+            public void accept(String pageUrl, String imageUrl) {
+                sendImageUpdate(sess, pageUrl, imageUrl);
+            }
+        });
+    }
+
+    private void sendImageUpdate(Session session, String pageUrl, String imageUrl) {
+        if (session == null || !session.isOpen()) {
+            return;
+        }
+        PeopleSearchResultTO upd = new PeopleSearchResultTO();
+        upd.setTitulo("IMAGE_UPDATE");
+        upd.setLink(pageUrl);
+        upd.setImagem(imageUrl);
+        synchronized (session) {
+            try {
+                session.getBasicRemote().sendText(new Gson().toJson(
+                        new PeoplesearchTO("", upd)));
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Falha ao enviar IMAGE_UPDATE", e);
+            }
+        }
+    }
+
+    private void throttle() throws InterruptedException {
+        Thread.sleep(THROTTLE_MILLIS);
+    }
+
+    private void sendStatus(Session session, String msg) {
+        if (session == null || !session.isOpen()) {
+            return;
+        }
+        synchronized (session) {
+            try {
+                session.getBasicRemote().sendText(new Gson().toJson(
+                        new PeoplesearchTO("", new PeopleSearchResultTO("STATUS", msg))));
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Falha ao enviar status WebSocket", e);
+            }
+        }
+    }
+
+    private void sendResult(Session session, PeoplesearchTO input, PeopleSearchResultTO result) {
+        if (session == null || !session.isOpen()) {
+            return;
+        }
+        synchronized (session) {
+            try {
+                session.getBasicRemote().sendText(new Gson().toJson(
+                        new PeoplesearchTO(input.getNome(), result)));
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Falha ao enviar resultado WebSocket", e);
+            }
+        }
+    }
 }

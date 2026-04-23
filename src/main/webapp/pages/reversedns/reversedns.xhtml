@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="Reverse DNS — PTR Lookup Online" />
+	<ui:param name="description" value="Reverse DNS lookup online. Find the hostname behind any IPv4 or IPv6 address via PTR record. Free, instant, no install." />
+	<ui:param name="keywords" value="reverse dns, ptr lookup, rdns, ip to hostname" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+
+	<h:form id="idFormReverseDns" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<div class="row">
+									<h1 class="font-extra-bold no-margins text-success text-center">Reverse DNS</h1>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-lg-8">
+										<label>IP address (IPv4 or IPv6)</label>
+										<br />
+										<h:inputText id="id-input-ip" value="#{reverseDnsController.to.ip}" styleClass="form-control" />
+									</div>
+									<div class="form-group col-lg-3">
+										<h:commandButton action="#{reverseDnsController.reversedns}" value="Go!" id="id-button-reversedns" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+											<f:ajax event="click" onevent="buttonClick()" execute="idFormReverseDns" render="idPanelHistory" />
+										</h:commandButton>
+									</div>
+								</div>
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background: #000;">
+								<code id="id-panel-result" style="background-color: #000;color: #62cb31;min-height: 200px;">Net Tools Live - Terminal...</code>
+							</div>
+						</div>
+						<div class="row">
+							<br />
+							<br />
+							<br />
+							<div class="panel-footer">
+								<div class="fb-comments" data-href="https://nettools.live/reversedns" data-width="" data-numposts="10"></div>
+							</div>
+						</div>
+
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About reverse DNS</h2>
+							</div>
+							<div class="panel-body">
+								<p>A reverse DNS (rDNS) lookup maps an IP address back to the hostname its operator has published. Unlike a normal forward lookup (hostname → IP), rDNS relies on a PTR record on the <em>in-addr.arpa</em> (IPv4) or <em>ip6.arpa</em> (IPv6) tree, which the network owning the IP block is responsible for publishing.</p>
+								<p>This tool queries the authoritative resolvers directly and streams the answer back.</p>
+								<h3>Why it matters</h3>
+								<ul>
+									<li><strong>Email deliverability</strong> — mail servers without a matching PTR are frequently marked as spam.</li>
+									<li><strong>Log analysis</strong> — translating raw IPs into readable hostnames makes traffic logs human-friendly.</li>
+									<li><strong>Security research</strong> — PTR records often leak who owns an IP (e.g. <em>ec2-54-…compute.amazonaws.com</em>).</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why is there no PTR for my IP?</strong> rDNS zones are delegated by the network owner. Home users rarely have PTR control; ask your ISP or hosting provider.</p>
+								<p><strong>Does rDNS have to match forward DNS?</strong> No, but matching (FCrDNS — Forward-Confirmed Reverse DNS) is required by many mail receivers and improves deliverability.</p>
+								<p><strong>Can I have more than one PTR?</strong> Technically yes, but most resolvers return only the first. Some mail systems will reject IPs with multiple PTRs.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Reverse DNS",
+						  "description": "Free PTR lookup for IPv4 and IPv6.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/reversedns",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why is there no PTR for my IP?", "acceptedAnswer": {"@type": "Answer", "text": "Reverse DNS zones are delegated by the network owner. Home users rarely control PTR; contact your ISP or hosting provider."}},
+						    {"@type": "Question", "name": "Does rDNS have to match forward DNS?", "acceptedAnswer": {"@type": "Answer", "text": "No, but matching (FCrDNS) is required by many mail receivers and improves deliverability."}},
+						    {"@type": "Question", "name": "Can I have more than one PTR?", "acceptedAnswer": {"@type": "Answer", "text": "Technically yes, but most resolvers return only the first and many mail systems reject multi-PTR IPs."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="reversedns" />
+						</ui:include>
+
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="6" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<h:panelGroup id="idPanelHistory">
+							<ui:fragment rendered="#{customIdentity.reverseDns.size() gt 0}">
+								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+								<br />
+								<h:dataTable id="idTableReverseDns" value="#{customIdentity.reverseDns}" var="rd" styleClass="table">
+									<h:column>
+										<f:facet name="header">play</f:facet>
+										<a onclick="historyClick('#{rd.ip}')">
+											<i class="pe-7s-upload pe-rotate-90"></i>
+										</a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">ip</f:facet>
+										#{rd.ip}
+									</h:column>
+									<h:column>
+										<f:facet name="header">when</f:facet>
+										#{rd.dateTimeFormat}
+									</h:column>
+								</h:dataTable>
+							</ui:fragment>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>
+	</h:form>
+
+	<script>
+	//<![CDATA[
+	document.getElementById('id-panel-footer').style.display = 'none';
+	var wsocketHost = null;
+	function connect() {
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/ReverseDnsServer', null, {debug: false, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;
+		wsocketHost.onopen = onOpen;
+	}
+	function onMessage(evt) {
+		var obj = JSON.parse(evt.data);
+		if (obj.resultado !== 'FIM') {
+			document.getElementById('id-panel-footer').style.display = 'block';
+			var line = document.createElement('div');
+			line.textContent = obj.resultado;
+			document.getElementById('id-panel-result').appendChild(line);
+		} else {
+			document.getElementById('id-button-reversedns').value = 'Go!';
+		}
+	}
+	function onOpen(evt) {}
+	var buttonClick = function () {
+		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
+		var ip = document.getElementById('id-input-ip').value;
+		if (ip !== '') {
+			document.getElementById('id-button-reversedns').value = 'Waiting...';
+			document.getElementById('id-panel-result').innerHTML = '';
+			wsocketHost.send(JSON.stringify({ ip: ip }));
+		} else {
+			alert('Fill an IP address.');
+		}
+	};
+	var historyClick = function (ip) {
+		document.getElementById('id-input-ip').value = ip;
+		buttonClick();
+	};
+	connect();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>

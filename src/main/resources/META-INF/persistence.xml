@@ -3,8 +3,7 @@
 
     <persistence-unit name="my_persistence_unit" transaction-type="JTA">
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="javax.persistence.schema-generation.database.action" value="none"/>
         </properties>
     </persistence-unit>
 </persistence>

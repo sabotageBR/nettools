@@ -3,29 +3,64 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	lang="en">
 
-<f:view contentType="text/html">
+<f:view contentType="text/html" locale="en">
+
+	<ui:param name="description" value="#{description != null ? description : title}" />
+	<ui:param name="canonicalPath" value="#{canonicalPath != null ? canonicalPath : (requestScope['javax.servlet.forward.request_uri'] != null ? requestScope['javax.servlet.forward.request_uri'] : request.requestURI)}" />
+	<ui:param name="ogImage" value="https://nettools.live/og-image.png" />
+	<ui:param name="isCanonicalHost" value="#{request.serverName == 'nettools.live'}" />
 
 	<h:head>
 		<meta charset="utf-8" />
-		<title>#{title}</title>
-		<meta name="description" content="#{keywords}" />
-		<meta name="Cache-Control" content="max-age=3600" />
-		<meta name="keywords" content="#{keywords}" />
-		<link rel="canonical" href="https://nettools.live/" />
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="robots" content="index, follow" />
+		<title>#{title} | Nettools Live</title>
+		<meta name="description" content="#{description}" />
+		<link rel="canonical" href="https://nettools.live#{canonicalPath}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="#{isCanonicalHost ? 'index,follow,max-image-preview:large' : 'noindex,nofollow'}" />
+
+		<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://connect.facebook.net" crossorigin="anonymous" />
+		<link rel="dns-prefetch" href="https://platform.twitter.com" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Nettools Live" />
 		<meta property="og:title" content="#{title}" />
-		<meta property="og:description" content="#{keywords}" />
-		<meta property="og:image" content="https://nettools.live/favicon.ico" />
-		<link rel="icon" type="image/png" href="https://nettools.live/favicon.ico" />
-		<meta name="application-name" content="Nettools.live" />
+		<meta property="og:description" content="#{description}" />
+		<meta property="og:url" content="https://nettools.live#{canonicalPath}" />
+		<meta property="og:image" content="#{ogImage}" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="#{title}" />
+		<meta name="twitter:description" content="#{description}" />
+		<meta name="twitter:image" content="#{ogImage}" />
+
+		<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<meta name="application-name" content="Nettools Live" />
+
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "WebSite",
+		  "name": "Nettools Live",
+		  "url": "https://nettools.live/",
+		  "potentialAction": {
+		    "@type": "SearchAction",
+		    "target": "https://nettools.live/peoplesearch?q={search_term_string}",
+		    "query-input": "required name=search_term_string"
+		  }
+		}
+		</script>
+
 		<script src="#{request.contextPath}/resources/vendor/jquery/dist/jquery.min.js"></script>
 		<link rel="stylesheet" href="#{request.contextPath}/resources/vendor/bootstrap/dist/css/bootstrap.min.css" />
-		
+
 	</h:head>
 
 	<h:body>
@@ -73,31 +108,77 @@
 						<a href="#{request.contextPath}/nslookup"> <span class="nav-label">NSLOOKUP</span>
 						</a>
 					</li>
-					
+
+					<li class="active">
+						<a href="#{request.contextPath}/reversedns"> <span class="nav-label">REVERSE DNS</span>
+						</a>
+					</li>
+
 					<li class="active">
 						<a href="#{request.contextPath}/whois"> <span class="nav-label">WHOIS</span>
 						</a>
 					</li>
-					
+
 					<li class="active">
 						<a href="#{request.contextPath}/traceroute"> <span class="nav-label">TRACEROUTE</span>
 						</a>
 					</li>
-					
+
 					<li class="active">
 						<a href="#{request.contextPath}/nmap"> <span class="nav-label">NMAP</span>
 						</a>
 					</li>
-					
+
+					<li class="active">
+						<a href="#{request.contextPath}/portcheck"> <span class="nav-label">PORT CHECK</span>
+						</a>
+					</li>
+
 					<li class="active">
 						<a href="#{request.contextPath}/snmp"> <span class="nav-label">SNMP</span>
 						</a>
 					</li>
-					
+
 					<li class="active">
 						<a href="#{request.contextPath}/sip"> <span class="nav-label">SIP</span>
 						</a>
 					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/subnet"> <span class="nav-label">SUBNET CALC</span>
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/myip"> <span class="nav-label">MY IP</span>
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/useragent"> <span class="nav-label">USER AGENT</span>
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/mac"> <span class="nav-label">MAC LOOKUP</span>
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/httpstatus"> <span class="nav-label">HTTP STATUS</span>
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/isitdown"> <span class="nav-label">IS IT DOWN</span>
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="#{request.contextPath}/ssl"> <span class="nav-label">SSL CHECKER</span>
+						</a>
+					</li>
+
 					<li class="active">
 						<a href="#{request.contextPath}/blog"> <span class="nav-label">BLOG</span>
 						</a>
@@ -145,7 +226,6 @@
 		  gtag('config', 'G-JZYCL749E9');
 		  //]]>
 		</script>
-		<script data-ad-client="ca-pub-3327695882262362" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<h:form prependId="false">
 			<h:inputHidden id="id-ip-externo" value="#{customIdentity.ipExterno}"/>
 			<h:commandButton id="id-botao-informacoes" style="display:none" action="#{customIdentity.comporInformacoesHTTP()}">

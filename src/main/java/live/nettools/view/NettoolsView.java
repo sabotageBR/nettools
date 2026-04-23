@@ -14,8 +14,16 @@ import com.ocpsoft.pretty.faces.annotation.URLMappings;
 		  
 		  @URLMapping(id = "nslookup", pattern = "/nslookup", viewId = "/pages/nslookup/nslookup.xhtml"),
 		  @URLMapping(id = "pentest", pattern = "/pentest", viewId = "/pages/dirb/dirb.xhtml"),
-		  @URLMapping(id = "videodownload", pattern = "/videodownload", viewId = "/pages/youtube/youtube.xhtml"),
 		  @URLMapping(id = "peoplesearch", pattern = "/peoplesearch", viewId = "/pages/peoplesearch/peoplesearch.xhtml"),
+		  @URLMapping(id = "portcheck", pattern = "/portcheck", viewId = "/pages/portcheck/portcheck.xhtml"),
+		  @URLMapping(id = "reversedns", pattern = "/reversedns", viewId = "/pages/reversedns/reversedns.xhtml"),
+		  @URLMapping(id = "subnet", pattern = "/subnet", viewId = "/pages/subnet/subnet.xhtml"),
+		  @URLMapping(id = "myip", pattern = "/myip", viewId = "/pages/myip/myip.xhtml"),
+		  @URLMapping(id = "useragent", pattern = "/useragent", viewId = "/pages/useragent/useragent.xhtml"),
+		  @URLMapping(id = "mac", pattern = "/mac", viewId = "/pages/mac/mac.xhtml"),
+		  @URLMapping(id = "httpstatus", pattern = "/httpstatus", viewId = "/pages/httpstatus/httpstatus.xhtml"),
+		  @URLMapping(id = "isitdown", pattern = "/isitdown", viewId = "/pages/isitdown/isitdown.xhtml"),
+		  @URLMapping(id = "ssl", pattern = "/ssl", viewId = "/pages/ssl/ssl.xhtml"),
 		  
 		  @URLMapping(id = "blog", pattern = "/blog", viewId = "/pages/blog/blog.xhtml"),
 		  @URLMapping(id = "live", pattern = "/live", viewId = "/pages/live/live.xhtml"),

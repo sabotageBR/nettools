@@ -3,34 +3,70 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	lang="en">
 
-<f:view contentType="text/html">
-	
+<f:view contentType="text/html" locale="en">
+
 	<h:head>
 		<meta charset="utf-8" />
-		<title>Net Tools Live</title>
-		<meta name="description" content="#{resources['label.global.bemvindos1']}" />
-		<meta name="Cache-Control" content="max-age=3600" />
-		<meta name="keywords" content="My ip, Meu ip, whois domain, ping test, traceroute test, nmap test, Pentest, Find people, Search people, True People Search, Video Downloader" />
+		<title>Nettools Live — Free Online Network Tools</title>
+		<meta name="description" content="Free online network tools: ping, traceroute, whois, nslookup, nmap, SNMP, SIP, penetration test and people search. Run diagnostics from your browser in seconds." />
 		<link rel="canonical" href="https://nettools.live/" />
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="robots" content="index, follow" />
-		
-		<meta property="og:title" content="Network Tools Online" />
-		<meta property="og:description" content="#{resources['label.global.bemvindos1']}" />
-		<meta property="og:image" content="https://nettools.live/favicon.ico" />
-		<link rel="icon" type="image/png" href="https://nettools.live/favicon.ico" />
-		<meta name="application-name" content="Nettools.live" />
-		
-		<link rel="stylesheet" href="#{request.contextPath}/resources/vendor/bootstrap/dist/css/bootstrap.min.css" />   
-		<script src="#{request.contextPath}/resources/vendor/jquery/dist/jquery.min.js"></script> 
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="#{request.serverName == 'nettools.live' ? 'index,follow,max-image-preview:large' : 'noindex,nofollow'}" />
+
+		<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous" />
+		<link rel="preconnect" href="https://connect.facebook.net" crossorigin="anonymous" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Nettools Live" />
+		<meta property="og:title" content="Nettools Live — Free Online Network Tools" />
+		<meta property="og:description" content="Ping, traceroute, whois, nslookup, nmap, SNMP, SIP and more — all in your browser, free." />
+		<meta property="og:url" content="https://nettools.live/" />
+		<meta property="og:image" content="https://nettools.live/og-image.png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Nettools Live — Free Online Network Tools" />
+		<meta name="twitter:description" content="Ping, traceroute, whois, nslookup, nmap, SNMP, SIP and more — all in your browser, free." />
+		<meta name="twitter:image" content="https://nettools.live/og-image.png" />
+
+		<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<meta name="application-name" content="Nettools Live" />
+
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "WebSite",
+		  "name": "Nettools Live",
+		  "alternateName": "nettools.live",
+		  "url": "https://nettools.live/",
+		  "description": "Free online network tools suite.",
+		  "potentialAction": {
+		    "@type": "SearchAction",
+		    "target": "https://nettools.live/peoplesearch?q={search_term_string}",
+		    "query-input": "required name=search_term_string"
+		  }
+		}
+		</script>
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "Organization",
+		  "name": "Nettools Live",
+		  "url": "https://nettools.live/",
+		  "logo": "https://nettools.live/icon-192.png"
+		}
+		</script>
+
+		<link rel="stylesheet" href="#{request.contextPath}/resources/vendor/bootstrap/dist/css/bootstrap.min.css" />
+		<script src="#{request.contextPath}/resources/vendor/jquery/dist/jquery.min.js"></script>
 		<link rel="stylesheet" href="#{request.contextPath}/resources/styles/style-lg.css" />
-		
-		
-		
+
 	</h:head>
 	
 	
@@ -51,17 +87,57 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="page-scroll" href="#{request.contextPath}/peoplesearch">People Search</a></li>
-                <li><a class="page-scroll" href="https://gettvid.com">Video Download</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/pentest">Penetration test</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/ping">Ping</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/nslookup">Nslookup</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/whois">Whois</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/traceroute">Traceroute</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/nmap">Nmap</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/snmp">Snmp </a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/sip">Sip</a></li>
-                <li><a class="page-scroll" href="#{request.contextPath}/blog">Blog</a></li>
+                <li><a href="#{request.contextPath}/peoplesearch">People Search</a></li>
+                <li><a href="https://gettvid.com">Video Download</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Diagnostics <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#{request.contextPath}/ping">Ping</a></li>
+                        <li><a href="#{request.contextPath}/traceroute">Traceroute</a></li>
+                        <li><a href="#{request.contextPath}/portcheck">Port Check</a></li>
+                        <li><a href="#{request.contextPath}/httpstatus">HTTP Status</a></li>
+                        <li><a href="#{request.contextPath}/isitdown">Is It Down</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">DNS <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#{request.contextPath}/nslookup">Nslookup</a></li>
+                        <li><a href="#{request.contextPath}/reversedns">Reverse DNS</a></li>
+                        <li><a href="#{request.contextPath}/whois">Whois</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Security <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#{request.contextPath}/ssl">SSL Checker</a></li>
+                        <li><a href="#{request.contextPath}/nmap">Nmap</a></li>
+                        <li><a href="#{request.contextPath}/snmp">SNMP</a></li>
+                        <li><a href="#{request.contextPath}/sip">SIP</a></li>
+                        <li><a href="#{request.contextPath}/pentest">Penetration Test</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Info <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#{request.contextPath}/myip">My IP</a></li>
+                        <li><a href="#{request.contextPath}/useragent">User Agent</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#{request.contextPath}/subnet">Subnet Calculator</a></li>
+                        <li><a href="#{request.contextPath}/mac">MAC Lookup</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#{request.contextPath}/blog">Blog</a></li>
             </ul>
         </div>
     </div>
@@ -84,10 +160,57 @@
 				if(data && data.length > 0){
 					document.getElementById('id-seu-ip').innerHTML = data;
 					document.getElementById('id-ip-externo').value = data;
+					var copyBtn = document.getElementById('id-copy-ip');
+					if (copyBtn) { copyBtn.style.display = 'inline-block'; }
 					document.getElementById('id-botao-informacoes').click();
 				}
 			});
-			//]]> 	
+
+			window.copyMyIp = function (ev) {
+				if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+				var el = document.getElementById('id-seu-ip');
+				var btn = document.getElementById('id-copy-ip');
+				if (!el || !btn) { return false; }
+				var text = (el.textContent || el.innerText || '').trim();
+				if (!text) { return false; }
+				var done = function () {
+					var orig = btn.innerHTML;
+					btn.innerHTML = '<i class="fa fa-check"></i> Copied!';
+					btn.classList.add('btn-success');
+					btn.classList.remove('btn-default');
+					if (btn.blur) { btn.blur(); }
+					setTimeout(function () {
+						btn.innerHTML = orig;
+						btn.classList.remove('btn-success');
+						btn.classList.add('btn-default');
+					}, 1800);
+				};
+				if (navigator.clipboard && navigator.clipboard.writeText) {
+					navigator.clipboard.writeText(text).then(done).catch(function () {
+						fallbackCopyMyIp(text, done);
+					});
+				} else {
+					fallbackCopyMyIp(text, done);
+				}
+				return false;
+			};
+
+			function fallbackCopyMyIp(text, done) {
+				var active = document.activeElement;
+				var ta = document.createElement('textarea');
+				ta.value = text;
+				ta.setAttribute('readonly', '');
+				ta.style.position = 'fixed';
+				ta.style.top = '-1000px';
+				ta.style.left = '-1000px';
+				ta.style.opacity = '0';
+				document.body.appendChild(ta);
+				ta.select();
+				try { document.execCommand('copy'); done(); } catch (e) {}
+				document.body.removeChild(ta);
+				if (active && active.focus) { active.focus(); }
+			}
+			//]]>
 		</script>
 		<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-JZYCL749E9"></script>
 		<script>
@@ -98,8 +221,6 @@
 		  gtag('config', 'G-JZYCL749E9');
 		  //]]>
 		</script>
-		
-		<script data-ad-client="ca-pub-3327695882262362" async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		
 		<h:form prependId="false">
 			<h:inputHidden id="id-ip-externo" value="#{customIdentity.ipExterno}"/>

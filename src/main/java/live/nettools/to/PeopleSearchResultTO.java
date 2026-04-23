@@ -14,6 +14,7 @@ public class PeopleSearchResultTO implements Serializable{
 	private String titulo;
 	private String link;
 	private String texto;
+	private String imagem;
 	private PeoplesearchTypeEnum tipo;
 	
 	public PeopleSearchResultTO() {
@@ -51,6 +52,12 @@ public class PeopleSearchResultTO implements Serializable{
 	}
 	public void setTipo(PeoplesearchTypeEnum tipo) {
 		this.tipo = tipo;
+	}
+	public String getImagem() {
+		return imagem;
+	}
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
 	
 

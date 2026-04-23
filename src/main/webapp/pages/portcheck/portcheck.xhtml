@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="Port Check — Test if a TCP Port is Open" />
+	<ui:param name="description" value="Free online port checker. Test from the public internet whether a TCP port is open, closed or filtered on any host. Instant result, no install." />
+	<ui:param name="keywords" value="port check, open port, port test, tcp port, firewall test" />
+	<ui:define name="corpo">
+	<script src="#{request.contextPath}/resources/scripts/reconnecting-websocket.min.js"></script>
+
+	<h:form id="idFormPortCheck" prependId="false">
+		<div id="wrapper">
+			<div class="content animate-panel">
+
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-7">
+						<div class="hpanel">
+							<div class="panel-heading">
+								<div class="row">
+									<h1 class="font-extra-bold no-margins text-success text-center">Port Check</h1>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-lg-5">
+										<label>Host</label>
+										<br />
+										<h:inputText id="id-input-host" value="#{portCheckController.to.host}" styleClass="form-control" />
+									</div>
+									<div class="form-group col-lg-3">
+										<label>Port</label>
+										<br />
+										<h:inputText id="id-input-port" value="#{portCheckController.to.porta}" styleClass="form-control" onkeypress="mascara(this,soNumeros);" maxlength="5">
+											<f:passThroughAttribute name="type" value="tel" />
+										</h:inputText>
+									</div>
+									<div class="form-group col-lg-3">
+										<h:commandButton action="#{portCheckController.portcheck}" value="Go!" id="id-button-portcheck" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
+											<f:ajax event="click" onevent="buttonClick()" execute="idFormPortCheck" render="idPanelHistory" />
+										</h:commandButton>
+									</div>
+								</div>
+							</div>
+							<div id="id-panel-footer" class="panel-footer" style="background: #000;">
+								<code id="id-panel-result" style="background-color: #000;color: #62cb31;min-height: 200px;">Net Tools Live - Terminal...</code>
+							</div>
+						</div>
+						<div class="row">
+							<br />
+							<br />
+							<br />
+							<div class="panel-footer">
+								<div class="fb-comments" data-href="https://nettools.live/portcheck" data-width="" data-numposts="10"></div>
+							</div>
+						</div>
+
+						<div class="hpanel" style="margin-top: 20px;">
+							<div class="panel-heading">
+								<h2 class="font-extra-bold no-margins text-success">About this port checker</h2>
+							</div>
+							<div class="panel-body">
+								<p>Port Check answers a simple question: is a specific TCP port accepting connections on a given host from the public internet? It opens a single TCP socket from our server to <em>host:port</em> and reports the outcome within three seconds.</p>
+								<h3>How to read the result</h3>
+								<ul>
+									<li><strong>OPEN</strong> — the 3-way handshake completed. Something is listening there and accepting connections.</li>
+									<li><strong>CLOSED</strong> — the host replied but rejected the connection (RST). The host is up, nothing is listening on that port.</li>
+									<li><strong>FILTERED</strong> — no reply at all within the timeout. A firewall is silently dropping packets.</li>
+								</ul>
+								<h3>FAQ</h3>
+								<p><strong>Why is my port filtered but works locally?</strong> Your ISP, your home router or a cloud security group is blocking inbound connections. Open the port in the router / security group configuration.</p>
+								<p><strong>Does this work for UDP?</strong> No. This tool tests TCP only. UDP has no handshake, so "open" for UDP requires application-level probing.</p>
+								<p><strong>Is this the same as nmap?</strong> Nmap scans a list of ports at once and does service fingerprinting. Port Check targets a single port and is 10× faster for the common "is it open?" question.</p>
+							</div>
+						</div>
+
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "SoftwareApplication",
+						  "name": "Nettools Port Check",
+						  "description": "Free online TCP port reachability tester.",
+						  "applicationCategory": "NetworkApplication",
+						  "operatingSystem": "Web",
+						  "url": "https://nettools.live/portcheck",
+						  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+						}
+						</script>
+						<script type="application/ld+json">
+						{
+						  "@context": "https://schema.org",
+						  "@type": "FAQPage",
+						  "mainEntity": [
+						    {"@type": "Question", "name": "Why is my port filtered but works locally?", "acceptedAnswer": {"@type": "Answer", "text": "Your ISP, home router or cloud security group is blocking inbound connections. Open the port in the router or security group configuration."}},
+						    {"@type": "Question", "name": "Does this work for UDP?", "acceptedAnswer": {"@type": "Answer", "text": "No. This tool tests TCP only. UDP has no handshake and requires application-level probing."}},
+						    {"@type": "Question", "name": "Is this the same as nmap?", "acceptedAnswer": {"@type": "Answer", "text": "Nmap scans many ports and fingerprints services. Port Check targets a single port and answers the open/closed question faster."}}
+						  ]
+						}
+						</script>
+
+						<ui:include src="/pages/includes/related-tools.xhtml">
+							<ui:param name="current" value="portcheck" />
+						</ui:include>
+
+						<ui:include src="/pages/blog/blog-include-horizontal.xhtml">
+							<ui:param name="tamanhodiv" value="6" />
+						</ui:include>
+					</div>
+					<div class="col-lg-3">
+						<h:panelGroup id="idPanelHistory">
+							<ui:fragment rendered="#{customIdentity.portchecks.size() gt 0}">
+								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+								<br />
+								<h:dataTable id="idTablePortCheck" value="#{customIdentity.portchecks}" var="pc" styleClass="table">
+									<h:column>
+										<f:facet name="header">play</f:facet>
+										<a onclick="historyClick('#{pc.host}','#{pc.porta}')">
+											<i class="pe-7s-upload pe-rotate-90"></i>
+										</a>
+									</h:column>
+									<h:column>
+										<f:facet name="header">host</f:facet>
+										#{pc.host}:#{pc.porta}
+									</h:column>
+									<h:column>
+										<f:facet name="header">when</f:facet>
+										#{pc.dateTimeFormat}
+									</h:column>
+								</h:dataTable>
+							</ui:fragment>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<span class="pull-right"> Net Tools Live </span> Company 2021
+			</footer>
+		</div>
+	</h:form>
+
+	<script>
+	//<![CDATA[
+	document.getElementById('id-panel-footer').style.display = 'none';
+	var wsocketHost = null;
+	function connect() {
+		var wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+		wsocketHost = new ReconnectingWebSocket(wsProto + '//' + window.location.host + '/PortCheckServer', null, {debug: false, reconnectInterval: 3000});
+		wsocketHost.onmessage = onMessage;
+		wsocketHost.onopen = onOpen;
+	}
+	function onMessage(evt) {
+		var obj = JSON.parse(evt.data);
+		if (obj.resultado !== 'FIM') {
+			document.getElementById('id-panel-footer').style.display = 'block';
+			var line = document.createElement('div');
+			line.textContent = obj.resultado;
+			document.getElementById('id-panel-result').appendChild(line);
+		} else {
+			document.getElementById('id-button-portcheck').value = 'Go!';
+		}
+	}
+	function onOpen(evt) {}
+	var buttonClick = function () {
+		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
+		var host = document.getElementById('id-input-host').value;
+		var port = document.getElementById('id-input-port').value;
+		if (host !== '' && port !== '') {
+			document.getElementById('id-button-portcheck').value = 'Waiting...';
+			document.getElementById('id-panel-result').innerHTML = '';
+			wsocketHost.send(JSON.stringify({ host: host, porta: port }));
+		} else {
+			alert('Fill host and port.');
+		}
+	};
+	var historyClick = function (h, p) {
+		document.getElementById('id-input-host').value = h;
+		document.getElementById('id-input-port').value = p;
+		buttonClick();
+	};
+	connect();
+	//]]>
+	</script>
+	</ui:define>
+</ui:composition>
