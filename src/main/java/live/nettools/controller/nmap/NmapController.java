@@ -20,8 +20,9 @@ public class NmapController extends AbstractController<NmapTO>{
 	
 	private UtilCollection<NmapTO> uc = new UtilCollection<NmapTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: NMap");
 		comporInformacoesHTTP();
 	}
@@ -34,5 +35,10 @@ public class NmapController extends AbstractController<NmapTO>{
 		customIdentity.getNmaps().add(new NmapTO(getTo().getHost(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getNmaps(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getNmaps().clear();
+	}
+
 }

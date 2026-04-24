@@ -22,13 +22,19 @@ public class IsItDownController extends AbstractController<IsItDownTO> {
 
     private UtilCollection<IsItDownTO> uc = new UtilCollection<IsItDownTO>();
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         getTo().setHost("example.com");
     }
 
     public void isitdown() {
         customIdentity.getIsitdowns().add(new IsItDownTO(getTo().getHost(), LocalDateTime.now()));
         uc.ordenarListaDesc(customIdentity.getIsitdowns(), "dateTimeOrder");
+    }
+
+    @Override
+    public void clearHistory() {
+        customIdentity.getIsitdowns().clear();
     }
 }

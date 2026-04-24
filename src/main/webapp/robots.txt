@@ -1,2 +1,11 @@
 User-agent: *
 Allow: /
+
+# Internal JSF/Facelets resources and raw xhtml paths — keep out of the index
+Disallow: /javax.faces.resource/
+Disallow: /pages/
+Disallow: /*.xhtml$
+Disallow: /*;jsessionid
+
+# Canonical sitemap
+Sitemap: https://nettools.live/sitemap.xml

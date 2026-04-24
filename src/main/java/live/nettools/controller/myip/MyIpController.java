@@ -23,8 +23,9 @@ public class MyIpController extends AbstractController<MyIpTO> implements Serial
 
     private MyIpTO info;
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         HttpServletRequest req = getRequest();
         String ip = getClientIpAddr();
         String ua = req != null ? req.getHeader("User-Agent") : null;

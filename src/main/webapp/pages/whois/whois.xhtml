@@ -33,9 +33,14 @@
 			                            <h:inputText id="id-input-host" value="#{whoisController.to.host}" styleClass="form-control" />
 		                            </div>
 		                            <div class="form-group col-lg-3">
-			                            <h:commandButton action="#{whoisController.whois}" value="Go!" id="id-button-whois" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-			                            	<f:ajax event="click" onevent="buttonClick()" execute="idFormWhois" render="idPanelHistory"/>
-			                            </h:commandButton>
+			                            <div style="margin-top: 10px;">
+			                                <h:commandButton action="#{whoisController.whois}" value="Go!" id="id-button-whois" styleClass="btn btn-success" style="margin-right: 6px;">
+			                                	<f:ajax event="click" onevent="buttonClick()" execute="idFormWhois" render="idPanelHistory"/>
+			                                </h:commandButton>
+			                                <h:commandButton action="#{whoisController.clear}" value="Clear" id="id-button-whois-clear" styleClass="btn btn-default">
+			                                	<f:ajax execute="@this" render="idFormWhois idPanelHistory"/>
+			                                </h:commandButton>
+			                            </div>
 		                            </div>
 			                    </div>    
 							</div>
@@ -96,6 +101,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="Whois" />
+							<ui:param name="toolSlug" value="whois" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="whois" />
 						</ui:include>
@@ -118,6 +128,7 @@
 						<h:panelGroup id="idPanelHistory">
 						<ui:fragment rendered="#{customIdentity.whoiss.size() gt 0}">
 							<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{whoisController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 							<br />
 							
 								<h:dataTable id="idTableWhoiss" value="#{customIdentity.whoiss}" var="whois" styleClass="table">
@@ -206,6 +217,7 @@
 		  
 		  let obj = JSON.parse(evt.data);
 		  if(obj.resultado !== 'FIM'){
+			  document.getElementById('id-panel-footer').style.display = 'block';
 			  document.getElementById('id-panel-result').innerHTML += obj.resultado +'<br />';
 		  }else{
 			  document.getElementById("id-button-whois").disabled = false;

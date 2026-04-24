@@ -24,6 +24,36 @@ public class AbstractController<TO> implements Serializable {
 	private TO to;
 	protected final String SUCESSO = "sucesso";
 	protected final String ERRO 	= "erro";
+
+	/**
+	 * Botão "Clear" das tool pages: zera apenas o TO (form volta vazio)
+	 * e chama init() para reaplicar os defaults do formulário (mesmo
+	 * método que o CDI executa via @PostConstruct no primeiro load).
+	 * Não toca no histórico — pra isso o usuário tem o link
+	 * "Clear history" dentro do painel History.
+	 */
+	public void clear() {
+		this.to = null;
+		init();
+	}
+
+	/**
+	 * Cada controller concreto sobrescreve este método e o anota com
+	 * @PostConstruct para que o CDI também o execute na criação do bean.
+	 * Default no-op para controllers que não precisam de inicialização.
+	 */
+	protected void init() {
+		// default: no-op
+	}
+
+	/**
+	 * Limpa somente o histórico (sem mexer no form atual). Chamável direto
+	 * do JSF via #{controller.clearHistory}. Cada controller sobrescreve
+	 * para zerar sua lista no CustomIdentity.
+	 */
+	public void clearHistory() {
+		// default: no-op
+	}
 	
 	
 	public HttpServletRequest getRequest() { 

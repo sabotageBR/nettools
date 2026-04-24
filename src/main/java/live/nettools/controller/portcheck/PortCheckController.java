@@ -22,8 +22,9 @@ public class PortCheckController extends AbstractController<PortCheckTO> {
 
     private UtilCollection<PortCheckTO> uc = new UtilCollection<PortCheckTO>();
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         comporInformacoesHTTP();
     }
 
@@ -36,5 +37,10 @@ public class PortCheckController extends AbstractController<PortCheckTO> {
         customIdentity.getPortchecks().add(new PortCheckTO(
                 getTo().getHost(), getTo().getPorta(), LocalDateTime.now()));
         uc.ordenarListaDesc(customIdentity.getPortchecks(), "dateTimeOrder");
+    }
+
+    @Override
+    public void clearHistory() {
+        customIdentity.getPortchecks().clear();
     }
 }

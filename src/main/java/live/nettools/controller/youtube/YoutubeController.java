@@ -21,8 +21,9 @@ public class YoutubeController extends AbstractController<YoutubeTO>{
 	
 	private UtilCollection<YoutubeTO> uc = new UtilCollection<YoutubeTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: VideoDownload");
 		comporInformacoesHTTP();
 	}

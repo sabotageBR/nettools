@@ -22,8 +22,9 @@ public class SnmpController extends AbstractController<SnmpTO>{
 	
 	private UtilCollection<SnmpTO> uc = new UtilCollection<SnmpTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: SNMP");
 		comporInformacoesHTTP();
 	}
@@ -42,5 +43,10 @@ public class SnmpController extends AbstractController<SnmpTO>{
 				getTo().getVersao(), getTo().getCommunity(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getSnmps(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getSnmps().clear();
+	}
+
 }

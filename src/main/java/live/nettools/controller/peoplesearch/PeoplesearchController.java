@@ -23,8 +23,9 @@ public class PeoplesearchController extends AbstractController<PeoplesearchTO>{
 	
 	private UtilCollection<PeoplesearchTO> uc = new UtilCollection<PeoplesearchTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: Peoplesearch");
 		comporInformacoesHTTP();
 	}
@@ -39,9 +40,14 @@ public class PeoplesearchController extends AbstractController<PeoplesearchTO>{
 			
 		customIdentity.getPeoplesearchs().add(new PeoplesearchTO(getTo().getNome(), getTo().getInstagram(),
 				getTo().getFacebook(), getTo().getTwitter(), LocalDateTime.now()));
-		
+
 		uc.ordenarListaDesc(customIdentity.getPeoplesearchs(),"dateTimeOrder");
 		}
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getPeoplesearchs().clear();
+	}
+
 }

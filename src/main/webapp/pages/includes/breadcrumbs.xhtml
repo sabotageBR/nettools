@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<!-- BreadcrumbList JSON-LD (Google rich result eligible).
+	     Inclua em cada página de ferramenta com:
+	     <ui:include src="/pages/includes/breadcrumbs.xhtml">
+	         <ui:param name="toolName" value="Ping"/>
+	         <ui:param name="toolSlug" value="ping"/>
+	     </ui:include>
+	     Emite: Home › Tools › <Tool>. Usa URLs absolutas em nettools.live. -->
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "BreadcrumbList",
+	  "itemListElement": [
+	    {
+	      "@type": "ListItem",
+	      "position": 1,
+	      "name": "Home",
+	      "item": "https://nettools.live/"
+	    },
+	    {
+	      "@type": "ListItem",
+	      "position": 2,
+	      "name": "Network Tools",
+	      "item": "https://nettools.live/#tools"
+	    },
+	    {
+	      "@type": "ListItem",
+	      "position": 3,
+	      "name": "#{toolName}",
+	      "item": "https://nettools.live/#{toolSlug}"
+	    }
+	  ]
+	}
+	</script>
+</ui:composition>

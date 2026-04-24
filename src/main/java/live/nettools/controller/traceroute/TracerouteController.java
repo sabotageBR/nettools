@@ -20,8 +20,9 @@ public class TracerouteController extends AbstractController<TracerouteTO>{
 	
 	private UtilCollection<TracerouteTO> uc = new UtilCollection<TracerouteTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: Traceroute");
 		comporInformacoesHTTP();
 	}
@@ -33,5 +34,10 @@ public class TracerouteController extends AbstractController<TracerouteTO>{
 		customIdentity.getTraceroutes().add(new TracerouteTO(getTo().getHost(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getTraceroutes(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getTraceroutes().clear();
+	}
+
 }

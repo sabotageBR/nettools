@@ -35,9 +35,14 @@
 										</h:inputText>
 									</div>
 									<div class="form-group col-lg-3">
-										<h:commandButton action="#{sslController.ssl}" value="Go!" id="id-button-ssl" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-											<f:ajax event="click" onevent="buttonClick()" execute="idFormSsl" render="idPanelHistory" />
-										</h:commandButton>
+										<div style="margin-top: 10px;">
+											<h:commandButton action="#{sslController.ssl}" value="Go!" id="id-button-ssl" styleClass="btn btn-success" style="margin-right: 6px;">
+												<f:ajax event="click" onevent="buttonClick()" execute="idFormSsl" render="idPanelHistory" />
+											</h:commandButton>
+											<h:commandButton action="#{sslController.clear}" value="Clear" id="id-button-ssl-clear" styleClass="btn btn-default">
+												<f:ajax execute="@this" render="idFormSsl idPanelHistory" />
+											</h:commandButton>
+										</div>
 									</div>
 								</div>
 								<small class="text-muted">Common TLS ports: 443 (HTTPS) · 465 (SMTPS) · 587 (SMTP+STARTTLS implicit via explicit test) · 993 (IMAPS) · 995 (POP3S) · 636 (LDAPS)</small>
@@ -101,6 +106,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="SSL Checker" />
+							<ui:param name="toolSlug" value="ssl" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="ssl" />
 						</ui:include>
@@ -113,6 +123,7 @@
 						<h:panelGroup id="idPanelHistory">
 							<ui:fragment rendered="#{customIdentity.ssls.size() gt 0}">
 								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{sslController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 								<br />
 								<h:dataTable value="#{customIdentity.ssls}" var="s" styleClass="table">
 									<h:column>
@@ -156,6 +167,7 @@
 			line.textContent = obj.resultado;
 			document.getElementById('id-panel-result').appendChild(line);
 		} else {
+			document.getElementById('id-button-ssl').disabled = false;
 			document.getElementById('id-button-ssl').value = 'Go!';
 		}
 	}
@@ -164,7 +176,8 @@
 		var host = document.getElementById('id-input-host').value;
 		var port = document.getElementById('id-input-port').value || '443';
 		if (host !== '') {
-			document.getElementById('id-button-ssl').value = 'Waiting...';
+			document.getElementById('id-button-ssl').disabled = true;
+			document.getElementById('id-button-ssl').value = '...';
 			document.getElementById('id-panel-result').innerHTML = '';
 			wsocketHost.send(JSON.stringify({ host: host, porta: port }));
 		} else {

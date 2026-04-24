@@ -47,9 +47,14 @@
 			                            <h:inputText id="id-input-user" value="#{sipController.to.user}" styleClass="form-control" />
 		                            </div>
 		                            <div class="form-group col-lg-3">
-			                            <h:commandButton action="#{sipController.sip}" value="Go!" id="id-button-sip" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-			                            	<f:ajax event="click" onevent="buttonClick()" execute="idFormSip" render="idPanelHistory"/>
-			                            </h:commandButton>
+			                            <div style="margin-top: 10px;">
+			                                <h:commandButton action="#{sipController.sip}" value="Go!" id="id-button-sip" styleClass="btn btn-success" style="margin-right: 6px;">
+			                                	<f:ajax event="click" onevent="buttonClick()" execute="idFormSip" render="idPanelHistory"/>
+			                                </h:commandButton>
+			                                <h:commandButton action="#{sipController.clear}" value="Clear" id="id-button-sip-clear" styleClass="btn btn-default">
+			                                	<f:ajax execute="@this" render="idFormSip idPanelHistory"/>
+			                                </h:commandButton>
+			                            </div>
 		                            </div>
 			                    </div>    
 							</div>
@@ -111,6 +116,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="SIP" />
+							<ui:param name="toolSlug" value="sip" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="sip" />
 						</ui:include>
@@ -133,6 +143,7 @@
 						<h:panelGroup id="idPanelHistory">
 						<ui:fragment rendered="#{customIdentity.sips.size() gt 0}">
 							<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{sipController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 							<br />
 							
 								<h:dataTable id="idTableSips" value="#{customIdentity.sips}" var="sip" styleClass="table">
@@ -221,6 +232,7 @@
 		  
 		  let obj = JSON.parse(evt.data);
 		  if(obj.resultado !== 'FIM'){
+			  document.getElementById('id-panel-footer').style.display = 'block';
 			  document.getElementById('id-panel-result').innerHTML += obj.resultado +'<br />';
 		  }else{
 			  document.getElementById("id-button-sip").disabled = false;

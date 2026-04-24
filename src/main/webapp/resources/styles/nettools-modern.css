@@ -246,11 +246,17 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 	border-radius: 4px;
 }
 
-/* Copy button that tool pages can dock into the terminal */
-.ns-copy-btn {
+/* Ações flutuantes no canto do terminal (Clear + Copy) */
+.ns-terminal-actions {
 	position: absolute;
 	top: 10px;
 	right: 14px;
+	display: flex;
+	gap: 6px;
+	z-index: 2;
+}
+
+.ns-copy-btn {
 	background: rgba(255,255,255,.08);
 	border: 1px solid rgba(255,255,255,.14);
 	color: #d1d5db;
@@ -260,7 +266,6 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 	font-family: var(--nt-font);
 	cursor: pointer;
 	transition: all .15s;
-	z-index: 2;
 }
 .ns-copy-btn:hover {
 	background: rgba(255,255,255,.14);
@@ -281,8 +286,7 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 
 #logo { background: transparent !important; }
 
-#logo a.label,
-.small-logo a.label,
+/* Home navbar: labels maiores (tem espaço) */
 .navbar-header a.label {
 	display: inline-block;
 	padding: 6px 10px;
@@ -293,6 +297,26 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
 	border: none;
+}
+
+/* Tool pages header: container #logo é estreito, labels compactos
+   pra caber na mesma linha. white-space:nowrap blinda contra wrap. */
+#logo,
+.small-logo { white-space: nowrap; }
+
+#logo a.label,
+.small-logo a.label {
+	display: inline-block;
+	padding: 3px 7px;
+	border-radius: 5px;
+	font-family: var(--nt-font);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	border: none;
+	white-space: nowrap;
+	margin: 0 1px;
 }
 
 .label-info    { background: var(--nt-accent) !important; color: #fff !important; }
@@ -348,41 +372,105 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 /* ---------- Sidebar Menu (tool pages) ---------- */
 #menu {
 	background: #fff !important;
-	border-right: 1px solid var(--nt-gray-200);
+	border-right: 1px solid var(--nt-gray-200) !important;
 	box-shadow: inset -1px 0 0 rgba(0,0,0,.02);
 }
 
-#side-menu { padding: 10px 8px; }
-
-#side-menu li { list-style: none; }
-
-#side-menu li a {
-	display: block;
-	color: var(--nt-gray-600) !important;
-	font-size: 13px !important;
-	font-weight: 500;
-	letter-spacing: 0.02em;
-	padding: 10px 14px !important;
-	border-radius: 8px;
-	margin: 2px 0;
-	border-left: 3px solid transparent;
-	transition: all .12s ease;
+#side-menu {
+	padding: 12px 10px 40px;
+	margin: 0;
+	list-style: none;
 }
 
-#side-menu li a:hover,
-#side-menu li a:focus {
+#side-menu li { list-style: none; margin: 0; }
+
+/* Section headers (DIAGNOSTICS, DNS, SECURITY, ...) */
+#side-menu li.nav-section {
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--nt-gray-400);
+	padding: 16px 12px 6px;
+	margin: 0;
+	border: none;
+	pointer-events: none;
+	user-select: none;
+}
+
+/* First section doesn't need the top padding */
+#side-menu li.nav-section:first-child { padding-top: 4px; }
+
+/* Menu items */
+#side-menu li.nav-item { padding: 0; }
+
+#side-menu li.nav-item a,
+#side-menu li.active a {
+	display: flex !important;
+	align-items: center;
+	gap: 10px;
+	color: var(--nt-gray-700) !important;
+	font-family: var(--nt-font);
+	font-size: 13.5px !important;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	padding: 9px 12px !important;
+	margin: 1px 0;
+	border-radius: 8px;
+	border-left: 3px solid transparent;
+	text-decoration: none !important;
+	transition: background-color .12s ease, color .12s ease, border-color .12s ease;
+	text-transform: none;
+}
+
+#side-menu li.nav-item a:hover,
+#side-menu li.nav-item a:focus,
+#side-menu li.active a:hover,
+#side-menu li.active a:focus {
 	background: var(--nt-gray-50) !important;
 	color: var(--nt-primary) !important;
 }
 
-#side-menu li.current-nav a,
-#side-menu li.active.current-page a {
-	background: var(--nt-primary-50) !important;
-	color: var(--nt-primary) !important;
-	border-left-color: var(--nt-primary);
+/* Icons inside menu items */
+#side-menu li.nav-item a i,
+#side-menu li.active a i {
+	font-size: 20px;
+	line-height: 1;
+	color: var(--nt-gray-500);
+	width: 22px;
+	text-align: center;
+	flex: 0 0 22px;
+	transition: color .12s ease, transform .12s ease;
 }
 
-#side-menu .nav-label { font-weight: 500; }
+#side-menu li.nav-item a:hover i,
+#side-menu li.active a:hover i {
+	color: var(--nt-primary);
+	transform: scale(1.06);
+}
+
+#side-menu li.nav-item .nav-label,
+#side-menu li.active .nav-label {
+	flex: 1 1 auto;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Active/current page highlight — added via JS based on window.location */
+#side-menu li.nav-item.ns-current a {
+	background: var(--nt-primary-50) !important;
+	color: var(--nt-primary-hover) !important;
+	border-left-color: var(--nt-primary) !important;
+	font-weight: 600;
+}
+#side-menu li.nav-item.ns-current a i {
+	color: var(--nt-primary) !important;
+}
+
+/* Divider between sections */
+#side-menu li.nav-section + li::before { content: none; }
 
 /* ---------- Home Page ----------
  * Note: we intentionally DO NOT override the hero background, IP card, or
@@ -431,7 +519,7 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 .landing-page section .hpanel i.pe-7s-calculator,
 .landing-page section .hpanel i.pe-7s-network,
 .landing-page section .hpanel i.pe-7s-display1,
-.landing-page section .hpanel i.pe-7s-micro,
+.landing-page section .hpanel i.pe-7s-signal,
 .landing-page section .hpanel i.pe-7s-look,
 .landing-page section .hpanel i.pe-7s-attention,
 .landing-page section .hpanel i.pe-7s-lock {
@@ -442,6 +530,117 @@ code, pre, kbd, samp { font-family: var(--nt-font-mono); }
 .landing-page section .hpanel:hover i {
 	transform: scale(1.12);
 	color: var(--nt-primary-hover) !important;
+}
+
+/* ---------- Blog Cards (blog-include-horizontal) ----------
+   Homer posiciona .title absoluto no fundo da imagem. Forçamos o título
+   pra FORA da imagem, numa faixa branca abaixo. Seletores agressivos para
+   derrotar qualquer !important legado. */
+
+/* Quebra o float staircase do Bootstrap 3: força o row que contém
+   .sort-blog a virar flex. Todos os cards da mesma linha ficam da
+   mesma altura, sem buracos quando um é mais alto que o outro. */
+.row:has(> .sort-blog) {
+	display: flex !important;
+	flex-wrap: wrap !important;
+}
+.sort-blog {
+	display: flex !important;
+	flex-direction: column;
+	float: none !important;
+}
+.sort-blog > .hpanel.blog-box {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.hpanel.blog-box .panel-body {
+	flex: 1 1 auto;
+}
+
+.hpanel.blog-box { overflow: hidden !important; }
+
+.hpanel.blog-box .panel-image {
+	position: relative !important;
+	overflow: visible !important;
+	display: block;
+}
+
+.hpanel.blog-box .panel-image > a {
+	display: block !important;
+	line-height: 0;
+}
+
+.hpanel.blog-box .panel-image img.img-responsive {
+	width: 100% !important;
+	height: 170px !important;
+	max-height: 170px !important;
+	object-fit: cover !important;
+	display: block !important;
+	margin: 0 !important;
+}
+
+.hpanel.blog-box .panel-image .title,
+.hpanel.blog-box .panel-image > .title,
+.hpanel.blog-box .panel-image div.title {
+	position: relative !important;
+	top: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	right: auto !important;
+	inset: auto !important;
+	transform: none !important;
+	background: #ffffff !important;
+	background-color: #ffffff !important;
+	background-image: none !important;
+	padding: 14px 18px 8px !important;
+	margin: 0 !important;
+	z-index: auto !important;
+	color: var(--nt-gray-900) !important;
+}
+
+.hpanel.blog-box .panel-image .title h4,
+.hpanel.blog-box .panel-image .title h4 a {
+	margin: 0 0 4px !important;
+	color: var(--nt-gray-900) !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	line-height: 1.35 !important;
+	text-shadow: none !important;
+}
+
+.hpanel.blog-box .panel-image .title small,
+.hpanel.blog-box .panel-image .title small a {
+	color: var(--nt-gray-500) !important;
+	display: block !important;
+	font-size: 12px !important;
+	text-shadow: none !important;
+}
+
+.hpanel.blog-box .panel-image .title a {
+	color: var(--nt-gray-900) !important;
+	text-decoration: none !important;
+	display: block;
+}
+
+.hpanel.blog-box .panel-image .title a:hover h4 {
+	color: var(--nt-primary) !important;
+}
+
+.hpanel.blog-box .panel-body {
+	padding: 12px 18px 18px !important;
+}
+
+.hpanel.blog-box .panel-body a {
+	color: var(--nt-gray-700) !important;
+	text-decoration: none !important;
+}
+
+.hpanel.blog-box .panel-body p {
+	margin-bottom: 6px !important;
+	font-size: 13px !important;
+	line-height: 1.55 !important;
+	color: var(--nt-gray-700) !important;
 }
 
 /* Normaliza altura dos cards do grid de ferramentas na home — evita
@@ -565,4 +764,28 @@ footer.footer {
 	.landing-page header h6 { font-size: 15px; }
 	.hpanel .panel-body { padding: 18px; }
 	#side-menu li a { font-size: 14px !important; }
+}
+
+/* ---------- Footer ---------- */
+.ns-footer {
+	margin-top: 40px;
+	padding: 24px 0 28px;
+	border-top: 1px solid #e5e7eb;
+	background: #fafafa;
+	font-size: 13px;
+	color: #6b7280;
+	text-align: center;
+}
+.ns-footer .ns-footer-links a {
+	color: #374151;
+	text-decoration: none;
+	font-weight: 500;
+	padding: 0 6px;
+}
+.ns-footer .ns-footer-links a:hover { color: #16a34a; text-decoration: underline; }
+.ns-footer .ns-footer-sep { color: #cbd5e1; }
+.ns-footer .ns-footer-copy { margin-top: 8px; font-size: 12px; color: #9ca3af; }
+@media (max-width: 640px) {
+	.ns-footer .ns-footer-links a { display: inline-block; padding: 4px 8px; }
+	.ns-footer .ns-footer-sep { display: none; }
 }

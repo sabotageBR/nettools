@@ -25,6 +25,10 @@ import com.ocpsoft.pretty.faces.annotation.URLMappings;
 		  @URLMapping(id = "isitdown", pattern = "/isitdown", viewId = "/pages/isitdown/isitdown.xhtml"),
 		  @URLMapping(id = "ssl", pattern = "/ssl", viewId = "/pages/ssl/ssl.xhtml"),
 		  
+		  @URLMapping(id = "privacy", pattern = "/privacy", viewId = "/pages/legal/privacy.xhtml"),
+		  @URLMapping(id = "terms", pattern = "/terms", viewId = "/pages/legal/terms.xhtml"),
+		  @URLMapping(id = "contact", pattern = "/contact", viewId = "/pages/legal/contact.xhtml"),
+
 		  @URLMapping(id = "blog", pattern = "/blog", viewId = "/pages/blog/blog.xhtml"),
 		  @URLMapping(id = "live", pattern = "/live", viewId = "/pages/live/live.xhtml"),
 		  

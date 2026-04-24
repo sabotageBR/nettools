@@ -22,13 +22,19 @@ public class HttpStatusController extends AbstractController<HttpStatusTO> {
 
     private UtilCollection<HttpStatusTO> uc = new UtilCollection<HttpStatusTO>();
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         getTo().setUrl("https://example.com");
     }
 
     public void httpstatus() {
         customIdentity.getHttpstatuses().add(new HttpStatusTO(getTo().getUrl(), LocalDateTime.now()));
         uc.ordenarListaDesc(customIdentity.getHttpstatuses(), "dateTimeOrder");
+    }
+
+    @Override
+    public void clearHistory() {
+        customIdentity.getHttpstatuses().clear();
     }
 }

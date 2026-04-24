@@ -34,11 +34,12 @@ public class PeoplesearchTO extends NettoolsTO{
 		setResultado(resultado);
 	}
 	
-	public PeoplesearchTO(String nome, String instagram,String facebook,String twitter, LocalDateTime dateTime) {
+	public PeoplesearchTO(String nome, String instagram, String facebook, String twitter, LocalDateTime dateTime) {
 		setNome(nome);
 		setInstagram(instagram);
 		setFacebook(facebook);
 		setTwitter(twitter);
+		setDateTime(dateTime);
 	}
 	
 	public LocalDateTime getDateTime() {
@@ -87,6 +88,21 @@ public class PeoplesearchTO extends NettoolsTO{
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	/**
+	 * Rótulo usado na coluna "nome" do painel History. Quando o usuário não
+	 * preencheu o campo Nome mas preencheu outro (Instagram, Facebook,
+	 * Twitter ou TikTok), mostramos o handle prefixado pra ficar claro.
+	 * Nunca retorna string vazia.
+	 */
+	public String getDisplayLabel() {
+		if (nome != null && !nome.trim().isEmpty()) return nome;
+		if (instagram != null && !instagram.trim().isEmpty()) return "IG @" + instagram;
+		if (facebook != null && !facebook.trim().isEmpty()) return "FB " + facebook;
+		if (twitter != null && !twitter.trim().isEmpty()) return "X @" + twitter;
+		if (tiktok != null && !tiktok.trim().isEmpty()) return "TT @" + tiktok;
+		return "—";
 	}
 	public PeopleSearchResultTO getResultado() {
 		return resultado;

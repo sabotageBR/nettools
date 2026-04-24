@@ -20,8 +20,9 @@ public class WhoisController extends AbstractController<WhoisTO>{
 	
 	private UtilCollection<WhoisTO> uc = new UtilCollection<WhoisTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: Whois");
 		comporInformacoesHTTP();
 	}
@@ -33,5 +34,10 @@ public class WhoisController extends AbstractController<WhoisTO>{
 		customIdentity.getWhoiss().add(new WhoisTO(getTo().getHost(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getWhoiss(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getWhoiss().clear();
+	}
+
 }

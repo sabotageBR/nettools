@@ -22,8 +22,9 @@ public class NslookupController extends AbstractController<NslookupTO>{
 	
 	private UtilCollection<NslookupTO> uc = new UtilCollection<NslookupTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		comporInformacoesHTTP();
 	}
 	
@@ -34,5 +35,10 @@ public class NslookupController extends AbstractController<NslookupTO>{
 		customIdentity.getNslookups().add(new NslookupTO(getTo().getHost(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getNslookups(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getNslookups().clear();
+	}
+
 }

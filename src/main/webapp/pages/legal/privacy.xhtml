@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:param name="title" value="Privacy Policy" />
+	<ui:param name="description" value="How Nettools Live handles your data: what we log, what we don't, cookies, Google Analytics, advertising and your rights under GDPR and LGPD." />
+	<ui:define name="corpo">
+	<div id="wrapper">
+		<div class="content animate-panel">
+			<div class="row">
+				<div class="col-md-offset-1 col-lg-9">
+					<div class="hpanel">
+						<div class="panel-heading">
+							<h1 class="font-extra-bold no-margins text-success">Privacy Policy</h1>
+							<small class="text-muted">Last updated: 2026-04-22</small>
+						</div>
+						<div class="panel-body" style="line-height: 1.7; font-size: 15px;">
+
+							<p>Nettools Live (<a href="https://nettools.live/">nettools.live</a>) is a free set of online network diagnostic tools. This page explains, in plain language, what personal data we collect, why, how long we keep it, and the rights you have over it.</p>
+
+							<h2 class="text-success" style="margin-top: 24px;">1. Who we are</h2>
+							<p>Nettools Live is operated by an independent developer. For any question related to this policy, see our <a href="/contact">contact page</a>.</p>
+
+							<h2 class="text-success" style="margin-top: 24px;">2. What we collect</h2>
+							<ul>
+								<li><strong>Tool inputs</strong> — the hostnames, IPs, ports, URLs or queries you type into a tool. These are processed on our server to run the diagnostic and are kept in your session so you can see your own history while the session lasts. They are not sold or shared.</li>
+								<li><strong>Your public IP address</strong> — detected automatically via the ipify.org API to populate the "What Is My IP" feature. It is stored in the session memory only.</li>
+								<li><strong>User agent &amp; language</strong> — sent by your browser on every HTTP request. Used only for the User Agent tool and for debugging.</li>
+								<li><strong>Server access logs</strong> — standard web server logs (IP, URL, timestamp, user agent, referrer) are rotated automatically.</li>
+							</ul>
+
+							<h2 class="text-success" style="margin-top: 24px;">3. What we do NOT collect</h2>
+							<ul>
+								<li>No account. No email. No password.</li>
+								<li>We do not track you across the web.</li>
+								<li>We do not sell, rent, or trade data about you.</li>
+							</ul>
+
+							<h2 class="text-success" style="margin-top: 24px;">4. Cookies</h2>
+							<p>We use the minimum cookies required to run the site:</p>
+							<ul>
+								<li><strong>Session cookie (<code>JSESSIONID</code>)</strong> — set by the Java application server so your tool results and history stay in your session. Expires when you close the browser.</li>
+								<li><strong>Google Analytics</strong> — sets <code>_ga</code> and related cookies to measure aggregated page visits. IPs are anonymized where supported by Google.</li>
+							</ul>
+
+							<h2 class="text-success" style="margin-top: 24px;">5. Third-party services</h2>
+							<ul>
+								<li><a rel="nofollow noopener" href="https://policies.google.com/privacy" target="_blank">Google Analytics</a> — page-view analytics.</li>
+								<li><a rel="nofollow noopener" href="https://www.facebook.com/privacy/policy/" target="_blank">Facebook SDK</a> — used for social sharing widgets only.</li>
+								<li><a rel="nofollow noopener" href="https://www.ipify.org/" target="_blank">ipify.org</a> — queried from your browser to detect your public IP.</li>
+								<li>Fonts are served by Google Fonts.</li>
+							</ul>
+
+							<h2 class="text-success" style="margin-top: 24px;">6. Advertising</h2>
+							<p>If advertising is enabled on the site, it is delivered by <a rel="nofollow noopener" href="https://policies.google.com/technologies/ads" target="_blank">Google AdSense</a>. Google and its partners may use cookies and identifiers to serve ads based on your prior visits to this or other sites. You can opt out of personalized advertising at <a rel="nofollow noopener" href="https://adssettings.google.com" target="_blank">Ad Settings</a>.</p>
+
+							<h2 class="text-success" style="margin-top: 24px;">7. Data retention</h2>
+							<p>Your session data is held in memory by the server and discarded when the session ends (typically after 30 minutes of inactivity or when you close the browser). Access logs are rotated on the server.</p>
+
+							<h2 class="text-success" style="margin-top: 24px;">8. Your rights (GDPR / LGPD)</h2>
+							<p>You may request access to, correction of, or deletion of any personal data we hold about you. Because we do not create user accounts, the data we hold is limited to the server access logs for the period in which they are retained. Contact us via the <a href="/contact">contact page</a>.</p>
+
+							<h2 class="text-success" style="margin-top: 24px;">9. Security</h2>
+							<p>All traffic to nettools.live is served over HTTPS. Tool inputs are validated server-side to protect the diagnostic backend.</p>
+
+							<h2 class="text-success" style="margin-top: 24px;">10. Changes to this policy</h2>
+							<p>We may update this policy from time to time. The "Last updated" date at the top reflects the most recent revision.</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</ui:define>
+</ui:composition>

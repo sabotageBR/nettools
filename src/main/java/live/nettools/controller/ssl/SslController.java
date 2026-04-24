@@ -22,8 +22,9 @@ public class SslController extends AbstractController<SslTO> {
 
     private UtilCollection<SslTO> uc = new UtilCollection<SslTO>();
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         getTo().setHost("google.com");
         getTo().setPorta("443");
     }
@@ -31,5 +32,10 @@ public class SslController extends AbstractController<SslTO> {
     public void ssl() {
         customIdentity.getSsls().add(new SslTO(getTo().getHost(), getTo().getPorta(), LocalDateTime.now()));
         uc.ordenarListaDesc(customIdentity.getSsls(), "dateTimeOrder");
+    }
+
+    @Override
+    public void clearHistory() {
+        customIdentity.getSsls().clear();
     }
 }

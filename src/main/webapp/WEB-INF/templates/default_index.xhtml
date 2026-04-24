@@ -14,7 +14,9 @@
 		<meta name="description" content="Free online network tools: ping, traceroute, whois, nslookup, nmap, SNMP, SIP, penetration test and people search. Run diagnostics from your browser in seconds." />
 		<link rel="canonical" href="https://nettools.live/" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="robots" content="#{request.serverName == 'nettools.live' ? 'index,follow,max-image-preview:large' : 'noindex,nofollow'}" />
+		<meta name="robots" content="#{request.serverName == 'nettools.live' ? 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1' : 'noindex,nofollow'}" />
+		<meta name="theme-color" content="#16a34a" />
+		<meta name="msapplication-TileColor" content="#16a34a" />
 
 		<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous" />
 		<link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" />
@@ -22,7 +24,8 @@
 		<link rel="preconnect" href="https://connect.facebook.net" crossorigin="anonymous" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" />
+		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" /></noscript>
 
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="Nettools Live" />
@@ -32,6 +35,8 @@
 		<meta property="og:image" content="https://nettools.live/og-image.png" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:locale:alternate" content="pt_BR" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="Nettools Live — Free Online Network Tools" />
 		<meta name="twitter:description" content="Ping, traceroute, whois, nslookup, nmap, SNMP, SIP and more — all in your browser, free." />
@@ -39,7 +44,9 @@
 
 		<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
 		<meta name="application-name" content="Nettools Live" />
+		<meta name="apple-mobile-web-app-title" content="Nettools Live" />
 
 		<script type="application/ld+json">
 		{
@@ -62,7 +69,38 @@
 		  "@type": "Organization",
 		  "name": "Nettools Live",
 		  "url": "https://nettools.live/",
-		  "logo": "https://nettools.live/icon-192.png"
+		  "logo": "https://nettools.live/icon-192.png",
+		  "sameAs": [
+		    "https://gettvid.com"
+		  ]
+		}
+		</script>
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "ItemList",
+		  "name": "Network tools at Nettools Live",
+		  "itemListOrder": "https://schema.org/ItemListOrderAscending",
+		  "numberOfItems": 17,
+		  "itemListElement": [
+		    { "@type": "ListItem", "position": 1,  "name": "Ping",               "url": "https://nettools.live/ping" },
+		    { "@type": "ListItem", "position": 2,  "name": "Traceroute",         "url": "https://nettools.live/traceroute" },
+		    { "@type": "ListItem", "position": 3,  "name": "Port Check",         "url": "https://nettools.live/portcheck" },
+		    { "@type": "ListItem", "position": 4,  "name": "HTTP Status",        "url": "https://nettools.live/httpstatus" },
+		    { "@type": "ListItem", "position": 5,  "name": "Is It Down",         "url": "https://nettools.live/isitdown" },
+		    { "@type": "ListItem", "position": 6,  "name": "Nslookup",           "url": "https://nettools.live/nslookup" },
+		    { "@type": "ListItem", "position": 7,  "name": "Reverse DNS",        "url": "https://nettools.live/reversedns" },
+		    { "@type": "ListItem", "position": 8,  "name": "Whois",              "url": "https://nettools.live/whois" },
+		    { "@type": "ListItem", "position": 9,  "name": "SSL Checker",        "url": "https://nettools.live/ssl" },
+		    { "@type": "ListItem", "position": 10, "name": "Nmap",               "url": "https://nettools.live/nmap" },
+		    { "@type": "ListItem", "position": 11, "name": "SNMP",               "url": "https://nettools.live/snmp" },
+		    { "@type": "ListItem", "position": 12, "name": "SIP",                "url": "https://nettools.live/sip" },
+		    { "@type": "ListItem", "position": 13, "name": "Penetration Test",   "url": "https://nettools.live/pentest" },
+		    { "@type": "ListItem", "position": 14, "name": "My IP",              "url": "https://nettools.live/myip" },
+		    { "@type": "ListItem", "position": 15, "name": "User Agent",         "url": "https://nettools.live/useragent" },
+		    { "@type": "ListItem", "position": 16, "name": "Subnet Calculator",  "url": "https://nettools.live/subnet" },
+		    { "@type": "ListItem", "position": 17, "name": "MAC Lookup",         "url": "https://nettools.live/mac" }
+		  ]
 		}
 		</script>
 
@@ -148,6 +186,22 @@
 </nav>
 <ui:insert name="corpo" />
 
+<footer class="ns-footer" role="contentinfo">
+	<div class="container">
+		<div class="ns-footer-links">
+			<a href="#{request.contextPath}/">Home</a>
+			<span class="ns-footer-sep">·</span>
+			<a href="#{request.contextPath}/blog">Blog</a>
+			<span class="ns-footer-sep">·</span>
+			<a href="#{request.contextPath}/contact">Contact</a>
+			<span class="ns-footer-sep">·</span>
+			<a href="#{request.contextPath}/privacy">Privacy Policy</a>
+			<span class="ns-footer-sep">·</span>
+			<a href="#{request.contextPath}/terms">Terms of Service</a>
+		</div>
+		<div class="ns-footer-copy">© Nettools Live — Free online network tools.</div>
+	</div>
+</footer>
 
 		<link rel="stylesheet" href="#{request.contextPath}/resources/vendor/fontawesome/css/font-awesome.css" />
 	    <link rel="stylesheet" href="#{request.contextPath}/resources/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css" />
@@ -163,11 +217,14 @@
 			var cont = 0;
 			$.get('https://api.ipify.org', function(data) {
 				if(data && data.length > 0){
-					document.getElementById('id-seu-ip').innerHTML = data;
-					document.getElementById('id-ip-externo').value = data;
+					var seuIp = document.getElementById('id-seu-ip');
+					var hidden = document.getElementById('id-ip-externo');
 					var copyBtn = document.getElementById('id-copy-ip');
+					var btn = document.getElementById('id-botao-informacoes');
+					if (seuIp) { seuIp.innerHTML = data; }
+					if (hidden) { hidden.value = data; }
 					if (copyBtn) { copyBtn.style.display = 'inline-block'; }
-					document.getElementById('id-botao-informacoes').click();
+					if (btn) { btn.click(); }
 				}
 			});
 
@@ -227,7 +284,7 @@
 		  //]]>
 		</script>
 		
-		<h:form prependId="false">
+		<h:form prependId="false" rendered="#{not empty customIdentity}">
 			<h:inputHidden id="id-ip-externo" value="#{customIdentity.ipExterno}"/>
 			<h:commandButton id="id-botao-informacoes" style="display:none" action="#{customIdentity.comporInformacoesHTTP()}">
 				<f:ajax execute="id-ip-externo" />

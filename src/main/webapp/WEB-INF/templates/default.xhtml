@@ -19,7 +19,9 @@
 		<meta name="description" content="#{description}" />
 		<link rel="canonical" href="https://nettools.live#{canonicalPath}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="robots" content="#{isCanonicalHost ? 'index,follow,max-image-preview:large' : 'noindex,nofollow'}" />
+		<meta name="robots" content="#{isCanonicalHost ? 'index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1' : 'noindex,nofollow'}" />
+		<meta name="theme-color" content="#16a34a" />
+		<meta name="msapplication-TileColor" content="#16a34a" />
 
 		<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous" />
 		<link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" />
@@ -28,7 +30,8 @@
 		<link rel="dns-prefetch" href="https://platform.twitter.com" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" />
+		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" /></noscript>
 
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="Nettools Live" />
@@ -38,6 +41,8 @@
 		<meta property="og:image" content="#{ogImage}" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:locale:alternate" content="pt_BR" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="#{title}" />
 		<meta name="twitter:description" content="#{description}" />
@@ -45,7 +50,9 @@
 
 		<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
 		<meta name="application-name" content="Nettools Live" />
+		<meta name="apple-mobile-web-app-title" content="Nettools Live" />
 
 		<script type="application/ld+json">
 		{
@@ -87,104 +94,80 @@
 		<!-- Navigation -->
 		<aside id="menu">
 			<div id="navigation">
-
 				<ul class="nav" id="side-menu">
-					<li class="active">
-						<a href="#{request.contextPath}/peoplesearch"> <span class="nav-label">PEOPLE SEARCH</span>
-						</a>
+
+					<li class="nav-section">Featured</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/peoplesearch"><i class="pe-7s-user"></i><span class="nav-label">People Search</span></a>
 					</li>
-					<li class="active">
-						<a href="https://gettvid.com"> <span class="nav-label">VIDEO DOWNLOAD</span>
-						</a>
-					</li>
-					
-					<li class="active">
-						<a href="#{request.contextPath}/pentest"> <span class="nav-label">PENETRATION TEST</span>
-						</a>
-					</li>
-					<li class="active">
-						<a href="#{request.contextPath}/ping"> <span class="nav-label">PING</span>
-						</a>
-					</li>
-					
-					<li class="active">
-						<a href="#{request.contextPath}/nslookup"> <span class="nav-label">NSLOOKUP</span>
-						</a>
+					<li class="nav-item">
+						<a href="https://gettvid.com"><i class="pe-7s-cloud-download"></i><span class="nav-label">Video Download</span></a>
 					</li>
 
-					<li class="active">
-						<a href="#{request.contextPath}/reversedns"> <span class="nav-label">REVERSE DNS</span>
-						</a>
+					<li class="nav-section">Diagnostics</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/ping"><i class="pe-7s-cloud-upload"></i><span class="nav-label">Ping</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/traceroute"><i class="pe-7s-graph1"></i><span class="nav-label">Traceroute</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/portcheck"><i class="pe-7s-plug"></i><span class="nav-label">Port Check</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/httpstatus"><i class="pe-7s-look"></i><span class="nav-label">HTTP Status</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/isitdown"><i class="pe-7s-attention"></i><span class="nav-label">Is It Down</span></a>
 					</li>
 
-					<li class="active">
-						<a href="#{request.contextPath}/whois"> <span class="nav-label">WHOIS</span>
-						</a>
+					<li class="nav-section">DNS</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/nslookup"><i class="pe-7s-wallet"></i><span class="nav-label">Nslookup</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/reversedns"><i class="pe-7s-back"></i><span class="nav-label">Reverse DNS</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/whois"><i class="pe-7s-id"></i><span class="nav-label">Whois</span></a>
 					</li>
 
-					<li class="active">
-						<a href="#{request.contextPath}/traceroute"> <span class="nav-label">TRACEROUTE</span>
-						</a>
+					<li class="nav-section">Security</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/ssl"><i class="pe-7s-lock"></i><span class="nav-label">SSL Checker</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/nmap"><i class="pe-7s-map"></i><span class="nav-label">Nmap</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/snmp"><i class="pe-7s-way"></i><span class="nav-label">SNMP</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/sip"><i class="pe-7s-phone"></i><span class="nav-label">SIP</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/pentest"><i class="pe-7s-key"></i><span class="nav-label">Penetration Test</span></a>
 					</li>
 
-					<li class="active">
-						<a href="#{request.contextPath}/nmap"> <span class="nav-label">NMAP</span>
-						</a>
+					<li class="nav-section">My Info</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/myip"><i class="pe-7s-network"></i><span class="nav-label">My IP</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/useragent"><i class="pe-7s-display1"></i><span class="nav-label">User Agent</span></a>
 					</li>
 
-					<li class="active">
-						<a href="#{request.contextPath}/portcheck"> <span class="nav-label">PORT CHECK</span>
-						</a>
+					<li class="nav-section">Utilities</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/subnet"><i class="pe-7s-calculator"></i><span class="nav-label">Subnet Calc</span></a>
+					</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/mac"><i class="pe-7s-signal"></i><span class="nav-label">MAC Lookup</span></a>
 					</li>
 
-					<li class="active">
-						<a href="#{request.contextPath}/snmp"> <span class="nav-label">SNMP</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/sip"> <span class="nav-label">SIP</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/subnet"> <span class="nav-label">SUBNET CALC</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/myip"> <span class="nav-label">MY IP</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/useragent"> <span class="nav-label">USER AGENT</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/mac"> <span class="nav-label">MAC LOOKUP</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/httpstatus"> <span class="nav-label">HTTP STATUS</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/isitdown"> <span class="nav-label">IS IT DOWN</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/ssl"> <span class="nav-label">SSL CHECKER</span>
-						</a>
-					</li>
-
-					<li class="active">
-						<a href="#{request.contextPath}/blog"> <span class="nav-label">BLOG</span>
-						</a>
+					<li class="nav-section">Content</li>
+					<li class="nav-item">
+						<a href="#{request.contextPath}/blog"><i class="pe-7s-note2"></i><span class="nav-label">Blog</span></a>
 					</li>
 
 				</ul>
@@ -205,6 +188,23 @@
 		
 		<ui:insert name="corpo" />
 
+		<footer class="ns-footer" role="contentinfo">
+			<div class="container">
+				<div class="ns-footer-links">
+					<a href="#{request.contextPath}/">Home</a>
+					<span class="ns-footer-sep">·</span>
+					<a href="#{request.contextPath}/blog">Blog</a>
+					<span class="ns-footer-sep">·</span>
+					<a href="#{request.contextPath}/contact">Contact</a>
+					<span class="ns-footer-sep">·</span>
+					<a href="#{request.contextPath}/privacy">Privacy Policy</a>
+					<span class="ns-footer-sep">·</span>
+					<a href="#{request.contextPath}/terms">Terms of Service</a>
+				</div>
+				<div class="ns-footer-copy">© Nettools Live — Free online network tools.</div>
+			</div>
+		</footer>
+
 		<!-- Vendor scripts -->
 		
 
@@ -216,8 +216,10 @@
 			var cont = 0;
 			$.get('https://api.ipify.org', function(data) {
 				if(data && data.length > 0){
-					document.getElementById('id-ip-externo').value = data;
-					document.getElementById('id-botao-informacoes').click();
+					var hidden = document.getElementById('id-ip-externo');
+					var btn = document.getElementById('id-botao-informacoes');
+					if (hidden) { hidden.value = data; }
+					if (btn) { btn.click(); }
 				}
 			});
 			//]]> 	
@@ -231,7 +233,7 @@
 		  gtag('config', 'G-JZYCL749E9');
 		  //]]>
 		</script>
-		<h:form prependId="false">
+		<h:form prependId="false" rendered="#{not empty customIdentity}">
 			<h:inputHidden id="id-ip-externo" value="#{customIdentity.ipExterno}"/>
 			<h:commandButton id="id-botao-informacoes" style="display:none" action="#{customIdentity.comporInformacoesHTTP()}">
 				<f:ajax execute="id-ip-externo" />

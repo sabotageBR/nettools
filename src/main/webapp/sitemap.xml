@@ -120,4 +120,19 @@
 		<lastmod>2026-04-23</lastmod>
 		<priority>0.5</priority>
 	</url>
+	<url>
+		<loc>https://nettools.live/privacy</loc>
+		<lastmod>2026-04-22</lastmod>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>https://nettools.live/terms</loc>
+		<lastmod>2026-04-22</lastmod>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>https://nettools.live/contact</loc>
+		<lastmod>2026-04-22</lastmod>
+		<priority>0.4</priority>
+	</url>
 </urlset>

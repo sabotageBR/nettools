@@ -90,32 +90,29 @@ public class PeoplesearchServer {
             sendStatus(session, "Service not available");
             return;
         }
-        boolean added;
         int position;
+        boolean hadQueued;
         LOCK.lock();
         try {
-            if (QUEUE.containsKey(session.getId())) {
-                added = false;
-                position = indexOf(session.getId());
-            } else {
-                QUEUE.put(session.getId(), new QueuedSearch(session, input, service));
-                added = true;
-                position = QUEUE.size() - 1;
+            hadQueued = QUEUE.containsKey(session.getId());
+            // SEMPRE usa o input mais recente. Se já havia entrada na fila
+            // (worker ainda não pegou OU está processando a anterior), ela
+            // é substituída pela nova — assim o usuário pode alterar o
+            // formulário e reenviar Go sem a busca voltar com valor antigo.
+            QUEUE.put(session.getId(), new QueuedSearch(session, input, service));
+            if (!hadQueued) {
                 NEW_WORK.signalAll();
             }
+            position = indexOf(session.getId());
         } finally {
             LOCK.unlock();
         }
-        if (added) {
-            if (position == 0) {
-                sendStatus(session, "Starting soon...");
-            } else {
-                sendStatus(session, "Position in queue: " + position);
-            }
-            broadcastPositions();
+        if (position == 0) {
+            sendStatus(session, hadQueued ? "Queued (running with updated values next)" : "Starting soon...");
         } else {
-            sendStatus(session, position == 0 ? "Already running" : "Position in queue: " + position);
+            sendStatus(session, "Position in queue: " + position);
         }
+        broadcastPositions();
     }
 
     private void removeFromQueue(Session session) {
@@ -193,12 +190,26 @@ public class PeoplesearchServer {
             }
 
             LOCK.lock();
+            boolean leftNewer = false;
             try {
-                QUEUE.remove(next.session.getId());
+                // Só remove se a entrada na fila ainda for a mesma que o
+                // worker processou. Se o usuário enviou nova busca durante
+                // o processamento, o enqueue substituiu a entrada — nesse
+                // caso mantemos, para o worker pegar na próxima iteração.
+                QueuedSearch current = QUEUE.get(next.session.getId());
+                if (current == next) {
+                    QUEUE.remove(next.session.getId());
+                } else {
+                    leftNewer = current != null;
+                    NEW_WORK.signalAll();
+                }
             } finally {
                 LOCK.unlock();
             }
             broadcastPositions();
+            if (leftNewer && next.session.isOpen()) {
+                sendStatus(next.session, "Re-running with updated values...");
+            }
         }
     }
 

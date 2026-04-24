@@ -21,8 +21,9 @@ public class DirbController extends AbstractController<DirbTO>{
 	
 	private UtilCollection<DirbTO> uc = new UtilCollection<DirbTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: Dirb");
 		comporInformacoesHTTP();
 	}
@@ -35,7 +36,12 @@ public class DirbController extends AbstractController<DirbTO>{
 		if(!us.vazio(getTo().getHost())) {
 			customIdentity.getDirbs().add(new DirbTO(getTo().getHost(), LocalDateTime.now()));
 			uc.ordenarListaDesc(customIdentity.getDirbs(),"dateTimeOrder");
-		}	
+		}
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getDirbs().clear();
+	}
+
 }

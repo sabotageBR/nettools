@@ -35,9 +35,14 @@
 			                            </h:inputText>
 		                            </div>
 		                            <div class="form-group col-lg-3">
-			                            <h:commandButton action="#{dirbController.dirb}" value="Go!" id="id-button-dirb" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-			                            	<f:ajax event="click" onevent="buttonClick()" execute="idFormDirb" render="idPanelHistory"/>
-			                            </h:commandButton>
+			                            <div style="margin-top: 10px;">
+			                                <h:commandButton action="#{dirbController.dirb}" value="Go!" id="id-button-dirb" styleClass="btn btn-success" style="margin-right: 6px;">
+			                                	<f:ajax event="click" onevent="buttonClick()" execute="idFormDirb" render="idPanelHistory"/>
+			                                </h:commandButton>
+			                                <h:commandButton action="#{dirbController.clear}" value="Clear" id="id-button-dirb-clear" styleClass="btn btn-default">
+			                                	<f:ajax execute="@this" render="idFormDirb idPanelHistory"/>
+			                                </h:commandButton>
+			                            </div>
 		                            </div>
 			                    </div>    
 							</div>
@@ -98,6 +103,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="Penetration Test" />
+							<ui:param name="toolSlug" value="pentest" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="pentest" />
 						</ui:include>
@@ -120,6 +130,7 @@
 						<h:panelGroup id="idPanelHistory">
 						<ui:fragment rendered="#{customIdentity.dirbs.size() gt 0}">
 							<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{dirbController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 							<br />
 							
 								<h:dataTable id="idTableDirbs" value="#{customIdentity.dirbs}" var="dirb" styleClass="table">
@@ -207,6 +218,7 @@
 				  document.getElementById('id-panel-result-now').innerHTML = obj.resultado;
 			  }else{
 				  if (obj.resultado !== '' && obj.resultado.trim().length > 0){
+					  document.getElementById('id-panel-footer').style.display = 'block';
 					  document.getElementById('id-panel-result').innerHTML += obj.resultado+'<br />';
 				  }
 			  }

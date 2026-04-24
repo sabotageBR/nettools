@@ -34,9 +34,14 @@
 			                            <h:inputText id="id-input-host" value="#{nslookupController.to.host}" styleClass="form-control" />
 		                            </div>
 		                            <div class="form-group col-lg-3">
-			                            <h:commandButton action="#{nslookupController.nslookup}" value="Go!" id="id-button-nslookup" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-			                            	<f:ajax event="click" onevent="buttonClick()" execute="idFormNslookup" render="idPanelHistory"/>
-			                            </h:commandButton>
+			                            <div style="margin-top: 10px;">
+			                                <h:commandButton action="#{nslookupController.nslookup}" value="Go!" id="id-button-nslookup" styleClass="btn btn-success" style="margin-right: 6px;">
+			                                	<f:ajax event="click" onevent="buttonClick()" execute="idFormNslookup" render="idPanelHistory"/>
+			                                </h:commandButton>
+			                                <h:commandButton action="#{nslookupController.clear}" value="Clear" id="id-button-nslookup-clear" styleClass="btn btn-default">
+			                                	<f:ajax execute="@this" render="idFormNslookup idPanelHistory"/>
+			                                </h:commandButton>
+			                            </div>
 		                            </div>
 			                    </div>    
 							</div>
@@ -99,6 +104,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="Nslookup" />
+							<ui:param name="toolSlug" value="nslookup" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="nslookup" />
 						</ui:include>
@@ -121,6 +131,7 @@
 						<h:panelGroup id="idPanelHistory">
 						<ui:fragment rendered="#{customIdentity.nslookups.size() gt 0}">
 							<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{nslookupController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 							<br />
 							
 								<h:dataTable id="idTableNslookups" value="#{customIdentity.nslookups}" var="nslookup" styleClass="table">
@@ -206,6 +217,7 @@
 		  
 		  let obj = JSON.parse(evt.data);
 		  if(obj.resultado !== 'FIM'){
+			  document.getElementById('id-panel-footer').style.display = 'block';
 			  document.getElementById('id-panel-result').innerHTML += obj.resultado +'<br />';
 		  }else{
 			  document.getElementById("id-button-nslookup").disabled = false;

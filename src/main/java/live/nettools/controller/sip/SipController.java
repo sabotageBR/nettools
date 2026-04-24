@@ -22,8 +22,9 @@ public class SipController extends AbstractController<SipTO>{
 	
 	private UtilCollection<SipTO> uc = new UtilCollection<SipTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: SIP");	
 		comporInformacoesHTTP();
 	}
@@ -38,5 +39,10 @@ public class SipController extends AbstractController<SipTO>{
 		customIdentity.getSips().add(new SipTO(getTo().getHost(), getTo().getPorta(),getTo().getUser(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getSips(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getSips().clear();
+	}
+
 }

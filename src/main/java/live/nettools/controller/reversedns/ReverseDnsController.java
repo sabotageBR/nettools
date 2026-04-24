@@ -22,8 +22,9 @@ public class ReverseDnsController extends AbstractController<ReverseDnsTO> {
 
     private UtilCollection<ReverseDnsTO> uc = new UtilCollection<ReverseDnsTO>();
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         comporInformacoesHTTP();
     }
 
@@ -34,5 +35,10 @@ public class ReverseDnsController extends AbstractController<ReverseDnsTO> {
     public void reversedns() {
         customIdentity.getReverseDns().add(new ReverseDnsTO(getTo().getIp(), LocalDateTime.now()));
         uc.ordenarListaDesc(customIdentity.getReverseDns(), "dateTimeOrder");
+    }
+
+    @Override
+    public void clearHistory() {
+        customIdentity.getReverseDns().clear();
     }
 }

@@ -22,13 +22,19 @@ public class MacController extends AbstractController<MacTO> {
 
     private UtilCollection<MacTO> uc = new UtilCollection<MacTO>();
 
+    @Override
     @PostConstruct
-    private void init() {
+    protected void init() {
         getTo().setMac("00:1A:2B:3C:4D:5E");
     }
 
     public void mac() {
         customIdentity.getMacs().add(new MacTO(getTo().getMac(), LocalDateTime.now()));
         uc.ordenarListaDesc(customIdentity.getMacs(), "dateTimeOrder");
+    }
+
+    @Override
+    public void clearHistory() {
+        customIdentity.getMacs().clear();
     }
 }

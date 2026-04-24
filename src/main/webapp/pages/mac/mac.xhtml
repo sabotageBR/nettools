@@ -29,9 +29,14 @@
 										<small class="text-muted">Any format accepted: <code>AA:BB:CC:DD:EE:FF</code>, <code>aa-bb-cc-dd-ee-ff</code>, <code>AABB.CCDD.EEFF</code>, <code>AABBCCDDEEFF</code></small>
 									</div>
 									<div class="form-group col-lg-3">
-										<h:commandButton action="#{macController.mac}" value="Go!" id="id-button-mac" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-											<f:ajax event="click" onevent="buttonClick()" execute="idFormMac" render="idPanelHistory" />
-										</h:commandButton>
+										<div style="margin-top: 10px;">
+											<h:commandButton action="#{macController.mac}" value="Go!" id="id-button-mac" styleClass="btn btn-success" style="margin-right: 6px;">
+												<f:ajax event="click" onevent="buttonClick()" execute="idFormMac" render="idPanelHistory" />
+											</h:commandButton>
+											<h:commandButton action="#{macController.clear}" value="Clear" id="id-button-mac-clear" styleClass="btn btn-default">
+												<f:ajax execute="@this" render="idFormMac idPanelHistory" />
+											</h:commandButton>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -90,6 +95,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="MAC Lookup" />
+							<ui:param name="toolSlug" value="mac" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="mac" />
 						</ui:include>
@@ -102,6 +112,7 @@
 						<h:panelGroup id="idPanelHistory">
 							<ui:fragment rendered="#{customIdentity.macs.size() gt 0}">
 								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{macController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 								<br />
 								<h:dataTable value="#{customIdentity.macs}" var="m" styleClass="table">
 									<h:column>
@@ -145,6 +156,7 @@
 			line.textContent = obj.resultado;
 			document.getElementById('id-panel-result').appendChild(line);
 		} else {
+			document.getElementById('id-button-mac').disabled = false;
 			document.getElementById('id-button-mac').value = 'Go!';
 		}
 	}
@@ -152,7 +164,8 @@
 		if (wsocketHost.readyState === WebSocket.CLOSED) { connect(); }
 		var mac = document.getElementById('id-input-mac').value;
 		if (mac !== '') {
-			document.getElementById('id-button-mac').value = 'Waiting...';
+			document.getElementById('id-button-mac').disabled = true;
+			document.getElementById('id-button-mac').value = '...';
 			document.getElementById('id-panel-result').innerHTML = '';
 			wsocketHost.send(JSON.stringify({ mac: mac }));
 		} else {

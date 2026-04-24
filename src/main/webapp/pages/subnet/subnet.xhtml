@@ -90,6 +90,11 @@
 					}
 					</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="Subnet Calculator" />
+							<ui:param name="toolSlug" value="subnet" />
+						</ui:include>
+
 					<ui:include src="/pages/includes/related-tools.xhtml">
 						<ui:param name="current" value="subnet" />
 					</ui:include>

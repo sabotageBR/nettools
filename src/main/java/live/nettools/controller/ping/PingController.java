@@ -20,8 +20,9 @@ public class PingController extends AbstractController<PingTO>{
 	
 	private UtilCollection<PingTO> uc = new UtilCollection<PingTO>();
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		System.out.println(customIdentity.getIpExterno()+"- Nav: Ping");
 		comporInformacoesHTTP();
 	}
@@ -34,5 +35,10 @@ public class PingController extends AbstractController<PingTO>{
 		customIdentity.getPings().add(new PingTO(getTo().getHost(), getTo().getQtd(), getTo().getSendBuffer(), LocalDateTime.now()));
 		uc.ordenarListaDesc(customIdentity.getPings(),"dateTimeOrder");
 	}
-	
+
+	@Override
+	public void clearHistory() {
+		customIdentity.getPings().clear();
+	}
+
 }

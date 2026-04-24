@@ -11,35 +11,63 @@
 (function () {
 	'use strict';
 
-	function injectCopyButton() {
+	function injectTerminalActions() {
 		var footer = document.getElementById('id-panel-footer');
 		var result = document.getElementById('id-panel-result');
 		if (!footer || !result) return;
-		if (document.getElementById('ns-copy-btn')) return;
+		if (document.getElementById('ns-terminal-actions')) return;
 
-		// Garante position: relative pro footer, necessário pro absolute do botão
+		// Garante position: relative pro footer, necessário pro absolute do grupo
 		var cs = window.getComputedStyle(footer);
 		if (cs.position === 'static') footer.style.position = 'relative';
 
-		var btn = document.createElement('button');
-		btn.type = 'button';
-		btn.id = 'ns-copy-btn';
-		btn.className = 'ns-copy-btn';
-		btn.setAttribute('aria-label', 'Copy terminal output');
-		btn.setAttribute('title', 'Copy output');
-		btn.innerHTML = '⎘ Copy';
-		btn.addEventListener('click', function (ev) {
+		var group = document.createElement('div');
+		group.id = 'ns-terminal-actions';
+		group.className = 'ns-terminal-actions';
+
+		// --- Clear button ---
+		var clearBtn = document.createElement('button');
+		clearBtn.type = 'button';
+		clearBtn.id = 'ns-clear-btn';
+		clearBtn.className = 'ns-copy-btn';
+		clearBtn.setAttribute('aria-label', 'Clear terminal output');
+		clearBtn.setAttribute('title', 'Clear output');
+		clearBtn.innerHTML = '⌫ Clear';
+		clearBtn.addEventListener('click', function (ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			result.innerHTML = '';
+			footer.style.display = 'none';
+			clearBtn.classList.add('ns-copied');
+			clearBtn.innerHTML = '✓ Cleared';
+			if (clearBtn.blur) clearBtn.blur();
+			setTimeout(function () {
+				clearBtn.classList.remove('ns-copied');
+				clearBtn.innerHTML = '⌫ Clear';
+			}, 1200);
+			return false;
+		});
+
+		// --- Copy button ---
+		var copyBtn = document.createElement('button');
+		copyBtn.type = 'button';
+		copyBtn.id = 'ns-copy-btn';
+		copyBtn.className = 'ns-copy-btn';
+		copyBtn.setAttribute('aria-label', 'Copy terminal output');
+		copyBtn.setAttribute('title', 'Copy output');
+		copyBtn.innerHTML = '⎘ Copy';
+		copyBtn.addEventListener('click', function (ev) {
 			ev.preventDefault();
 			ev.stopPropagation();
 			var text = (result.textContent || result.innerText || '').trim();
 			if (!text) return;
 			var done = function () {
-				btn.classList.add('ns-copied');
-				btn.innerHTML = '✓ Copied';
-				if (btn.blur) btn.blur();
+				copyBtn.classList.add('ns-copied');
+				copyBtn.innerHTML = '✓ Copied';
+				if (copyBtn.blur) copyBtn.blur();
 				setTimeout(function () {
-					btn.classList.remove('ns-copied');
-					btn.innerHTML = '⎘ Copy';
+					copyBtn.classList.remove('ns-copied');
+					copyBtn.innerHTML = '⎘ Copy';
 				}, 1600);
 			};
 			if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -49,7 +77,10 @@
 			}
 			return false;
 		});
-		footer.appendChild(btn);
+
+		group.appendChild(clearBtn);
+		group.appendChild(copyBtn);
+		footer.appendChild(group);
 	}
 
 	function fallbackCopy(text, done) {
@@ -96,10 +127,65 @@
 		observer.observe(result, { childList: true, subtree: true, characterData: true });
 	}
 
+	function resetTerminalIfEmpty() {
+		var result = document.getElementById('id-panel-result');
+		var footer = document.getElementById('id-panel-footer');
+		if (!result || !footer) return;
+		var txt = (result.textContent || result.innerText || '').trim();
+		if (txt === '' || txt === 'Net Tools Live - Terminal...') {
+			footer.style.display = 'none';
+		}
+	}
+
+	function registerJsfAjaxListener() {
+		// O botão Clear dispara um JSF AJAX que re-renderiza o form. O
+		// conteúdo injetado via JS (Copy/Clear no canto do terminal) some
+		// junto. Re-injetamos e resetamos o terminal após cada AJAX success.
+		if (typeof jsf === 'undefined' || !jsf.ajax || typeof jsf.ajax.addOnEvent !== 'function') {
+			return;
+		}
+		jsf.ajax.addOnEvent(function (data) {
+			if (data && data.status === 'success') {
+				injectTerminalActions();
+				autoScrollTerminal();
+				resetTerminalIfEmpty();
+			}
+		});
+	}
+
+	function highlightCurrentSidebarItem() {
+		var menu = document.getElementById('side-menu');
+		if (!menu) return;
+		var path = window.location.pathname.replace(/\/+$/, '') || '/';
+		var bestLink = null;
+		var bestLen = 0;
+		var links = menu.querySelectorAll('li.nav-item > a[href]');
+		for (var i = 0; i < links.length; i++) {
+			var a = links[i];
+			var href;
+			try {
+				href = new URL(a.getAttribute('href'), window.location.href).pathname.replace(/\/+$/, '') || '/';
+			} catch (e) { continue; }
+			if (href === '/' || href.indexOf('://') !== -1) continue;
+			if (path === href || (href !== '/' && path.indexOf(href) === 0 && path.charAt(href.length) === '/')) {
+				if (href.length > bestLen) {
+					bestLen = href.length;
+					bestLink = a;
+				}
+			}
+		}
+		if (bestLink) {
+			bestLink.parentElement.classList.add('ns-current');
+		}
+	}
+
 	function init() {
-		injectCopyButton();
+		injectTerminalActions();
 		enableEnterSubmit();
 		autoScrollTerminal();
+		resetTerminalIfEmpty();
+		registerJsfAjaxListener();
+		highlightCurrentSidebarItem();
 	}
 
 	if (document.readyState === 'loading') {

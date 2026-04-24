@@ -69,14 +69,18 @@
 												<f:ajax event="click" onevent="buttonClick()"
 													execute="idFormPeoplesearch" render="idPanelHistory" />
 											</h:commandButton>
+											<h:commandButton
+												action="#{peoplesearchController.clear}" value="Clear"
+												id="id-button-peoplesearch-clear"
+												styleClass="btn btn-default btn-lg" style="margin-top: 10px; margin-left: 6px;">
+												<f:ajax execute="@this" render="idFormPeoplesearch idPanelHistory" />
+											</h:commandButton>
 										</div>
 									</div>
 								</div>
 								<div id="id-panel-footer" class="panel-footer"
 									style="background: #000;">
-									<code id="id-panel-result"
-										style="background-color: #000; color: #62cb31; min-height: 200px;font-size: 115%;">Net
-										Tools Live - Terminal...</code>
+									<code id="id-panel-result" style="background-color: #000; color: #62cb31; min-height: 200px; font-size: 115%;">Net Tools Live - Terminal...</code>
 								</div>
 							</div>
 							<div class="row">
@@ -199,6 +203,11 @@
 							}
 							</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="People Search" />
+							<ui:param name="toolSlug" value="peoplesearch" />
+						</ui:include>
+
 							<ui:include src="/pages/includes/related-tools.xhtml">
 								<ui:param name="current" value="peoplesearch" />
 							</ui:include>
@@ -212,6 +221,7 @@
 								<ui:fragment
 									rendered="#{customIdentity.peoplesearchs.size() gt 0}">
 									<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{peoplesearchController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 									<br />
 
 									<h:dataTable id="idTablePeoplesearchs"
@@ -230,7 +240,7 @@
 											<f:facet name="header">
 											nome
 										</f:facet>
-										#{peoplesearch.nome}
+										#{peoplesearch.displayLabel}
 									</h:column>
 										<h:column>
 											<f:facet name="header">
@@ -483,6 +493,7 @@
 			  return;
 		  }
 		  if (res.texto === 'FIM') {
+			  document.getElementById('id-button-peoplesearch').disabled = false;
 			  document.getElementById('id-button-peoplesearch').value = 'Go!';
 			  notificar();
 			  return;
@@ -508,7 +519,8 @@
 				  	 	   		document.getElementById('id-input-tiktok').value !== ''){
 
 			  	 autorizarNotificacoes();
-			     document.getElementById("id-button-peoplesearch").value = "Waiting...";
+			     document.getElementById("id-button-peoplesearch").disabled = true;
+			     document.getElementById("id-button-peoplesearch").value = "...";
 			     document.getElementById('id-panel-result').innerHTML = '';
 			     PENDING_IMG = {};
 			     ['final','facebook','instagram','twitter','tiktok'].forEach(function(t){

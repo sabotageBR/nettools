@@ -15,8 +15,9 @@ public class IndexController extends AbstractController<IndexTO>{
 	
 	private static final long serialVersionUID = -5104849116507289650L;
 	
+	@Override
 	@PostConstruct
-	private void init() {
+	protected void init() {
 		comporInformacoesHTTP();
 	}
 	

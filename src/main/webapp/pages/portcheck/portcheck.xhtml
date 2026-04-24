@@ -38,9 +38,14 @@
 										</h:inputText>
 									</div>
 									<div class="form-group col-lg-3">
-										<h:commandButton action="#{portCheckController.portcheck}" value="Go!" id="id-button-portcheck" styleClass="btn btn-success btn-lg" style="margin-top: 10px">
-											<f:ajax event="click" onevent="buttonClick()" execute="idFormPortCheck" render="idPanelHistory" />
-										</h:commandButton>
+										<div style="margin-top: 10px;">
+											<h:commandButton action="#{portCheckController.portcheck}" value="Go!" id="id-button-portcheck" styleClass="btn btn-success" style="margin-right: 6px;">
+												<f:ajax event="click" onevent="buttonClick()" execute="idFormPortCheck" render="idPanelHistory" />
+											</h:commandButton>
+											<h:commandButton action="#{portCheckController.clear}" value="Clear" id="id-button-portcheck-clear" styleClass="btn btn-default">
+												<f:ajax execute="@this" render="idFormPortCheck idPanelHistory" />
+											</h:commandButton>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -100,6 +105,11 @@
 						}
 						</script>
 
+						<ui:include src="/pages/includes/breadcrumbs.xhtml">
+							<ui:param name="toolName" value="Port Check" />
+							<ui:param name="toolSlug" value="portcheck" />
+						</ui:include>
+
 						<ui:include src="/pages/includes/related-tools.xhtml">
 							<ui:param name="current" value="portcheck" />
 						</ui:include>
@@ -112,6 +122,7 @@
 						<h:panelGroup id="idPanelHistory">
 							<ui:fragment rendered="#{customIdentity.portchecks.size() gt 0}">
 								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>
+							<div class="text-center" style="margin: -4px 0 8px;"><h:commandLink action="#{portCheckController.clearHistory}" style="font-size: 11px; color: #999;"><i class="fa fa-trash"></i> Clear history<f:ajax render="idPanelHistory"/></h:commandLink></div>
 								<br />
 								<h:dataTable id="idTablePortCheck" value="#{customIdentity.portchecks}" var="pc" styleClass="table">
 									<h:column>
@@ -158,6 +169,7 @@
 			line.textContent = obj.resultado;
 			document.getElementById('id-panel-result').appendChild(line);
 		} else {
+			document.getElementById('id-button-portcheck').disabled = false;
 			document.getElementById('id-button-portcheck').value = 'Go!';
 		}
 	}
@@ -167,7 +179,8 @@
 		var host = document.getElementById('id-input-host').value;
 		var port = document.getElementById('id-input-port').value;
 		if (host !== '' && port !== '') {
-			document.getElementById('id-button-portcheck').value = 'Waiting...';
+			document.getElementById('id-button-portcheck').disabled = true;
+			document.getElementById('id-button-portcheck').value = '...';
 			document.getElementById('id-panel-result').innerHTML = '';
 			wsocketHost.send(JSON.stringify({ host: host, porta: port }));
 		} else {
