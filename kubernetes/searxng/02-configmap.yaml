@@ -1,0 +1,146 @@
+# Configuracao do SearXNG interno, consumido por live.nettools.util.SearxngClient.
+#
+# Estes arquivos NAO sao montados direto no container: o entrypoint da imagem faz
+# `sed -i` em /etc/searxng/settings.yml, e volume de ConfigMap e read-only. O
+# Deployment usa um initContainer que copia daqui para um emptyDir gravavel.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: searxng-config
+  namespace: nettools
+  labels:
+    app.kubernetes.io/name: searxng
+    app.kubernetes.io/part-of: nettools
+data:
+  settings.yml: |
+    # Mescla com os defaults do SearXNG; so o que diverge precisa estar aqui.
+    use_default_settings: true
+
+    general:
+      instance_name: "nettools"
+      debug: false
+      enable_metrics: false
+      donation_url: false
+      contact_url: false
+
+    server:
+      # secret_key NAO fica aqui: vem de $SEARXNG_SECRET (Secret searxng-secret),
+      # que sobrescreve o settings.yml (searx/settings_defaults.py:218).
+      #
+      # limiter PRECISA ficar false. O metodo http_accept da botdetection responde
+      # 429 para qualquer request cujo header Accept nao contenha "text/html", e
+      # SearxngClient.java:67 manda "Accept: application/json". Com o limiter
+      # ligado o peoplesearch quebra silenciosamente.
+      # Para ligar depois, ver o pass_ip no limiter.toml abaixo.
+      limiter: false
+      public_instance: false
+      # og:image e resolvido por live.nettools.util.OgImageResolver, nao aqui.
+      image_proxy: false
+      # So define o metodo do formulario HTML da UI; nao afeta a API.
+      # Alinhado ao GET que o SearxngClient faz, para facilitar teste manual.
+      method: "GET"
+
+    search:
+      # Sem "json" nesta lista o /search?format=json responde 403
+      # (searx/webapp.py:630). Nao existe variavel de ambiente equivalente:
+      # esta chave so pode ser definida via settings.yml.
+      formats:
+        - html
+        - json
+      safe_search: 0
+      autocomplete: ""
+
+      # Defaults do SearXNG sao 86400s (24h) para CAPTCHA/AccessDenied e 3600s
+      # para TooManyRequests. Com o volume que o peoplesearch gera (ate 9
+      # queries por submit), um bloqueio transitorio derrubava o engine por um
+      # dia inteiro. Reduzido para o servico se recuperar sozinho.
+      suspended_times:
+        SearxEngineAccessDenied: 1800
+        SearxEngineCaptcha: 1800
+        SearxEngineTooManyRequests: 600
+
+    outgoing:
+      # Precisa fechar abaixo dos 15s de TIMEOUT_MS (SearxngClient.java:48),
+      # senao o Java derruba a conexao antes de o SearXNG responder.
+      request_timeout: 6.0
+      max_request_timeout: 10.0
+      pool_connections: 100
+      pool_maxsize: 20
+
+    valkey:
+      # Sobrescrito por $SEARXNG_VALKEY_URL no Deployment. So e usado se o
+      # limiter for ligado — hoje o Valkey fica ocioso de proposito.
+      url: valkey://valkey:6379/0
+
+    # Por padrao o SearXNG habilita so 4 engines de busca web: brave,
+    # duckduckgo, google cse e startpage. Todos os 4 bloqueiam rapido o IP de
+    # saida de um servidor (CAPTCHA / too many requests), e quando isso acontece
+    # a busca devolve ZERO resultados — foi exatamente o que ocorreu em
+    # 2026-08-03.
+    #
+    # Os engines abaixo vem desabilitados por padrao e foram verificados um a um
+    # a partir deste cluster, conferindo o campo `engine` de cada resultado
+    # (importante: nome de engine inexistente faz o SearXNG cair no conjunto
+    # padrao em vez de dar erro, o que produz falso positivo).
+    #
+    # CRITICO: so dogpile e zapmeta respeitam o operador `site:`, que o
+    # PeoplesearchService usa nas buscas por rede social (PeoplesearchService.java:112).
+    # Os demais devolvem ZERO para "termo site:instagram.com" e servem apenas as
+    # queries livres. Nao remova dogpile/zapmeta sem antes verificar quem os
+    # substitui em query com `site:`.
+    #
+    #   engine           busca livre   com site:
+    #   dogpile               8             8
+    #   zapmeta               9             9
+    #   duckduckgo web       10             0
+    #   infospace             8             0
+    #   bing                 10             0
+    #
+    # Descartados de proposito: seznam (indice tcheco) e naver (coreano)
+    # funcionam, mas sao ruins para busca de pessoas no Brasil. mojeek, qwant,
+    # yahoo, crowdview e yep nao retornaram nada.
+    engines:
+      - name: bing
+        disabled: false
+      - name: duckduckgo web
+        disabled: false
+      - name: dogpile
+        disabled: false
+      - name: zapmeta
+        disabled: false
+      - name: infospace
+        disabled: false
+
+  limiter.toml: |
+    # INERTE enquanto server.limiter = false no settings.yml.
+    #
+    # Deixado pronto para o caso de ligar o limiter: o proprio limiter.toml
+    # upstream documenta que "the ip_lists method has priority over all other
+    # methods -> if an IP is in the pass_ip list, it has unrestricted access and
+    # it is also not checked if e.g. the user agent suggests a bot".
+    #
+    # Ou seja, com o pod do nettools dentro de pass_ip, o http_accept deixa de
+    # bloquear o Accept: application/json.
+    #
+    # O range abaixo e o do weave-net deste cluster (IPALLOC_RANGE default
+    # 10.32.0.0/12 — o pod do nettools esta em 10.46.0.x). Se trocar de CNI,
+    # reconfira com:
+    #   kubectl -n nettools get pods -o wide
+    [botdetection]
+    ipv4_prefix = 32
+    ipv6_prefix = 48
+    trusted_proxies = [
+      '127.0.0.0/8',
+      '::1',
+    ]
+
+    [botdetection.ip_limit]
+    filter_link_local = false
+    link_token = false
+
+    [botdetection.ip_lists]
+    pass_searxng_org = false
+    pass_ip = [
+      '10.32.0.0/12',   # pod CIDR do weave-net
+    ]
+    block_ip = []

@@ -1,0 +1,96 @@
+# Valkey usado pelo limiter do SearXNG.
+#
+# ATENCAO: enquanto server.limiter = false (o padrao deste deploy, exigido para
+# que o SearxngClient funcione), o SearXNG NAO usa o Valkey para nada. Ele fica
+# aqui deployado e cabeado para que ligar o limiter seja so trocar uma linha.
+# Se quiser economizar recursos, pode remover este arquivo sem impacto nenhum.
+#
+# Cache puro, sem persistencia: nao ha PVC e nada aqui precisa sobreviver a um
+# restart.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valkey
+  namespace: nettools
+  labels:
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/part-of: nettools
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: valkey
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: valkey
+        app.kubernetes.io/part-of: nettools
+    spec:
+      containers:
+        - name: valkey
+          image: valkey/valkey:8-alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            - valkey-server
+            - --save
+            - ""
+            - --appendonly
+            - "no"
+            - --maxmemory
+            - 128mb
+            - --maxmemory-policy
+            - allkeys-lru
+          ports:
+            - name: valkey
+              containerPort: 6379
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          readinessProbe:
+            exec:
+              command: ["valkey-cli", "ping"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            exec:
+              command: ["valkey-cli", "ping"]
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 192Mi
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: valkey
+  namespace: nettools
+  labels:
+    app.kubernetes.io/name: valkey
+    app.kubernetes.io/part-of: nettools
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: valkey
+  ports:
+    - name: valkey
+      port: 6379
+      targetPort: valkey
+      protocol: TCP

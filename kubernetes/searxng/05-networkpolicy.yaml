@@ -1,0 +1,53 @@
+# OPCIONAL — nao aplicado por padrao. Leia antes de usar.
+#
+# O cluster usa weave-net, cujo weave-npc APLICA NetworkPolicy de verdade.
+# Ou seja: um selector errado aqui bloqueia trafego real.
+#
+# O selector abaixo ja reflete os labels reais do Deployment nettools-live
+# (app=nettools-live-server, tier=Production). Reconfira antes de aplicar:
+#   kubectl -n nettools get pods --show-labels
+# Se o selector nao bater, o SearXNG passa a recusar o nettools e o peoplesearch
+# volta a falhar — com a mesma mensagem generica de sempre.
+---
+# Fecha o SearXNG para aceitar trafego apenas do pod do nettools.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: searxng-allow-nettools
+  namespace: nettools
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: searxng
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              # Label real do Deployment nettools-live.
+              app: nettools-live-server
+      ports:
+        - port: 8080
+          protocol: TCP
+---
+# Fecha o Valkey para aceitar trafego apenas do SearXNG.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: valkey-allow-searxng
+  namespace: nettools
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: valkey
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: searxng
+      ports:
+        - port: 6379
+          protocol: TCP
