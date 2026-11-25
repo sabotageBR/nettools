@@ -1,0 +1,55 @@
+/*
+ * Anúncio da California Games (californiagames.io).
+ * Mesmo arquivo no gettvid (statics/css/cg-ad.css) e no nettools (resources/styles/cg-ad.css): mudou um, copie no outro.
+ * Formatos: .cg-ad--h (faixa horizontal) e .cg-ad--v (cartão vertical de coluna lateral).
+ * A lista traz 8 jogos; só os 4 primeiros aparecem, e o script do include sorteia a ordem a cada visita.
+ */
+.cg-ad{--cg-plum:#2A1238;--cg-cream:#FFE2B8;--cg-peach:#FFC1A1;--cg-pink:#F7A7B5;--cg-sun1:#FFD36E;--cg-sun2:#FF8A5B;--cg-lilac:#CDA6E8;
+	position:relative;box-sizing:border-box;display:flex;align-items:center;gap:22px;width:100%;max-width:1000px;margin:28px auto;
+	padding:18px 24px 23px;border-radius:18px;overflow:hidden;text-align:left;color:var(--cg-cream);
+	background:radial-gradient(140% 170% at 100% 0%,#6b2a5c 0%,#3B1740 44%,#2A1238 100%);
+	box-shadow:0 14px 32px -16px rgba(42,18,56,.7);font:400 14px/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.cg-ad *{box-sizing:border-box}
+.cg-ad::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;
+	background:linear-gradient(90deg,var(--cg-sun1),var(--cg-sun2) 35%,var(--cg-pink) 70%,var(--cg-lilac))}
+.cg-ad .cg-ad__tag{position:absolute;top:7px;right:12px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,226,184,.5)}
+.cg-ad .cg-ad__logo{display:block;height:48px;width:auto;max-width:none;flex:0 0 auto;border:0}
+.cg-ad .cg-ad__copy{flex:1 1 auto;min-width:0}
+.cg-ad .cg-ad__title{margin:0 0 4px;padding:0;font-size:20px;font-weight:800;line-height:1.2;letter-spacing:-.01em;color:#fff}
+.cg-ad .cg-ad__sub{margin:0;padding:0;font-size:13.5px;line-height:1.4;color:var(--cg-peach)}
+.cg-ad .cg-ad__games{display:flex;gap:10px;margin:0;padding:0;list-style:none;flex:0 0 auto}
+.cg-ad .cg-ad__games li{margin:0;padding:0;list-style:none;background:none;border:0}
+.cg-ad .cg-ad__games li:nth-child(n+5){display:none}
+.cg-ad .cg-ad__game{position:relative;z-index:2;display:block;width:70px;height:70px;border-radius:14px;overflow:hidden;
+	box-shadow:0 0 0 2px rgba(255,226,184,.16);transition:transform .15s ease,box-shadow .15s ease}
+.cg-ad .cg-ad__game:hover,.cg-ad .cg-ad__game:focus-visible{transform:translateY(-3px) rotate(-2deg);box-shadow:0 0 0 2px var(--cg-sun1)}
+.cg-ad .cg-ad__game img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;border:0;border-radius:0}
+.cg-ad .cg-ad__name{display:none}
+.cg-ad .cg-ad__cta{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;
+	background:linear-gradient(180deg,var(--cg-sun1),var(--cg-sun2));color:var(--cg-plum);font-size:15px;font-weight:800;line-height:1;
+	text-decoration:none;white-space:nowrap;box-shadow:0 8px 18px -8px rgba(255,138,91,.9);transition:transform .15s ease}
+/* O botão cobre o cartão inteiro (clique em qualquer ponto leva à home); os jogos ficam por cima (z-index 2). */
+.cg-ad .cg-ad__cta::before{content:"";position:absolute;inset:0;z-index:1}
+.cg-ad .cg-ad__cta:hover,.cg-ad .cg-ad__cta:focus{color:var(--cg-plum);text-decoration:none;transform:translateY(-1px)}
+
+@media (max-width:880px){
+	.cg-ad--h{flex-wrap:wrap;gap:14px 16px;padding:16px 16px 21px}
+	.cg-ad--h .cg-ad__copy{flex:1 1 260px}
+	.cg-ad--h .cg-ad__games{order:3;flex:1 1 100%}
+	.cg-ad--h .cg-ad__games li{flex:1 1 0}
+	.cg-ad--h .cg-ad__game{width:100%;height:auto;aspect-ratio:1}
+	.cg-ad--h .cg-ad__cta{order:4;flex:1 1 100%}
+}
+@media (max-width:520px){
+	.cg-ad--h .cg-ad__logo{height:40px}
+	.cg-ad--h .cg-ad__copy{flex-basis:100%}
+	.cg-ad--h .cg-ad__title{font-size:18px}
+}
+
+.cg-ad--v{flex-direction:column;align-items:stretch;gap:14px;max-width:340px;margin:0 auto 22px;padding:22px 16px 23px;text-align:center}
+.cg-ad--v .cg-ad__logo{height:42px;margin:0 auto}
+.cg-ad--v .cg-ad__title{font-size:18px}
+.cg-ad--v .cg-ad__games{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cg-ad--v .cg-ad__game{width:100%;height:auto;aspect-ratio:1}
+.cg-ad--v .cg-ad__name{display:block;position:absolute;left:0;right:0;bottom:0;padding:16px 6px 6px;font-size:11px;font-weight:700;line-height:1.15;
+	color:#fff;text-align:center;background:linear-gradient(180deg,rgba(42,18,56,0),rgba(42,18,56,.9))}

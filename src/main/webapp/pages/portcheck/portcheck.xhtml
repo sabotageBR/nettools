@@ -119,6 +119,10 @@
 						</ui:include>
 					</div>
 					<div class="col-lg-3">
+						<ui:include src="/pages/includes/cg-ad.xhtml">
+							<ui:param name="variante" value="v" />
+							<ui:param name="campanha" value="nettools-sidebar" />
+						</ui:include>
 						<h:panelGroup id="idPanelHistory">
 							<ui:fragment rendered="#{customIdentity.portchecks.size() gt 0}">
 								<h4 class="font-extra-bold no-margins text-success text-center">History</h4>

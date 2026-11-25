@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Anúncio da California Games (californiagames.io). Inclua com:
+	  <ui:include src="/pages/includes/cg-ad.xhtml">
+	    <ui:param name="variante" value="v" />          v (cartão vertical) ou h (faixa horizontal)
+	    <ui:param name="campanha" value="nettools-sidebar" />   utm_campaign do clique
+	  </ui:include>
+	CSS em resources/styles/cg-ad.css (o mesmo arquivo do gettvid) e imagens em resources/images/cg/.
+	Sem JavaScript aparecem os 4 primeiros jogos e os links vão para /en/. Com JavaScript a ordem dos 8 é
+	sorteada e os links dos jogos usam o idioma do navegador (o botão vai para a raiz, que já redireciona
+	pelo idioma e mantém a UTM).
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:param name="cgUtm" value="utm_source=nettools&amp;utm_medium=banner&amp;utm_campaign=#{campanha}" />
+	<ui:param name="cgImg" value="#{request.contextPath}/resources/images/cg" />
+
+	<aside class="cg-ad cg-ad--#{variante}" aria-label="Ad: California Games">
+		<span class="cg-ad__tag">Ad</span>
+		<img class="cg-ad__logo" src="#{cgImg}/california-games-logo.svg" alt="California Games" width="139" height="48" />
+		<div class="cg-ad__copy">
+			<p class="cg-ad__title">Need a break? Play free games</p>
+			<p class="cg-ad__sub">Instant browser games on desktop and mobile. No install, no sign-up.</p>
+		</div>
+		<ul class="cg-ad__games">
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/motocrazy?#{cgUtm}" target="_blank" rel="noopener" title="MotoCrazy"><img src="#{cgImg}/motocrazy.webp" alt="MotoCrazy" width="120" height="120" loading="lazy" /><span class="cg-ad__name">MotoCrazy</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/spot-kick-stars?#{cgUtm}" target="_blank" rel="noopener" title="Spot Kick Stars"><img src="#{cgImg}/spot-kick-stars.webp" alt="Spot Kick Stars" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Spot Kick Stars</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/bubble-cup?#{cgUtm}" target="_blank" rel="noopener" title="Bubble Cup"><img src="#{cgImg}/bubble-cup.webp" alt="Bubble Cup" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Bubble Cup</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/run-run-sahur?#{cgUtm}" target="_blank" rel="noopener" title="Run Run Sahur"><img src="#{cgImg}/run-run-sahur.webp" alt="Run Run Sahur" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Run Run Sahur</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/cubaconda-io?#{cgUtm}" target="_blank" rel="noopener" title="Cubaconda.io"><img src="#{cgImg}/cubaconda-io.webp" alt="Cubaconda.io" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Cubaconda.io</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/paws-chess?#{cgUtm}" target="_blank" rel="noopener" title="Paws Chess"><img src="#{cgImg}/paws-chess.webp" alt="Paws Chess" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Paws Chess</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/tiptoe-treats?#{cgUtm}" target="_blank" rel="noopener" title="Tiptoe Treats"><img src="#{cgImg}/tiptoe-treats.webp" alt="Tiptoe Treats" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Tiptoe Treats</span></a></li>
+			<li><a class="cg-ad__game" href="https://californiagames.io/en/g/magic-block?#{cgUtm}" target="_blank" rel="noopener" title="Magic Block"><img src="#{cgImg}/magic-block.webp" alt="Magic Block" width="120" height="120" loading="lazy" /><span class="cg-ad__name">Magic Block</span></a></li>
+		</ul>
+		<a class="cg-ad__cta" href="https://californiagames.io/?#{cgUtm}" target="_blank" rel="noopener">Play now <span aria-hidden="true">→</span></a>
+	</aside>
+	<script>
+	//<![CDATA[
+	(function () {
+		var s = document.currentScript, ad = s && s.previousElementSibling;
+		if (!ad || !ad.classList || !ad.classList.contains('cg-ad')) { return; }
+		var idiomas = ['pt-br', 'en', 'es', 'fr', 'de', 'it', 'tr', 'id', 'pl', 'vi', 'ru', 'ar', 'ja'];
+		var l = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+		var p = l.indexOf('pt') === 0 ? 'pt-br' : l.split('-')[0];
+		if (idiomas.indexOf(p) < 0) { p = 'en'; }
+		var ul = ad.querySelector('.cg-ad__games'), lis = [].slice.call(ul.children);
+		for (var i = lis.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = lis[i]; lis[i] = lis[j]; lis[j] = t; }
+		lis.forEach(function (li) {
+			var a = li.querySelector('a');
+			a.href = a.href.replace('/en/g/', '/' + p + '/g/');
+			ul.appendChild(li);
+		});
+	})();
+	//]]>
+	</script>
+</ui:composition>

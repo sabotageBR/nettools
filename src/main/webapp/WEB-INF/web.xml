@@ -27,4 +27,8 @@
 			<secure>true</secure>
 		</cookie-config>
 	</session-config>
+	<mime-mapping>
+		<extension>webp</extension>
+		<mime-type>image/webp</mime-type>
+	</mime-mapping>
 </web-app>
